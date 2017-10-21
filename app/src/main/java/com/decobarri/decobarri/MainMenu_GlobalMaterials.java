@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Marc G on 20/10/2017.
- */
-
-public class TabFragment1 extends Fragment {
+public class MainMenu_GlobalMaterials extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment_1, container, false);
+        return inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
     }
 }

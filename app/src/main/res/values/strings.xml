@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DecoBarri</string>
+    <string name="materials_screen">Materials screen</string>
+    <string name="my_projects_screen">My Projects screen</string>
+    <string name="project_search_screen">Project Search screen</string>
 </resources>

@@ -16,9 +16,9 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Project Search"));
         tabLayout.addTab(tabLayout.newTab().setText("My projects"));
         tabLayout.addTab(tabLayout.newTab().setText("Materials"));
-        tabLayout.addTab(tabLayout.newTab().setText("Project Search"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
