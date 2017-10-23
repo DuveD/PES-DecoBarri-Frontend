@@ -8,23 +8,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.Block;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import java.lang.Object;
-import java.util.Objects;
+import javax.net.ssl.HttpsURLConnection;
 
-import com.mongodb.client.model.Filters;
-
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.bson.Document;
 
 
@@ -32,9 +26,7 @@ public class Login extends AppCompatActivity {
 
     TextView error;
     EditText username, password;
-    MongoClientURI uri;
-    MongoClient mongoClient;
-    MongoDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,36 +37,15 @@ public class Login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);
 
-        uri = new MongoClientURI( "mongodb://projectePES:PES12L@ds121565.mlab.com:21565/decorbarris" );
-        mongoClient = new MongoClient(uri);
-        db = mongoClient.getDatabase(uri.getDatabase());
+
     }
 
     public void iniciar_sessio(View v) {
 
         String user = username.getText().toString();
         String pass = password.getText().toString();
-
-
-
-        try {
-            MongoCollection<Document> coll = db.getCollection("users");
-
-            BasicDBObject whereq = new BasicDBObject();
-            whereq.put("username", user);
-            MongoCursor<Document> c = coll.find(whereq).iterator();
-            if( c.hasNext() && Objects.equals(c.next().get("password").toString(), pass)){
-                TextView exito = (TextView) findViewById(R.id.textView5);
-                exito.setVisibility(View.VISIBLE);
-            }
-            else{
-                error.setVisibility(View.VISIBLE);
-                username.getText().clear();
-                password.getText().clear();
-            }
-        }catch (MongoException e) {
-            e.printStackTrace();
-        }
+        //project-pes.herokuapp.com/user/login
+        //200:OK
     }
 
     public void registre (View v) {

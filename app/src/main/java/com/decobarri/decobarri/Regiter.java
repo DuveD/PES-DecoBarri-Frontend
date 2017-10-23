@@ -46,24 +46,6 @@ public class Regiter extends AppCompatActivity {
         String user = username.getText().toString();
         String pass = password.getText().toString();
 
-        try {
-            MongoCollection<Document> coll = db.getCollection("users");
 
-            BasicDBObject whereq = new BasicDBObject();
-            whereq.put("username", user);
-            MongoCursor<Document> c = coll.find(whereq).iterator();
-            if( !c.hasNext() ){
-                Document doc = new Document();
-                doc.put("username", user);
-                doc.put("password", pass);
-                coll.insertOne(doc);
-                mongoClient.close();
-            }
-            else{
-                error.setVisibility(View.VISIBLE);
-            }
-        }catch (MongoException e) {
-            e.printStackTrace();
-        }
     }
 }
