@@ -7,21 +7,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 
 import org.bson.Document;
 
-import java.net.UnknownHostException;
-
-public class Regiter extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     TextView error;
     EditText username, password;
@@ -32,7 +27,7 @@ public class Regiter extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regiter);
+        setContentView(R.layout.activity_register);
         error = (TextView) findViewById(R.id.textView4);
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);

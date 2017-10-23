@@ -1,8 +1,5 @@
 package com.decobarri.decobarri;
 
-/**
- * Created by Marc G on 20/10/2017.
- */
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -20,16 +17,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                TabFragment1 tab1 = new TabFragment1();
+                MainMenu_ProjectSearch tab1 = new MainMenu_ProjectSearch();
                 return tab1;
             case 1:
-                TabFragment2 tab2 = new TabFragment2();
+                MainMenu_MyProjects tab2 = new MainMenu_MyProjects();
                 return tab2;
             case 2:
-                TabFragment3 tab3 = new TabFragment3();
+                MainMenu_GlobalMaterials tab3 = new MainMenu_GlobalMaterials();
                 return tab3;
             default:
-                return null;
+                MainMenu_ProjectSearch defaultTab = new MainMenu_ProjectSearch();
+                return defaultTab;
         }
     }
 
