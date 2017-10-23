@@ -4,12 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/global_materials_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/global_materials_emptyElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/materials_screen"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:text="(vacio)"
+        android:textColor="#717171"
+        android:textSize="19.0sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

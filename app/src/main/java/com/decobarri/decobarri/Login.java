@@ -1,6 +1,5 @@
 package com.decobarri.decobarri;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,21 +8,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.Block;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-import java.lang.Object;
 import java.util.Objects;
-
-import com.mongodb.client.model.Filters;
 
 import org.bson.Document;
 
@@ -78,6 +70,6 @@ public class Login extends AppCompatActivity {
     }
 
     public void registre (View v) {
-        startActivity(new Intent(this, Regiter.class));
+        startActivity(new Intent(this, Register.class));
     }
 }

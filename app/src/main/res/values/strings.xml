@@ -3,4 +3,7 @@
     <string name="materials_screen">Materials screen</string>
     <string name="my_projects_screen">My Projects screen</string>
     <string name="project_search_screen">Project Search screen</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
