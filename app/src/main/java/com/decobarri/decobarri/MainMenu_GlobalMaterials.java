@@ -25,7 +25,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
         final View view = inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
 
         // BD_library init wiht activity context
-        httpDBlibrary = new DB_library(this.getActivity());
+        httpDBlibrary = new DB_library( this.getActivity() );
 
         /*
          * Global Materials List Information fill

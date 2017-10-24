@@ -1,3 +1,17 @@
 <resources>
     <item name="db_URL" type="string">http://project-pes.herokuapp.com</item>
+
+    <!--User-->
+    <item name="FIND_ALL_USERS" type="string">/user/findAll</item>
+    <item name="FIND_USER_BY_ID" type="string">/user/findByID/</item>
+    <item name="FIND_USER_BY_NAME" type="string">/user/findAll/</item>
+    <item name="ADD_USER" type="string">/user/add</item>
+    <item name="DELETE_USER" type="string">/user/delete/</item>
+    <item name="LOGIN" type="string">/user/login</item>
+    <item name="EDIT_USER" type="string">/user/edit/</item>
+
+    <!--Project-->
+    <item name="FIND_ALL_PROJECTS" type="string">/project/findAll</item>
+    <item name="FIND_PROJECT_BY_ID" type="string">/project/findByID/</item>
+    <item name="ADD_PROJECT" type="string">/project/add/</item>
 </resources>

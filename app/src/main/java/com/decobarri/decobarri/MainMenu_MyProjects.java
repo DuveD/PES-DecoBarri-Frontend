@@ -18,9 +18,10 @@ public class MainMenu_MyProjects extends Fragment {
         final View view = inflater.inflate(R.layout.tab_fragment_my_projects, container, false);
 
         // BD_library init wiht activity context
-        httpDBlibrary = new DB_library(this.getActivity());
-        String result = httpDBlibrary.db_call("/user/findAll");
+        httpDBlibrary = new DB_library( this.getActivity() );
 
+        String call = this.getActivity().getResources().getString(R.string.FIND_ALL_USERS);
+        String result = httpDBlibrary.db_call( call );
 
         Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
         toast.show();

@@ -18,14 +18,13 @@ public class MainMenu_ProjectSearch extends Fragment {
         final View view = inflater.inflate(R.layout.tab_fragment_project_search, container, false);
 
         // BD_library init wiht activity context
-        httpDBlibrary = new DB_library(this.getActivity());
+        httpDBlibrary = new DB_library( this.getActivity() );
 
-        String result = httpDBlibrary.db_call("");
-
+        String call = "";
+        String result = httpDBlibrary.db_call( call );
 
         Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
         toast.show();
-
 
         return view;
     }
