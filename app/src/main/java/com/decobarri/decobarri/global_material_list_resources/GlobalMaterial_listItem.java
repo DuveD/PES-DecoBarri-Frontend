@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.material_list;
+package com.decobarri.decobarri.global_material_list_resources;
 
 public class GlobalMaterial_listItem {
     private int idImagen;

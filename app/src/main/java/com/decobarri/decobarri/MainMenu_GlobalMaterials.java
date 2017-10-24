@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.decobarri.decobarri.material_list.GlobalMaterial_listAdapter;
-import com.decobarri.decobarri.material_list.GlobalMaterial_listItem;
+import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listAdapter;
+import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listItem;
 
 import java.util.ArrayList;
 
