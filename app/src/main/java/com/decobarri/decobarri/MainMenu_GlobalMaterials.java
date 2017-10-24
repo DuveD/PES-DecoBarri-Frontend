@@ -11,16 +11,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.db_resources.DB_library;
 import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listAdapter;
 import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listItem;
 
 import java.util.ArrayList;
 
 public class MainMenu_GlobalMaterials extends Fragment {
+    private DB_library httpDBlibrary;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
+
+        // BD_library init wiht activity context
+        httpDBlibrary = new DB_library( this.getActivity() );
+
+        /* test */
+        /* test */
+        /* examples */
+        onCreateTest( view );
+        /* test */
+        /* test */
+        /* test */
 
         /*
          * Global Materials List Information fill
@@ -94,5 +107,13 @@ public class MainMenu_GlobalMaterials extends Fragment {
         global_material_listView.setAdapter(GlobalMaterialAdapter);
 
         return view;
+    }
+
+    public void onCreateTest( View view ){
+        String call = "";
+        String result = "You are on tab_fragment_global_materials"/*httpDBlibrary.db_call( call )*/;
+
+        Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

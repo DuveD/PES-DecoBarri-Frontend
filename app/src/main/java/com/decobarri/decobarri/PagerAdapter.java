@@ -5,11 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    static final int NUM_ITEMS = 3;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs) {
+    public PagerAdapter(FragmentManager fm) {
         super(fm);
-        this.mNumOfTabs = NumOfTabs;
     }
 
     @Override
@@ -26,13 +25,17 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 MainMenu_GlobalMaterials tab3 = new MainMenu_GlobalMaterials();
                 return tab3;
             default:
-                MainMenu_ProjectSearch defaultTab = new MainMenu_ProjectSearch();
-                return defaultTab;
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return NUM_ITEMS;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

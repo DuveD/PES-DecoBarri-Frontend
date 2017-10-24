@@ -35,7 +35,7 @@ public class DB_library {
         //  Step 1:  Start creating a few objects we'll need.
         //-----------------------------------------------------//
 
-        String output = null;
+        String output;
         URL uri;
         InputStream result = null;
         DataInputStream req;
@@ -78,9 +78,8 @@ public class DB_library {
             //------------------------------------------------------------//
 
             while ((output = req.readLine()) != null) {
-                System.out.println(output);
+                //System.out.println(output);
                 responseResult = output;
-
             }
 
         } catch (MalformedURLException mue) {
