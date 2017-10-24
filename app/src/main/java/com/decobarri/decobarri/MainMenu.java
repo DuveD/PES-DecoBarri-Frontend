@@ -41,12 +41,17 @@ public class MainMenu extends AppCompatActivity
 
         // Set up the tabs for ViewPager
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Project Search"));
-        tabLayout.addTab(tabLayout.newTab().setText("My projects"));
-        tabLayout.addTab(tabLayout.newTab().setText("Materials"));
 
-        //set gravity for tab bar
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.addTab(tabLayout.newTab().setText("Projects"));
+        tabLayout.getTabAt(0).setIcon(R.drawable.tab_project_search);
+
+        tabLayout.addTab(tabLayout.newTab().setText("My projects"));
+        tabLayout.getTabAt(1).setIcon(R.drawable.tab_my_projects);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Materials"));
+        tabLayout.getTabAt(2).setIcon(R.drawable.tab_wanted_materials);
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
         //handling navigation view item event
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

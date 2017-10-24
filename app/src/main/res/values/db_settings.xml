@@ -1,0 +1,3 @@
+<resources>
+    <item name="db_URL" type="string">http://project-pes.herokuapp.com</item>
+</resources>
