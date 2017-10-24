@@ -8,11 +8,15 @@ import com.decobarri.decobarri.R;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class DB_library {
     private Context context;
@@ -65,7 +69,6 @@ public class DB_library {
             //-------------------------------------------------------------//
 
             req = new DataInputStream(new BufferedInputStream(result));
-
             //------------------------------------------------------------//
             // Step 5:                                                    //
             //------------------------------------------------------------//

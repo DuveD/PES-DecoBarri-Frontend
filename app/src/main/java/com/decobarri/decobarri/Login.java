@@ -1,5 +1,6 @@
 package com.decobarri.decobarri;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.decobarri.decobarri.db_resources.DB_library;
+
+import java.io.UnsupportedEncodingException;
 
 
 public class Login extends AppCompatActivity {
@@ -14,6 +18,9 @@ public class Login extends AppCompatActivity {
     TextView error;
     EditText username, password;
 
+    String user;
+    String pass;
+    DB_library httpDBlibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +31,28 @@ public class Login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);
 
-
     }
 
-    public void iniciar_sessio(View v) {
+    public void iniciar_sessio(View v) throws UnsupportedEncodingException {
 
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
-        //project-pes.herokuapp.com/user/login
-        //200:OK
+        user = username.getText().toString();
+        pass = password.getText().toString();
+        if (user.isEmpty()||pass.isEmpty()){
+            error.setVisibility(View.VISIBLE);
+        }
+        else {
+            httpDBlibrary = new DB_library(this);
+            String result = httpDBlibrary.db_call("/user/login");
+
+            if (result.isEmpty()) {
+                error.setVisibility(View.VISIBLE);
+            } else {
+                ContentValues values = new ContentValues();
+                values.put("username", user);
+                values.put("password", pass);
+                startActivity(new Intent(this, MainMenu.class));
+            }
+        }
     }
 
     public void registre (View v) {
