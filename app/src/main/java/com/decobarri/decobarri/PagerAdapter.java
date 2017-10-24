@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -18,6 +18,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 MainMenu_ProjectSearch tab1 = new MainMenu_ProjectSearch();
+
                 return tab1;
             case 1:
                 MainMenu_MyProjects tab2 = new MainMenu_MyProjects();
@@ -26,8 +27,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 MainMenu_GlobalMaterials tab3 = new MainMenu_GlobalMaterials();
                 return tab3;
             default:
-                MainMenu_ProjectSearch defaultTab = new MainMenu_ProjectSearch();
-                return defaultTab;
+                return null;
         }
     }
 

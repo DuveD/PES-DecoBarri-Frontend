@@ -11,16 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.db_resources.DB_library;
 import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listAdapter;
 import com.decobarri.decobarri.global_material_list_resources.GlobalMaterial_listItem;
 
 import java.util.ArrayList;
 
 public class MainMenu_GlobalMaterials extends Fragment {
+    private DB_library httpDBlibrary;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
+
+        // BD_library init wiht activity context
+        httpDBlibrary = new DB_library(this.getActivity());
 
         /*
          * Global Materials List Information fill
