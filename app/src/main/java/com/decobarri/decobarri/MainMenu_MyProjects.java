@@ -20,12 +20,22 @@ public class MainMenu_MyProjects extends Fragment {
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
 
-        String call = this.getActivity().getResources().getString(R.string.FIND_ALL_USERS);
-        String result = httpDBlibrary.db_call( call );
+        /* test */
+        /* test */
+        /* examples */
+        onCreateTest( view );
+        /* test */
+        /* test */
+        /* test */
+
+        return view;
+    }
+
+    public void onCreateTest( View view ){
+        String call = "";
+        String result = "You are on tab_fragment_my_projects"/*httpDBlibrary.db_call( call )*/;
 
         Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
         toast.show();
-
-        return view;
     }
 }

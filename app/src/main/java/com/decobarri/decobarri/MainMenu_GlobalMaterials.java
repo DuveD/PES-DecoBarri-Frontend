@@ -27,6 +27,14 @@ public class MainMenu_GlobalMaterials extends Fragment {
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
 
+        /* test */
+        /* test */
+        /* examples */
+        onCreateTest( view );
+        /* test */
+        /* test */
+        /* test */
+
         /*
          * Global Materials List Information fill
          */
@@ -99,5 +107,13 @@ public class MainMenu_GlobalMaterials extends Fragment {
         global_material_listView.setAdapter(GlobalMaterialAdapter);
 
         return view;
+    }
+
+    public void onCreateTest( View view ){
+        String call = "";
+        String result = "You are on tab_fragment_global_materials"/*httpDBlibrary.db_call( call )*/;
+
+        Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
