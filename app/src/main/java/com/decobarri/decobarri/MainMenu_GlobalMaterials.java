@@ -11,9 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.decobarri.decobarri.db_resources.DB_library;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListAdapter;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListItem;
+import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;
 

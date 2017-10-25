@@ -1,5 +1,6 @@
 package com.decobarri.decobarri;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,26 +8,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.MongoException;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import com.decobarri.decobarri.db_resources.DB_library;
 
-import org.bson.Document;
-
-import java.util.Objects;
-
+import java.io.UnsupportedEncodingException;
 
 public class Login extends AppCompatActivity {
 
     TextView error;
     EditText username, password;
-    MongoClientURI uri;
-    MongoClient mongoClient;
-    MongoDatabase db;
+
+    String user;
+    String pass;
+    DB_library httpDBlibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,35 +30,36 @@ public class Login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);
 
-        uri = new MongoClientURI( "mongodb://projectePES:PES12L@ds121565.mlab.com:21565/decorbarris" );
-        mongoClient = new MongoClient(uri);
-        db = mongoClient.getDatabase(uri.getDatabase());
+        error.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                error.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
-    public void iniciar_sessio(View v) {
+    public void iniciar_sessio(View v) throws UnsupportedEncodingException {
 
-        String user = username.getText().toString();
-        String pass = password.getText().toString();
+        user = username.getText().toString();
+        pass = password.getText().toString();
 
+        if (user.isEmpty()||pass.isEmpty()){
+            error.setVisibility(View.VISIBLE);
+        }
+        else {
+            httpDBlibrary = new DB_library(this);
+            String param = "_id=" + user + "&password=" + pass;
+            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
 
-
-        try {
-            MongoCollection<Document> coll = db.getCollection("users");
-
-            BasicDBObject whereq = new BasicDBObject();
-            whereq.put("username", user);
-            MongoCursor<Document> c = coll.find(whereq).iterator();
-            if( c.hasNext() && Objects.equals(c.next().get("password").toString(), pass)){
-                TextView exito = (TextView) findViewById(R.id.textView5);
-                exito.setVisibility(View.VISIBLE);
-            }
-            else{
+            if (result.isEmpty()) {
                 error.setVisibility(View.VISIBLE);
-                username.getText().clear();
-                password.getText().clear();
+            } else {
+                ContentValues values = new ContentValues();
+                values.put("username", user);
+                values.put("password", pass);
+                startActivity(new Intent(this, MainMenu.class));
             }
-        }catch (MongoException e) {
-            e.printStackTrace();
         }
     }
 

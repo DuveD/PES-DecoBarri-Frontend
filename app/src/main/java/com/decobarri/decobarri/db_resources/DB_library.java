@@ -8,11 +8,20 @@ import com.decobarri.decobarri.R;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Objects;
 
 public class DB_library {
     private Context context;
@@ -22,7 +31,7 @@ public class DB_library {
     }
 
 
-    public String db_call(String call){
+    public String db_call(String call, String param, String method){
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -35,6 +44,7 @@ public class DB_library {
         URL uri;
         InputStream result = null;
         DataInputStream req;
+        HttpURLConnection connection = null;
 
         String responseResult = null;
 
@@ -47,36 +57,47 @@ public class DB_library {
             // command-line arg, or read it from a file.                  //
             //------------------------------------------------------------//
 
-            uri = new URL(context.getResources().getString(R.string.db_URL)+call);
 
-            //----------------------------------------------//
-            // Step 3:  Open an input stream from the url.  //
-            //----------------------------------------------//
 
-            result = uri.openStream();         // throws an IOException
+            if(Objects.equals(method, "POST") || Objects.equals(method, "PUT")) {
 
-            //-------------------------------------------------------------//
-            // Step 4:                                                     //
-            //-------------------------------------------------------------//
-            // Convert the InputStream to a buffered DataInputStream.      //
-            // Buffering the stream makes the reading faster; the          //
-            // readLine() method of the DataInputStream makes the reading  //
-            // easier.                                                     //
-            //-------------------------------------------------------------//
+                uri = new URL(context.getResources().getString(R.string.db_URL)+call);
 
-            req = new DataInputStream(new BufferedInputStream(result));
+                connection = (HttpURLConnection) uri.openConnection();
+                connection.setRequestMethod(method);
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(param);
+                out.close();
 
-            //------------------------------------------------------------//
-            // Step 5:                                                    //
-            //------------------------------------------------------------//
-            // Now just read each record of the input stream, and print   //
-            // it out.  Note that it's assumed that this problem is run   //
-            // from a command-line, not from an application or applet.    //
-            //------------------------------------------------------------//
+                int responseCode = connection.getResponseCode();
+                if(responseCode!=200) return String.valueOf(responseCode);
+                System.out.println("Sending 'POST' request to URL : " + uri);
+                System.out.println("Post parameters : " + param);
+                System.out.println("Response Code : " + responseCode);
 
-            while ((output = req.readLine()) != null) {
-                //System.out.println(output);
-                responseResult = output;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                while ((output = reader.readLine()) != null) {
+                    System.out.println(output);
+                    responseResult = output;
+                }
+            }
+            else {
+                uri = new URL(context.getResources().getString(R.string.db_URL)+call + param);
+                connection = (HttpURLConnection) uri.openConnection();
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                int responseCode = connection.getResponseCode();
+                result = connection.getInputStream();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(result));
+                System.out.println("Sending 'GET' request to URL : " + uri);
+                System.out.println("Post parameters : " + param);
+                System.out.println("Response Code : " + responseCode);
+                while ((output = reader.readLine()) != null) {
+                    System.out.println(output);
+                    responseResult = output;
+                }
             }
 
         } catch (MalformedURLException mue) {
@@ -92,20 +113,12 @@ public class DB_library {
             System.exit(1);
 
         } finally {
-
-            //---------------------------------//
-            // Step 6:  Close the InputStream  //
-            //---------------------------------//
-
-            try {
-                result.close();
-            } catch (IOException ioe) {
-                // just going to ignore this one
-            }
+            assert connection != null;
+            connection.disconnect();
 
         } // end of 'finally' clause
 
-        if (responseResult == null) output = "Void answer =(";
+        //if (responseResult == null) responseResult = "Void answer =(";
         return responseResult;
     }
 }
