@@ -64,17 +64,19 @@ public class DB_library {
                 uri = new URL(context.getResources().getString(R.string.db_URL)+call);
 
                 connection = (HttpURLConnection) uri.openConnection();
-                connection.setRequestMethod("POST");
+                connection.setRequestMethod(method);
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(param);
                 out.close();
+
                 int responseCode = connection.getResponseCode();
                 if(responseCode!=200) return String.valueOf(responseCode);
                 System.out.println("Sending 'POST' request to URL : " + uri);
                 System.out.println("Post parameters : " + param);
                 System.out.println("Response Code : " + responseCode);
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 while ((output = reader.readLine()) != null) {
                     System.out.println(output);
@@ -85,9 +87,13 @@ public class DB_library {
                 uri = new URL(context.getResources().getString(R.string.db_URL)+call + param);
                 connection = (HttpURLConnection) uri.openConnection();
                 connection.setRequestProperty("Accept-Charset", "UTF-8");
+                int responseCode = connection.getResponseCode();
                 result = connection.getInputStream();
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(result));
                 System.out.println("Sending 'GET' request to URL : " + uri);
+                System.out.println("Post parameters : " + param);
+                System.out.println("Response Code : " + responseCode);
                 while ((output = reader.readLine()) != null) {
                     System.out.println(output);
                     responseResult = output;

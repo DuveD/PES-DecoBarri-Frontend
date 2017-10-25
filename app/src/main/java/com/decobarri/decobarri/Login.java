@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public class Login extends AppCompatActivity {
@@ -44,7 +45,6 @@ public class Login extends AppCompatActivity {
 
         user = username.getText().toString();
         pass = password.getText().toString();
-
 
         if (user.isEmpty()||pass.isEmpty()){
             error.setVisibility(View.VISIBLE);
