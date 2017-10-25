@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="?attr/actionBarSize" >
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_nav_bar">
+
+        <ImageButton
+            android:id="@+id/btnExpBottomSheet"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/bottom_sheet_up_icon" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:padding="16dp"
+        android:text="Opción 1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:padding="16dp"
+        android:text="Opción 2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:padding="16dp"
+        android:text="Opción 3" />
+
+</LinearLayout>

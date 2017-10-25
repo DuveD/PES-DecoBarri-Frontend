@@ -6,15 +6,15 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/my_account"
-            android:icon="@drawable/menu_my_account"
+            android:icon="@drawable/menu_my_account_icon"
             android:title="My account" />
         <item
             android:id="@+id/chat"
-            android:icon="@drawable/menu_chat"
+            android:icon="@drawable/menu_chat_icon"
             android:title="Chat" />
         <item
             android:id="@+id/contact_list"
-            android:icon="@drawable/menu_contact_list"
+            android:icon="@drawable/menu_contact_list_icon"
             android:title="Contact List" />
     </group>
 
@@ -23,7 +23,7 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/logout"
-            android:icon="@drawable/menu_logout"
+            android:icon="@drawable/menu_logout_icon"
             android:title="Logout" />
     </group>
 

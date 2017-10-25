@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:contentDescription="Global material warning"
-            android:src="@drawable/material_alert"
+            android:src="@drawable/material_alert_icon"
             android:visibility="invisible" />
     </RelativeLayout>
 

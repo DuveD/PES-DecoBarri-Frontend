@@ -1,12 +1,12 @@
-package com.decobarri.decobarri.global_material_list_resources;
+package com.decobarri.decobarri.ActivityResources;
 
-public class GlobalMaterial_listItem {
+public class globalMaterialListItem {
     private int idImagen;
     private String nameMaterial;
     private String nameDirection;
     private boolean urgent;
 
-    public GlobalMaterial_listItem(int idImagen, String nameMaterial, String nameDirection, boolean urgent) {
+    public globalMaterialListItem(int idImagen, String nameMaterial, String nameDirection, boolean urgent) {
         this.idImagen = idImagen;
         this.nameMaterial = nameMaterial;
         this.nameDirection = nameDirection;

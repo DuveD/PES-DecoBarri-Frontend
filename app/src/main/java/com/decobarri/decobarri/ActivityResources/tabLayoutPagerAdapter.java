@@ -1,13 +1,17 @@
-package com.decobarri.decobarri;
+package com.decobarri.decobarri.ActivityResources;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
-    static final int NUM_ITEMS = 3;
+import com.decobarri.decobarri.MainMenu_GlobalMaterials;
+import com.decobarri.decobarri.MainMenu_MyProjects;
+import com.decobarri.decobarri.MainMenu_ProjectSearch;
 
-    public PagerAdapter(FragmentManager fm) {
+public class tabLayoutPagerAdapter extends FragmentStatePagerAdapter {
+    private static final int NUM_ITEMS = 3;
+
+    public tabLayoutPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

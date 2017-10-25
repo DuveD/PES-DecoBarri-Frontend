@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.global_material_list_resources;
+package com.decobarri.decobarri.ActivityResources;
 
 import java.util.ArrayList;
 
@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class GlobalMaterial_listAdapter extends BaseAdapter {
+public abstract class globalMaterialListAdapter extends BaseAdapter {
 
     private ArrayList<?> entradas;
     private int R_layout_IdView;
     private Context context;
 
-    public GlobalMaterial_listAdapter(Context context, int R_layout_IdView, ArrayList<?> entradas) {
+    public globalMaterialListAdapter(Context context, int R_layout_IdView, ArrayList<?> entradas) {
         super();
         this.context = context;
         this.entradas = entradas;

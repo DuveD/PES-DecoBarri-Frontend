@@ -1,8 +1,8 @@
 package com.decobarri.decobarri;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,9 +15,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-import java.util.Objects;
-
 import org.bson.Document;
+
+import java.util.Objects;
 
 
 public class Login extends AppCompatActivity {
