@@ -1,6 +1,11 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentDark">#246ff1</color>
+    <color name="colorAccentLight">#4086ff</color>
     <color name="blueApp">#0288D1</color>
+
+
+    <color name="tabSelectedColor">#ffffff</color>
+    <color name="tabUnselectedColor">#9acae2</color>
 </resources>

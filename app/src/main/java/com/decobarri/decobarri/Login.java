@@ -2,8 +2,8 @@ package com.decobarri.decobarri;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 
 public class Login extends AppCompatActivity {
 

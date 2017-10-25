@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register"></activity>
+        <activity android:name=".ProjectMenu"></activity>
         <activity android:name=".MainMenu"></activity>
     </application>
 

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.db_resources.DB_library;
@@ -19,14 +18,6 @@ public class MainMenu_MyProjects extends Fragment {
 
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
-
-        /* test */
-        /* test */
-        /* examples */
-        onCreateTest( view );
-        /* test */
-        /* test */
-        /* test */
 
         return view;
     }
