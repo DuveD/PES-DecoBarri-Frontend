@@ -9,10 +9,10 @@ public class projectItem {
     private String projectName;
     private String projectDescription;
 
-    public projectItem(int idImagen, String nameMaterial, String nameDirection, boolean urgent) {
-        this.idImagen = idImagen;
-        this.projectName = nameMaterial;
-        this.projectDescription = nameDirection;
+    public projectItem(int image, String projectName, String projectDescription) {
+        this.idImagen = image;
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
     }
 
     public int get_idImagen() {
