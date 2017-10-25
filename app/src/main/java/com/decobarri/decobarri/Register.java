@@ -20,6 +20,9 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
@@ -32,8 +35,10 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         error = (TextView) findViewById(R.id.textView4);
-        username = (EditText) findViewById(R.id.editText);
+        username = (EditText) findViewById(R.id.editText1);
         password = (EditText) findViewById(R.id.editText2);
+        name = (EditText) findViewById(R.id.editText3);
+        email = (EditText) findViewById(R.id.editText4);
 
 
     }
@@ -44,27 +49,26 @@ public class Register extends AppCompatActivity {
         String n = name.getText().toString();
         String e = email.getText().toString();
         if (user.isEmpty()||pass.isEmpty()){
-            error.setText("Un dels camps es incorrecte.");
+            error.setText("Un dels camps és incorrecte.");
             error.setVisibility(View.VISIBLE);
         }
         else {
             httpDBlibrary = new DB_library(this);
-
-            String result = httpDBlibrary.db_call("/user/findByID/:_id=" + user);
-            if (result.isEmpty()) {
-                String urlParameters  = "name="+n+"&_id="+user+"&password="+pass+"&email="+e;
-                byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
-                int    postDataLength = postData.length;
-                httpDBlibrary.db_call("/user/add");
-
+            String param = "_id=" + user + "&password=" + pass + "&name=" + n + "&email=" + e;
+            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.ADD_USER), param, "PUT");
+            if(Objects.equals(result, "409")) {
+                error.setVisibility(View.VISIBLE);
+            } else
+            if(Objects.equals(result, "500")) {
+                error.setText("Internal server error");
+                error.setVisibility(View.VISIBLE);
+            } else {
                 ContentValues values = new ContentValues();
                 values.put("username", user);
                 values.put("password", pass);
                 startActivity(new Intent(this, MainMenu.class));
             }
-            else {
-                error.setVisibility(View.VISIBLE);
-            }
+
         }
 
     }

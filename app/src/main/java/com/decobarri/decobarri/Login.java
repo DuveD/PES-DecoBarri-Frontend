@@ -31,18 +31,28 @@ public class Login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);
 
+        error.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                error.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
     public void iniciar_sessio(View v) throws UnsupportedEncodingException {
 
         user = username.getText().toString();
         pass = password.getText().toString();
+
+
         if (user.isEmpty()||pass.isEmpty()){
             error.setVisibility(View.VISIBLE);
         }
         else {
             httpDBlibrary = new DB_library(this);
-            String result = httpDBlibrary.db_call("/user/login");
+            String param = "_id=" + user + "&password=" + pass;
+            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
 
             if (result.isEmpty()) {
                 error.setVisibility(View.VISIBLE);
