@@ -53,8 +53,8 @@ public class Login extends AppCompatActivity {
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass;
             String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
-
-            if (result.isEmpty()) {
+            System.out.println(result);
+            if (result=="404") {
                 error.setVisibility(View.VISIBLE);
             } else {
                 ContentValues values = new ContentValues();
