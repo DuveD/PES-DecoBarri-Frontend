@@ -13,7 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/background_nav_bar">
+        android:background="@drawable/navigation_drawer_background">
 
         <ImageButton
             android:id="@+id/btnExpBottomSheet"

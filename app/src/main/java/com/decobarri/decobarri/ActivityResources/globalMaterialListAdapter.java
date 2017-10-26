@@ -48,4 +48,14 @@ public abstract class globalMaterialListAdapter extends BaseAdapter {
 
     public abstract void onItem (Object item, View view);
 
+    @Override
+    public int getViewTypeCount() {
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 }

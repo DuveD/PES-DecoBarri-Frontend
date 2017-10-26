@@ -32,11 +32,13 @@ public class globalMaterialListItem {
         return image;
     }
 
-    public String get_nameMaterial() {
+    public String get_name() {
         return name;
     }
 
-    public String get_description() { return description; }
+    public String get_description() {
+        return description;
+    }
 
     public boolean is_urgent(){
         return urgent;
@@ -46,7 +48,7 @@ public class globalMaterialListItem {
         return quantity;
     }
 
-    public String get_nameDirection() {
+    public String get_adress() {
         return adress;
     }
 }

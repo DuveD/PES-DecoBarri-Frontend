@@ -1,7 +1,10 @@
 package com.decobarri.decobarri;
 
 
+import android.app.LoaderManager;
+import android.content.Context;
 import android.graphics.PorterDuff;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -12,9 +15,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.ActivityResources.UpdateTask;
 import com.decobarri.decobarri.ActivityResources.tabLayoutPagerAdapter;
 
 public class MainMenu extends AppCompatActivity
@@ -23,6 +33,7 @@ public class MainMenu extends AppCompatActivity
     private ViewPager viewPager;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +41,7 @@ public class MainMenu extends AppCompatActivity
         setContentView(R.layout.activity_main_menu);
 
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
+        toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Bottom Sheets");
         drawerLayout = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
@@ -46,13 +57,13 @@ public class MainMenu extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.MainMenuTabLayout);
 
         tabLayout.addTab(tabLayout.newTab().setText("Projects").setIcon(R.drawable.tab_project_search_icon));
-        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabSelectedColor), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_selected_item_color), PorterDuff.Mode.SRC_IN);
         tabLayout.addTab(tabLayout.newTab().setText("My projects").setIcon(R.drawable.tab_my_projects_icon));
-        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabUnselectedColor), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
         tabLayout.addTab(tabLayout.newTab().setText("Materials").setIcon(R.drawable.tab_wanted_materials_icon));
-        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabUnselectedColor), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         //handling navigation view item event
         NavigationView navigationView = (NavigationView) findViewById(R.id.MainMenuNavigationView);
@@ -66,12 +77,12 @@ public class MainMenu extends AppCompatActivity
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabSelectedColor), PorterDuff.Mode.SRC_IN);
+                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabLayout_selected_item_color), PorterDuff.Mode.SRC_IN);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabUnselectedColor), PorterDuff.Mode.SRC_IN);
+                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
 
             }
 
@@ -81,22 +92,6 @@ public class MainMenu extends AppCompatActivity
             }
         });
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate()
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public void onBackPressed() {

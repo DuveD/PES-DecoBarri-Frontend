@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="80dp"
@@ -19,7 +19,7 @@
             android:src="@drawable/material_icon"
 
             app:civ_border_width="2dp"
-            app:civ_border_color="@color/blueApp"/>
+            app:civ_border_color="@color/primaryColor"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -39,11 +39,40 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/global_material_direction"
+            android:id="@+id/global_material_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Global material direction"
             android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/global_material_quantity_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity:"
+                android:gravity="center"
+                android:textSize="15sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp">
+                <TextView
+                    android:id="@+id/global_material_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:visibility="visible"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout

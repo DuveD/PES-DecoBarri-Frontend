@@ -1,11 +1,18 @@
 package com.decobarri.decobarri;
 
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,12 +22,26 @@ import android.widget.Toast;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListAdapter;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListItem;
 import com.decobarri.decobarri.db_resources.DB_library;
-import com.mongodb.util.JSON;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainMenu_GlobalMaterials extends Fragment {
     private DB_library httpDBlibrary;
+
+    private MenuItem refreshItem;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,7 +51,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
         httpDBlibrary = new DB_library( this.getActivity() );
 
         String call = this.getResources().getString(R.string.FIND_ALL_MATERIALS);
-        String result = httpDBlibrary.db_call( call , "" , "GET" );
+        //String result = httpDBlibrary.db_call( call , "" , "GET" );
 
         /*
         StructureMaterial {
@@ -42,12 +63,12 @@ public class MainMenu_GlobalMaterials extends Fragment {
         }
         */
 
-        JSON.parse(result);
+        //JSON.parse(result);
 
         /*
          * Global Materials List Information fill
          */
-        ArrayList<globalMaterialListItem> global_material_listContent = new ArrayList<globalMaterialListItem>();
+        ArrayList<globalMaterialListItem> global_material_listContent = new ArrayList<>();
 
         /* examples */
         /* examples */
@@ -61,7 +82,13 @@ public class MainMenu_GlobalMaterials extends Fragment {
          * private int quantity;
          * private String adress;
          */
-
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
+                "Sillas",
+                "Sillas sobrantes",
+                true,
+                5,
+                "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
                 "Botellas",
@@ -73,7 +100,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
-                true,
+                false,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
@@ -94,7 +121,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
-                false,
+                true,
                 4,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
@@ -118,16 +145,19 @@ public class MainMenu_GlobalMaterials extends Fragment {
                 false,
                 0,
                 "C/Exemple nº123"));
-        global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
-                "Sillas",
-                "Sillas sobrantes",
-                false,
-                5,
-                "C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
+
+        Collections.sort(global_material_listContent, new Comparator<globalMaterialListItem>() {
+            @Override
+            public int compare(globalMaterialListItem materialA, globalMaterialListItem materialB)
+            {
+                int boolean_compare = Boolean.compare( materialB.is_urgent(), materialA.is_urgent() );
+                if (boolean_compare == 0) return materialA.get_name().compareToIgnoreCase(materialB.get_name());
+                else return boolean_compare;
+            }
+        });
 
         final ListView global_material_listView = (ListView) view.findViewById(R.id.global_materials_listView);
         global_material_listView.setEmptyView(view.findViewById(R.id.global_materials_emptyElement));
@@ -148,16 +178,25 @@ public class MainMenu_GlobalMaterials extends Fragment {
                     /* SET GLOBAL MATERIAL NAME */
                     TextView globalMaterial_name = (TextView) view.findViewById(R.id.global_material_name);
                     if (globalMaterial_name != null)
-                        globalMaterial_name.setText(((globalMaterialListItem) item).get_nameMaterial());
+                        globalMaterial_name.setText(((globalMaterialListItem) item).get_name());
 
-                    /* SET GLOBAL MATERIAL DIRECTION */
-                    TextView globalMaterial_direction = (TextView) view.findViewById(R.id.global_material_direction);
+                    /* SET GLOBAL MATERIAL ADRESS */
+                    TextView globalMaterial_direction = (TextView) view.findViewById(R.id.global_material_address);
                     if (globalMaterial_direction != null)
-                        globalMaterial_direction.setText(((globalMaterialListItem) item).get_nameDirection());
+                        globalMaterial_direction.setText(((globalMaterialListItem) item).get_adress());
+
+                    /* SET GLOBAL MATERIAL QUANTITY */
+                    TextView globalMaterial_quantity = (TextView) view.findViewById(R.id.global_material_quantity);
+                    if (globalMaterial_quantity != null)
+                        if (((globalMaterialListItem) item).get_quantity() <= 0)
+                            globalMaterial_quantity.setText("-");
+                        else
+                            globalMaterial_quantity.setText(Integer.toString(((globalMaterialListItem) item).get_quantity()));
 
                     /* SET GLOBAL MATERIAL URGENT ICON TO VISIBLE IF IT IS NECESSARY */
-                    if (((globalMaterialListItem) item).is_urgent())
-                        ((ImageView) view.findViewById(R.id.global_material_warningImage)).setVisibility(View.VISIBLE);
+                    ImageView globalMaterial_urgent = (ImageView) view.findViewById(R.id.global_material_warningImage);
+                    if (globalMaterial_urgent != null)
+                        if (((globalMaterialListItem) item).is_urgent()) globalMaterial_urgent.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -171,7 +210,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 globalMaterialListItem selected = (globalMaterialListItem) parent.getItemAtPosition(position);
 
-                CharSequence text = "Selected: " + selected.get_nameMaterial();
+                CharSequence text = "Item description: " + selected.get_description();
                 Toast toast = Toast.makeText(view.getContext(), text, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -180,5 +219,26 @@ public class MainMenu_GlobalMaterials extends Fragment {
         global_material_listView.setAdapter(GlobalMaterialAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_activity_top_menu, optionsMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refreshItem = item;
+
+                CharSequence textt = "Selected: Refresh";
+                Toast toast = Toast.makeText(getContext(), textt, Toast.LENGTH_SHORT);
+                toast.show();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
