@@ -1,5 +1,7 @@
 package com.decobarri.decobarri;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -104,8 +106,15 @@ public class ProjectMenu extends AppCompatActivity
             toast.show();
         } else if (id == R.id.logout) {
             CharSequence textt = "Selected: Logout";
+
+            SharedPreferences settings = getSharedPreferences("LOGGED_USER", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("username", "");
+            editor.apply();
+
             Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
             toast.show();
+            startActivity(new Intent(this, Login.class));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.ProjectMenuDrawerLayout);
         drawer.closeDrawer(GravityCompat.START);

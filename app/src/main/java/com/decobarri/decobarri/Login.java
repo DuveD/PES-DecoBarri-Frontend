@@ -1,7 +1,7 @@
 package com.decobarri.decobarri;
 
-import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -56,9 +56,12 @@ public class Login extends AppCompatActivity {
             if (Objects.equals(result, "404")) {
                 error.setVisibility(View.VISIBLE);
             } else {
-                ContentValues values = new ContentValues();
-                values.put("username", user);
-                values.put("password", pass);
+                SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("username", user);
+                editor.commit();
+                editor.apply();
+
                 startActivity(new Intent(this, MainMenu.class));
             }
         }

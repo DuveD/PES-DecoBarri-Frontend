@@ -1,10 +1,6 @@
 package com.decobarri.decobarri;
 
-
-import android.app.LoaderManager;
-import android.content.Context;
 import android.graphics.PorterDuff;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,16 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.decobarri.decobarri.ActivityResources.UpdateTask;
 import com.decobarri.decobarri.ActivityResources.tabLayoutPagerAdapter;
 
 public class MainMenu extends AppCompatActivity
@@ -41,12 +30,12 @@ public class MainMenu extends AppCompatActivity
         setContentView(R.layout.activity_main_menu);
 
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
+        viewPager.setOffscreenPageLimit(2);
+
         toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
-        setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle("Bottom Sheets");
+
         drawerLayout = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
-
-
+        
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

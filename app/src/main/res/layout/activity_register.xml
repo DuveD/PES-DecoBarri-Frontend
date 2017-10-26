@@ -14,17 +14,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.DeviceDefault.WindowTitle"
+            android:gravity="center"
+            android:text="Registrar nou usuari" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView1"
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nom d&apos;usuari:"
-                style="@android:style/TextAppearance.Large"
-                android:id="@+id/textView1" />
+                android:gravity="center"
+                android:text="Nom d&apos;usuari:" />
 
             <EditText
                 android:layout_width="264dp"
@@ -38,16 +47,18 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView2"
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contrasenya:"
-                style="@android:style/TextAppearance.Large"
-                android:id="@+id/textView2" />
+                android:gravity="center"
+                android:text="Contrasenya:" />
 
             <EditText
                 android:id="@+id/editText2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,10 +68,11 @@
 
             <TextView
                 android:id="@+id/textView6"
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/TextAppearance.Large"
+                android:gravity="center"
                 android:text="Nom:" />
 
             <EditText
@@ -80,10 +92,11 @@
 
             <TextView
                 android:id="@+id/textView7"
+                style="@android:style/TextAppearance.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/TextAppearance.Large"
+                android:gravity="center"
                 android:text="Email:" />
 
             <EditText

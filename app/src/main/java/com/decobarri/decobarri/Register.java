@@ -43,12 +43,16 @@ public class Register extends AppCompatActivity {
         else {
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass + "&name=" + n + "&email=" + e;
-            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.ADD_USER), param, "PUT");
+            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.ADD_USER), param, "POST");
             if(Objects.equals(result, "409")) {
                 error.setVisibility(View.VISIBLE);
             } else
             if(Objects.equals(result, "500")) {
                 error.setText("Internal server error");
+                error.setVisibility(View.VISIBLE);
+            }
+            if(Objects.equals(result, "404")) {
+                error.setText("Not found error");
                 error.setVisibility(View.VISIBLE);
             } else {
                 ContentValues values = new ContentValues();

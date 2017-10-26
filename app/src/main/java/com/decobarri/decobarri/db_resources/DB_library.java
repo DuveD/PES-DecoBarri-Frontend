@@ -36,32 +36,16 @@ public class DB_library {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        //-----------------------------------------------------//
-        //  Step 1:  Start creating a few objects we'll need.  //
-        //-----------------------------------------------------//
-
         String output;
         URL uri;
-        InputStream result = null;
         HttpURLConnection connection = null;
+        int responseCode;
 
         String responseResult = null;
 
         try {
-
-            //------------------------------------------------------------//
-            // Step 2:  Create the URL.                                   //
-            //------------------------------------------------------------//
-            // Note: Put your real URL here, or better yet, read it as a  //
-            // command-line arg, or read it from a file.                  //
-            //------------------------------------------------------------//
-
-
-
             if(Objects.equals(method, "POST") || Objects.equals(method, "PUT")) {
-
                 uri = new URL(context.getResources().getString(R.string.db_URL)+call);
-
                 connection = (HttpURLConnection) uri.openConnection();
                 connection.setRequestMethod(method);
                 connection.setDoOutput(true);
@@ -69,34 +53,27 @@ public class DB_library {
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(param);
                 out.close();
-
-                int responseCode = connection.getResponseCode();
-                if(responseCode!=200) return String.valueOf(responseCode);
-                System.out.println("Sending 'POST' request to URL : " + uri);
-                System.out.println("Post parameters : " + param);
-                System.out.println("Response Code : " + responseCode);
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                while ((output = reader.readLine()) != null) {
-                    System.out.println(output);
-                    responseResult = output;
-                }
             }
             else {
                 uri = new URL(context.getResources().getString(R.string.db_URL)+call + param);
                 connection = (HttpURLConnection) uri.openConnection();
                 connection.setRequestProperty("Accept-Charset", "UTF-8");
-                int responseCode = connection.getResponseCode();
-                result = connection.getInputStream();
+            }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(result));
-                System.out.println("Sending 'GET' request to URL : " + uri);
-                System.out.println("Post parameters : " + param);
-                System.out.println("Response Code : " + responseCode);
-                while ((output = reader.readLine()) != null) {
-                    System.out.println(output);
-                    responseResult = output;
-                }
+            responseCode = connection.getResponseCode();
+
+            System.out.println("Call: " + uri);
+            System.out.println("Param: " + param);
+            System.out.println("Code: " + responseCode);
+
+            /*if(responseCode!=200) {
+                connection.disconnect();
+                return String.valueOf(responseCode);
+            }*/
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while ((output = reader.readLine()) != null) {
+                System.out.println(output);
+                responseResult = output;
             }
 
         } catch (MalformedURLException mue) {

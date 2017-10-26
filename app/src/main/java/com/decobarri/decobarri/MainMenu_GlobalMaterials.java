@@ -1,18 +1,14 @@
 package com.decobarri.decobarri;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -223,7 +219,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_activity_top_menu, optionsMenu);
+        inflater.inflate(R.menu.top_menu, optionsMenu);
     }
 
     @Override
