@@ -32,6 +32,7 @@ public class MainMenu extends AppCompatActivity
         setContentView(R.layout.activity_main_menu);
 
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
+        viewPager.setOffscreenPageLimit(2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setTitle("Bottom Sheets");
