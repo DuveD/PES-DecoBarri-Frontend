@@ -1,5 +1,6 @@
 package com.decobarri.decobarri;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListAdapter;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListItem;
 import com.decobarri.decobarri.db_resources.DB_library;
+import com.mongodb.util.JSON;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,21 @@ public class MainMenu_GlobalMaterials extends Fragment {
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
 
+        String call = this.getResources().getString(R.string.FIND_ALL_MATERIALS);
+        String result = httpDBlibrary.db_call( call , "" , "GET" );
+
+        /*
+        StructureMaterial {
+            name: string
+            description: string
+            urgent: boolean
+            quantity: integer
+            address: string
+        }
+        */
+
+        JSON.parse(result);
+
         /*
          * Global Materials List Information fill
          */
@@ -35,15 +52,79 @@ public class MainMenu_GlobalMaterials extends Fragment {
         /* examples */
         /* examples */
         /* examples */
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_botellas, "Botellas", "C/Exemple nº123", false));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_cables, "Cables", "C/Exemple nº123", true));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_cajas, "Cajas", "C/Exemple nº123", false));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_neumaticos, "Neumaticos", "C/Exemple nº123", true));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_porexpan, "Porexpan", "C/Exemple nº123", false));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_pinturas, "Pinturas", "C/Exemple nº123", true));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_herramientas, "Herramientas", "C/Exemple nº123", false));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_sillas, "Sillas", "C/Exemple nº123", true));
-        global_material_listContent.add(new globalMaterialListItem(R.drawable.example_resources_piscina_hinchable, "Piscina hinchable", "C/Exemple nº123", false));
+
+        /*
+         * private Bitmap idImagen;
+         * private String nameMaterial;
+         * private String description;
+         * private boolean urgent;
+         * private int quantity;
+         * private String adress;
+         */
+
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
+                "Botellas",
+                "Botellas sobrantes",
+                false,
+                5,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
+                "Cables",
+                "Cables sobrantes",
+                true,
+                0,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),
+                "Cajas",
+                "Cajas Grandes",
+                false,
+                20,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),
+                "Herramientas",
+                "Herramientas sobrantes",
+                false,
+                0,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
+                "Neumaticos",
+                "Neumaticos sobrantes",
+                false,
+                4,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),
+                "Pinturas",
+                "Pinturas roja, azul, verde y más...",
+                true,
+                0,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),
+                "Piscina",
+                "Piscina hinchable pequeña",
+                true,
+                1,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),
+                "Porexpan",
+                "Cuanto más grande mejor",
+                false,
+                0,
+                "C/Exemple nº123"));
+        global_material_listContent.add(new globalMaterialListItem(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
+                "Sillas",
+                "Sillas sobrantes",
+                false,
+                5,
+                "C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -62,7 +143,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
                     /* SET GLOBAL MATERIAL IMAGE */
                     ImageView globalMaterial_image = (ImageView) view.findViewById(R.id.global_material_imageView);
                     if (globalMaterial_image != null)
-                        globalMaterial_image.setImageResource(((globalMaterialListItem) item).get_idImagen());
+                        globalMaterial_image.setImageBitmap(((globalMaterialListItem) item).get_image());
 
                     /* SET GLOBAL MATERIAL NAME */
                     TextView globalMaterial_name = (TextView) view.findViewById(R.id.global_material_name);

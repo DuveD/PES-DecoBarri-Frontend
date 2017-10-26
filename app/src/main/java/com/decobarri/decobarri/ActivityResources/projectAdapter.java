@@ -1,4 +1,4 @@
-package com.decobarri.decobarri;
+package com.decobarri.decobarri.ActivityResources;
 
 import java.util.List;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.decobarri.decobarri.ActivityResources.projectItem;
+import com.decobarri.decobarri.R;
 
 /**
  * Created by Marc G on 24/10/2017.

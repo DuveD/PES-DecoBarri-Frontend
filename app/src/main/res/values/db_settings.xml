@@ -1,6 +1,11 @@
 <resources>
     <item name="db_URL" type="string">http://project-pes.herokuapp.com</item>
 
+    <!--Main Tags-->
+    <item name="USER" type="string">user</item>
+    <item name="PROJECT" type="string">project</item>
+    <item name="MATERIAL" type="string">material</item>
+
     <!--User-->
     <item name="FIND_ALL_USERS" type="string">/user/findAll</item>
     <item name="FIND_USER_BY_ID" type="string">/user/findByID/</item>
@@ -14,4 +19,8 @@
     <item name="FIND_ALL_PROJECTS" type="string">/project/findAll</item>
     <item name="FIND_PROJECT_BY_ID" type="string">/project/findByID/</item>
     <item name="ADD_PROJECT" type="string">/project/add/</item>
+
+    <!--Materials-->
+    <item name="FIND_ALL_MATERIALS" type="string">/material/findAll</item>
+    <item name="ADD_MATERIAL" type="string">/material/add</item>
 </resources>

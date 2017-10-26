@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.ActivityResources.projectAdapter;
 import com.decobarri.decobarri.ActivityResources.projectItem;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.decobarri.decobarri.R.id.recycler;
 
 public class MainMenu_MyProjects extends Fragment {
     private DB_library httpDBlibrary;

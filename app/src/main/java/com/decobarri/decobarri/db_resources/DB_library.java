@@ -37,13 +37,12 @@ public class DB_library {
         StrictMode.setThreadPolicy(policy);
 
         //-----------------------------------------------------//
-        //  Step 1:  Start creating a few objects we'll need.
+        //  Step 1:  Start creating a few objects we'll need.  //
         //-----------------------------------------------------//
 
         String output;
         URL uri;
         InputStream result = null;
-        DataInputStream req;
         HttpURLConnection connection = null;
 
         String responseResult = null;
