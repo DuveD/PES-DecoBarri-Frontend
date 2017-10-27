@@ -20,25 +20,26 @@ import java.util.List;
 public class MainMenu_MyProjects extends Fragment {
     private DB_library httpDBlibrary;
 
-    private RecyclerView rec ;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lmanager;
 
     List items = new ArrayList();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.tab_fragment_my_projects, container, false);
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_street_gracia)),
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.recycler);
+
+        items.add(new projectItem(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_street_gracia),
                 "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
                 " amb l'objectiu de tornar a quedar com el millor carrer de les festes de gràcia, tal com vam aconseguir l'any passat."));
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_festes_esplugues)),
+        items.add(new projectItem(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_festes_esplugues),
                 "Festes d' Esplugues", "Col·labora a fer millor les festes" +
                 " del nostre barri i participa en la organització de les seves activitats."));
 
-        rec = (RecyclerView) view.findViewById(R.id.recycler);
         lmanager = new LinearLayoutManager(getActivity());;
         rec.setLayoutManager(lmanager);
 
@@ -47,7 +48,11 @@ public class MainMenu_MyProjects extends Fragment {
 
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.tab_fragment_my_projects, container, false);
         return view;
     }
 

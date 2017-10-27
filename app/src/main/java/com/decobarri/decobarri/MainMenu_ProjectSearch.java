@@ -28,36 +28,41 @@ public class MainMenu_ProjectSearch extends Fragment {
     List items = new ArrayList();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.tab_fragment_project_search, container, false);
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.recycler);
+
+        items.add(new projectItem((BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_vallespir)), "Decoracio carrer Vallespi",
                 "Aquest any tornarem a participar a" +
-                " les festes de sants."));
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
+                        " les festes de sants."));
+        items.add(new projectItem((BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_christmas_school)),
                 "Projecte de decoració de Nadal de l'escola Les Corts", "Decoració " +
                 "ambientada en temàtica de nadal per als nens fins a 3r de primaria."));
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_festes_esplugues)),
+        items.add(new projectItem(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_festes_esplugues),
                 "Festes d' Esplugues", "Col·labora a fer millor les festes" +
                 " del nostre barri i participa en la organització de les seves activitats."));
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_street_gracia)),
+        items.add(new projectItem(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_street_gracia),
                 "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
                 " amb l'objectiu de tornar a quedar com el millor carrer de les festes de gràcia, tal com vam aconseguir l'any passat."));
-        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_christmas_centre_cultural)),
+        items.add(new projectItem(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_christmas_centre_cultural),
                 "Decoració temàtica de Nadal del centre cultural Les Corts.", "" +
                 " Ajuda a decorar el nostre centre i participa en els events que tenim preparats per aquest nadal."));
-
-        rec = (RecyclerView) view.findViewById(R.id.recycler);
         lmanager = new LinearLayoutManager(getActivity());;
         rec.setLayoutManager(lmanager);
-
         adapter = new projectAdapter(items);
         rec.setAdapter(adapter);
+    }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.tab_fragment_project_search, container, false);
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
 
