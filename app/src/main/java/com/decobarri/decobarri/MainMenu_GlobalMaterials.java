@@ -1,8 +1,10 @@
 package com.decobarri.decobarri;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,12 @@ import com.decobarri.decobarri.ActivityResources.globalMaterialListAdapter;
 import com.decobarri.decobarri.ActivityResources.globalMaterialListItem;
 import com.decobarri.decobarri.db_resources.DB_library;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -79,63 +87,63 @@ public class MainMenu_GlobalMaterials extends Fragment {
          * private String adress;
          */
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas)),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas)),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables)),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas)),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas)),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos)),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas)),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina)),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),
+                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan)),
                 "Porexpan",
                 "Cuanto más grande mejor",
                 false,

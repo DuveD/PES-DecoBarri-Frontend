@@ -1,5 +1,7 @@
 package com.decobarri.decobarri;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.ActivityResources.tabLayoutPagerAdapter;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +40,7 @@ public class MainMenu extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
-        
+
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -118,5 +123,13 @@ public class MainMenu extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+    public Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 60, out);
+        return BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
     }
 }
