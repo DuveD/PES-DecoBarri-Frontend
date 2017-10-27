@@ -245,4 +245,8 @@ public class MainMenu_GlobalMaterials extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void actualizeGlobalMaterialsList(){
+
+    }
 }

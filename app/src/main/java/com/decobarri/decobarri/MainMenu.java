@@ -38,6 +38,7 @@ public class MainMenu extends AppCompatActivity
         viewPager.setOffscreenPageLimit(2);
 
         toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
+        setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
 
