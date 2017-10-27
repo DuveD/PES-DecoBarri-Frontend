@@ -1,5 +1,6 @@
 package com.decobarri.decobarri;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,9 +29,13 @@ public class MainMenu_MyProjects extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tab_fragment_my_projects, container, false);
-        items.add(new projectItem(R.drawable.example_street_gracia, "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
+        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_street_gracia)),
+                "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
                 " amb l'objectiu de tornar a quedar com el millor carrer de les festes de gràcia, tal com vam aconseguir l'any passat."));
-        items.add(new projectItem(R.drawable.example_festes_esplugues, "Festes d' Esplugues", "Col·labora a fer millor les festes" +
+        items.add(new projectItem(((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(),
+                R.drawable.example_festes_esplugues)),
+                "Festes d' Esplugues", "Col·labora a fer millor les festes" +
                 " del nostre barri i participa en la organització de les seves activitats."));
 
         rec = (RecyclerView) view.findViewById(R.id.recycler);

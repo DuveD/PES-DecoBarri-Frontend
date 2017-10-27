@@ -50,7 +50,7 @@ public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectV
 
     @Override
     public void onBindViewHolder(ProjectViewHolder viewHolder, int i) {
-        viewHolder.imagen.setImageResource(item.get(i).get_idImagen());
+        viewHolder.imagen.setImageBitmap(item.get(i).get_Imagen());
         viewHolder.nombre.setText(item.get(i).get_name());
         viewHolder.descripcion.setText("Descripcion:" + String.valueOf(item.get(i).get_description()));
     }
