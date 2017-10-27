@@ -34,22 +34,10 @@ import java.util.Comparator;
 public class MainMenu_GlobalMaterials extends Fragment {
     private DB_library httpDBlibrary;
 
-    private MenuItem refreshItem;
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        final View view = getView();
         super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
 
         // BD_library init wiht activity context
         httpDBlibrary = new DB_library( this.getActivity() );
@@ -87,63 +75,63 @@ public class MainMenu_GlobalMaterials extends Fragment {
          * private String adress;
          */
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
         global_material_listContent.add(new globalMaterialListItem(
-                ((MainMenu) getActivity()).compressImage(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan)),
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),
                 "Porexpan",
                 "Cuanto más grande mejor",
                 false,
@@ -221,7 +209,17 @@ public class MainMenu_GlobalMaterials extends Fragment {
         });
 
         global_material_listView.setAdapter(GlobalMaterialAdapter);
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.tab_fragment_global_materials, container, false);
         return view;
     }
 
@@ -234,7 +232,6 @@ public class MainMenu_GlobalMaterials extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refreshItem = item;
 
                 CharSequence textt = "Selected: Refresh";
                 Toast toast = Toast.makeText(getContext(), textt, Toast.LENGTH_SHORT);
