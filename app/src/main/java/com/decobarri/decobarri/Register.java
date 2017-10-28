@@ -58,7 +58,9 @@ public class Register extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 values.put("username", user);
                 values.put("password", pass);
-                startActivity(new Intent(this, MainMenu.class));
+                Intent i = new Intent(this, MainMenu.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
             }
 
         }

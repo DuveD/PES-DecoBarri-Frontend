@@ -25,6 +25,22 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //-----LOGIN anterior------//
+        SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        user = pref.getString("username", "");
+        pass = pref.getString("password", "");
+        if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
+            httpDBlibrary = new DB_library(this);
+            String param = "_id=" + user + "&password=" + pass;
+            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
+            if(!Objects.equals(result, "404")&&!Objects.equals(result, "500")&&!Objects.equals(result, "401")){
+                Intent i = new Intent(this, MainMenu.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+            }
+        }
+
         setTitle("Login");
         setContentView(R.layout.activity_login);
         error = (TextView) findViewById(R.id.textView3);
@@ -55,14 +71,19 @@ public class Login extends AppCompatActivity {
             System.out.println(result);
             if (Objects.equals(result, "404")) {
                 error.setVisibility(View.VISIBLE);
-            } else {
+            } if (Objects.equals(result, "401")) {
+                error.setText("Wrong password");
+                error.setVisibility(View.VISIBLE);
+            }else {
                 SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("username", user);
+                editor.putString("password", pass);
                 editor.commit();
                 editor.apply();
-
-                startActivity(new Intent(this, MainMenu.class));
+                Intent i = new Intent(this, MainMenu.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
             }
         }
     }

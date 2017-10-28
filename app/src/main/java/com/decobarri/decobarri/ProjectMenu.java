@@ -105,16 +105,16 @@ public class ProjectMenu extends AppCompatActivity
             Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
             toast.show();
         } else if (id == R.id.logout) {
-            CharSequence textt = "Selected: Logout";
 
             SharedPreferences settings = getSharedPreferences("LOGGED_USER", 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("username", "");
+            editor.putString("password", "");
             editor.apply();
 
-            Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
-            toast.show();
-            startActivity(new Intent(this, Login.class));
+            Intent i = new Intent(this, Login.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.ProjectMenuDrawerLayout);
         drawer.closeDrawer(GravityCompat.START);
