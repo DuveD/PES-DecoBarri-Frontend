@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,18 +17,26 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="145dp"
+            android:layout_height="157dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/logo" />
+
         <TextView
             android:id="@+id/textView8"
-            style="@android:style/TextAppearance.DeviceDefault.WindowTitle"
+            android:textSize="@dimen/Title"
+            android:textColor="@color/navigationDrawer_selected_item_color"
+            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Login" />
+            android:layout_height="39dp"
+            android:text="LOGIN" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
@@ -35,19 +44,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nom d&apos;usuari:" />
+                android:text="Username:" />
 
             <EditText
-                android:layout_width="299dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"/>
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView2"
@@ -55,36 +64,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Contrasenya:" />
+                android:text="Password:" />
 
             <EditText
-                android:layout_width="299dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/editText2"
-                android:inputType="textPassword"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Iniciar sessió"
-            android:onClick="iniciar_sessio"
-            style="@android:style/TextAppearance.Medium"
-            android:id="@+id/button" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:orientation="vertical"></LinearLayout>
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Registrar nou usuari"
-            style="@android:style/TextAppearance.Medium"
+            android:text="LogIn"
+            android:onClick="iniciar_sessio"
+            android:textSize="@dimen/fab_margin"
+            android:id="@+id/button"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@color/tabLayout_background_color"
+            />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="I don't have an account. Register me!"
+            android:textSize="@dimen/fab_margin"
+            android:textColor="@color/navigationDrawer_selected_item_color"
+            android:background="@android:color/transparent"
             android:onClick="registre"
             android:id="@+id/button2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nom d&apos;usuari o contrasenya incorrectes"
+            android:text="Wrong username or password"
             android:textColor="@android:color/holo_red_dark"
             style="@android:style/TextAppearance.Medium"
             android:id="@+id/textView3"
