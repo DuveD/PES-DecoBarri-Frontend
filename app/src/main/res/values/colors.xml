@@ -2,10 +2,7 @@
 <resources>
     <!--App colors-->
     <color name="primaryColor">#2f6cd6</color>
-    <color name="primaryLightColor">#3F51B5</color>
     <color name="primaryDarkColor">#303F9F</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="colorAccentDark">#246ff1</color>
     <color name="colorAccentLight">#4086ff</color>
     <!--Navigation Drawer Colors-->
     <color name="navigationDrawer_selected_item_color">#4354bd</color>

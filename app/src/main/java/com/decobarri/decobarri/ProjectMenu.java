@@ -21,11 +21,11 @@ import android.widget.Toast;
 public class ProjectMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Boolean SheetExpanded = false;
     private ImageButton btnExpBottomSheet;
     private LinearLayout bottomSheet;
     //private ViewPager viewPager;
     private DrawerLayout drawerLayout;
-    Boolean SheetExpanded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +48,14 @@ public class ProjectMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.ProjectMenuNavigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        bottomSheet = (LinearLayout)findViewById(R.id.bottomSheet);
+        bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
         final BottomSheetBehavior bsb = BottomSheetBehavior.from(bottomSheet);
 
-        btnExpBottomSheet = (ImageButton)findViewById(R.id.btnExpBottomSheet);
+        btnExpBottomSheet = (ImageButton) findViewById(R.id.btnExpBottomSheet);
         btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( !SheetExpanded )
+                if (!SheetExpanded)
                     bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
                 else
                     bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -71,8 +71,10 @@ public class ProjectMenu extends AppCompatActivity
                     btnExpBottomSheet.animate().rotation(rotation).setInterpolator(new AccelerateDecelerateInterpolator());
                 }
             }
+
             @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
         });
     }
 

@@ -2,7 +2,7 @@ package com.decobarri.decobarri.ActivityResources;
 
 import android.graphics.Bitmap;
 
-public class globalMaterialListItem {
+public class GlobalMaterialListItem {
     /*
     StructureMaterial {
         name: string
@@ -19,7 +19,7 @@ public class globalMaterialListItem {
     private int quantity;
     private String adress;
 
-    public globalMaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String adress) {
+    public GlobalMaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String adress) {
         this.image = image;
         this.name = name;
         this.description = description;

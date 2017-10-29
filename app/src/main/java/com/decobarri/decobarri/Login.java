@@ -45,10 +45,9 @@ public class Login extends AppCompatActivity {
         user = username.getText().toString();
         pass = password.getText().toString();
 
-        if (user.isEmpty()||pass.isEmpty()){
+        if (user.isEmpty() || pass.isEmpty()) {
             error.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass;
             String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
@@ -67,7 +66,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void registre (View v) {
+    public void registre(View v) {
         startActivity(new Intent(this, Register.class));
     }
 }

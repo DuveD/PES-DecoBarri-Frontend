@@ -14,10 +14,10 @@ import com.decobarri.decobarri.R;
  * Created by Marc G on 24/10/2017.
  */
 
-public class projectAdapter extends RecyclerView.Adapter<projectAdapter.ProjectViewHolder> {
-    private List<projectItem> item;
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
+    private List<ProjectItem> item;
 
-    public projectAdapter(List<projectItem> item) {
+    public ProjectAdapter(List<ProjectItem> item) {
         this.item = item;
     }
 

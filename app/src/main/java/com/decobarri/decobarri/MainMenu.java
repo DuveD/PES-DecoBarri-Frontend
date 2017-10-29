@@ -16,7 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.decobarri.decobarri.ActivityResources.tabLayoutPagerAdapter;
+import com.decobarri.decobarri.ActivityResources.TabLayoutPagerAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -65,10 +65,10 @@ public class MainMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Set up the ViewPager with the sections adapter.
-        final tabLayoutPagerAdapter adapter = new tabLayoutPagerAdapter(getSupportFragmentManager());
+        final TabLayoutPagerAdapter adapter = new TabLayoutPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -98,7 +98,6 @@ public class MainMenu extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -125,8 +124,6 @@ public class MainMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
     public Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

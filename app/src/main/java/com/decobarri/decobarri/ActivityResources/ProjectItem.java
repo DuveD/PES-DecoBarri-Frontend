@@ -6,12 +6,12 @@ import android.graphics.Bitmap;
  * Created by Marc G on 26/10/2017.
  */
 
-public class projectItem {
+public class ProjectItem {
     private Bitmap image;
     private String projectName;
     private String projectDescription;
 
-    public projectItem(Bitmap image, String projectName, String projectDescription) {
+    public ProjectItem(Bitmap image, String projectName, String projectDescription) {
         this.image = image;
         this.projectName = projectName;
         this.projectDescription = projectDescription;

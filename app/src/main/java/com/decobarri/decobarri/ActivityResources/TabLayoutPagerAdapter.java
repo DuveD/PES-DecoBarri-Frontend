@@ -8,10 +8,10 @@ import com.decobarri.decobarri.MainMenu_GlobalMaterials;
 import com.decobarri.decobarri.MainMenu_MyProjects;
 import com.decobarri.decobarri.MainMenu_ProjectSearch;
 
-public class tabLayoutPagerAdapter extends FragmentStatePagerAdapter {
+public class TabLayoutPagerAdapter extends FragmentStatePagerAdapter {
     private static final int NUM_ITEMS = 3;
 
-    public tabLayoutPagerAdapter(FragmentManager fm) {
+    public TabLayoutPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

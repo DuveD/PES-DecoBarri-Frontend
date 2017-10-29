@@ -31,27 +31,25 @@ public class Register extends AppCompatActivity {
 
     }
 
-    public void registro (View v) {
+    public void registro(View v) {
         String user = username.getText().toString();
         String pass = password.getText().toString();
         String n = name.getText().toString();
         String e = email.getText().toString();
-        if (user.isEmpty()||pass.isEmpty()){
+        if (user.isEmpty() || pass.isEmpty()) {
             error.setText("Un dels camps és incorrecte.");
             error.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass + "&name=" + n + "&email=" + e;
             String result = httpDBlibrary.db_call(this.getResources().getString(R.string.ADD_USER), param, "POST");
-            if(Objects.equals(result, "409")) {
+            if (Objects.equals(result, "409")) {
                 error.setVisibility(View.VISIBLE);
-            } else
-            if(Objects.equals(result, "500")) {
+            } else if (Objects.equals(result, "500")) {
                 error.setText("Internal server error");
                 error.setVisibility(View.VISIBLE);
             }
-            if(Objects.equals(result, "404")) {
+            if (Objects.equals(result, "404")) {
                 error.setText("Not found error");
                 error.setVisibility(View.VISIBLE);
             } else {
