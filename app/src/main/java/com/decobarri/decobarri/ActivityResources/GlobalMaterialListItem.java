@@ -17,15 +17,15 @@ public class GlobalMaterialListItem {
     private String description;
     private boolean urgent;
     private int quantity;
-    private String adress;
+    private String address;
 
-    public GlobalMaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String adress) {
+    public GlobalMaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.urgent = urgent;
         this.quantity = quantity;
-        this.adress = adress;
+        this.address = address;
     }
 
     public Bitmap get_image() {
@@ -48,7 +48,7 @@ public class GlobalMaterialListItem {
         return quantity;
     }
 
-    public String get_adress() {
-        return adress;
+    public String get_address() {
+        return address;
     }
 }

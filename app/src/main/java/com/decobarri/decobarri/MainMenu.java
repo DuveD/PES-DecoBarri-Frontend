@@ -104,21 +104,13 @@ public class MainMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.my_account) {
-            CharSequence textt = "Selected: My account";
-            Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
-            toast.show();
+            System.out.println("Selected: My account");
         } else if (id == R.id.chat) {
-            CharSequence textt = "Selected: Chat";
-            Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
-            toast.show();
+            System.out.println("Selected: Chat");
         } else if (id == R.id.contact_list) {
-            CharSequence textt = "Selected: Contact list";
-            Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
-            toast.show();
+            System.out.println("Selected: Contact list");
         } else if (id == R.id.logout) {
-            CharSequence textt = "Selected: Logout";
-            Toast toast = Toast.makeText(this, textt, Toast.LENGTH_SHORT);
-            toast.show();
+            System.out.println("Selected: Logout");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
         drawer.closeDrawer(GravityCompat.START);

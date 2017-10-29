@@ -4,11 +4,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class AsyncCustomTask extends AsyncTask<Void, Void, Void> {
-    private Context mCon;
+public abstract class AsyncCustomTask extends AsyncTask<Void, Void, Void> {
 
-    protected AsyncCustomTask(Context con) {
-        mCon = con;
+    private Context context;
+
+    private String onPostMessage;
+
+    protected AsyncCustomTask(Context context) {
+        this.context = context;
+        this.onPostMessage = null;
+
+    }
+
+    protected AsyncCustomTask(Context context, String message) {
+        this.context = context;
+        this.onPostMessage = message;
+
     }
 
     @Override
@@ -28,15 +39,11 @@ public class AsyncCustomTask extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Toast.makeText(mCon, "Finished complex background doInBackgroundFunction!", Toast.LENGTH_LONG).show();
+        if (onPostMessage != null) Toast.makeText(context, onPostMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void doInBackgroundFunction() {
-
-    }
+    public abstract void doInBackgroundFunction();
 
 
-    public void onPostExecuteFunction() {
-
-    }
+    public abstract void onPostExecuteFunction();
 }
