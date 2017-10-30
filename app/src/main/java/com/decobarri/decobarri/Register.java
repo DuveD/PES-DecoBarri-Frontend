@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.Objects;
@@ -56,7 +57,7 @@ public class Register extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 values.put("username", user);
                 values.put("password", pass);
-                Intent i = new Intent(this, MainMenu.class);
+                Intent i = new Intent(this, MainMenuActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }

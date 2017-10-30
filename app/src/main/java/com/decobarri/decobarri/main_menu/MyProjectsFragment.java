@@ -1,4 +1,4 @@
-package com.decobarri.decobarri;
+package com.decobarri.decobarri.main_menu;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,14 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.decobarri.decobarri.ActivityResources.ProjectAdapter;
-import com.decobarri.decobarri.ActivityResources.ProjectItem;
+import com.decobarri.decobarri.activity_resources.ProjectAdapter;
+import com.decobarri.decobarri.activity_resources.ProjectItem;
+import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenu_MyProjects extends Fragment {
+public class MyProjectsFragment extends Fragment {
     List items = new ArrayList();
     private DB_library httpDBlibrary;
     private RecyclerView.Adapter adapter;
@@ -27,7 +28,7 @@ public class MainMenu_MyProjects extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.recycler);
+        final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.myprojects_recycler);
 
         items.add(new ProjectItem(BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_street_gracia),
@@ -51,13 +52,13 @@ public class MainMenu_MyProjects extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.tab_fragment_my_projects, container, false);
+        final View view = inflater.inflate(R.layout.fragment_my_projects, container, false);
         return view;
     }
 
     public void onCreateTest(View view) {
         String call = "";
-        String result = "You are on tab_fragment_my_projects"/*httpDBlibrary.db_call( call )*/;
+        String result = "You are on fragment_my_projects"/*httpDBlibrary.db_call( call )*/;
 
         Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
         toast.show();

@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.ActivityResources;
+package com.decobarri.decobarri.activity_resources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,11 @@ import com.decobarri.decobarri.R;
 
 public class GlobalMaterialListAdapter extends RecyclerView.Adapter<GlobalMaterialListAdapter.MaterialViewHolder> {
 
-    private List<GlobalMaterialListItem> materialList;
+    private List<MaterialListItem> materialList;
 
     private RecyclerView recyclerView;
 
-    public GlobalMaterialListAdapter(ArrayList<GlobalMaterialListItem> materialList, RecyclerView recyclerView) {
+    public GlobalMaterialListAdapter(ArrayList<MaterialListItem> materialList, RecyclerView recyclerView) {
         this.materialList = materialList;
         this.recyclerView = recyclerView;
     }
@@ -86,7 +86,7 @@ public class GlobalMaterialListAdapter extends RecyclerView.Adapter<GlobalMateri
         public void onClick(View view) {
 
             int itemPosition = recyclerView.getChildLayoutPosition(view);
-            GlobalMaterialListItem item = materialList.get(itemPosition);
+            MaterialListItem item = materialList.get(itemPosition);
 
             CharSequence text = "Item description: " + item.get_description() + "\n"
                     + "Item urgent: " + item.is_urgent();

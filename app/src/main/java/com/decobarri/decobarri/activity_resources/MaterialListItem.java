@@ -1,8 +1,8 @@
-package com.decobarri.decobarri.ActivityResources;
+package com.decobarri.decobarri.activity_resources;
 
 import android.graphics.Bitmap;
 
-public class GlobalMaterialListItem {
+public class MaterialListItem {
     /*
     StructureMaterial {
         name: string
@@ -19,7 +19,7 @@ public class GlobalMaterialListItem {
     private int quantity;
     private String address;
 
-    public GlobalMaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+    public MaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
         this.image = image;
         this.name = name;
         this.description = description;

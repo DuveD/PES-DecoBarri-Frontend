@@ -20,7 +20,7 @@
             android:layout_height="52dp"
             android:text="NEW USER"
             android:textColor="@color/navigationDrawer_selected_item_color"
-            android:textSize="@dimen/Title"
+            android:textSize="@dimen/title"
             android:textStyle="bold" />
 
         <LinearLayout

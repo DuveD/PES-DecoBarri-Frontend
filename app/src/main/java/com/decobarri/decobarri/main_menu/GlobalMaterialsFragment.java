@@ -1,6 +1,7 @@
-package com.decobarri.decobarri;
+package com.decobarri.decobarri.main_menu;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,27 +15,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
-import com.decobarri.decobarri.ActivityResources.GlobalMaterialListAdapter;
-import com.decobarri.decobarri.ActivityResources.GlobalMaterialListItem;
-import com.decobarri.decobarri.ActivityResources.AsyncCustomTask;
+import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
+import com.decobarri.decobarri.activity_resources.MaterialListItem;
+import com.decobarri.decobarri.activity_resources.AsyncCustomTask;
+import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.R.drawable;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
-import com.decobarri.decobarri.R.menu;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MainMenu_GlobalMaterials extends Fragment {
+public class GlobalMaterialsFragment extends Fragment {
 
     private Adapter adapter;
     private LayoutManager lmanager;
     private RecyclerView recyclerView;
-    private ArrayList<GlobalMaterialListItem> listContent;
+    private ArrayList<MaterialListItem> listContent;
+
+    private Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(layout.tab_fragment_global_materials, container, false);
+        View view = inflater.inflate(layout.fragment_global_materials, container, false);
 
         // En principio no hacemos nada
 
@@ -58,7 +62,7 @@ public class MainMenu_GlobalMaterials extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Recojemos y guardamos la view del fragment actual
-        this.recyclerView = (RecyclerView) getView().findViewById(R.id.global_materials_listView);
+        this.recyclerView = (RecyclerView) getView().findViewById(R.id.globalmaterials_recycler);
 
         // Rellenamos la lista con nada y asignamos el adaptador, pero esto no ahce nada en realidad...
         lmanager = new LinearLayoutManager(getActivity());
@@ -73,13 +77,22 @@ public class MainMenu_GlobalMaterials extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(menu.top_menu, optionsMenu);
+        inflater.inflate(R.menu.top_menu, optionsMenu);
+        menu = optionsMenu;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case id.action_refresh:
+
+                // Do animation start
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                item.setActionView(iv);
 
                 // Recargamos la lista en background y actualizamos la vista
                 System.out.println("Selected: refresh");
@@ -90,6 +103,18 @@ public class MainMenu_GlobalMaterials extends Fragment {
         }
     }
 
+    public void resetUpdating() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem.getActionView() != null) {
+                // Remove the animation.
+                menuItem.getActionView().clearAnimation();
+                menuItem.setActionView(null);
+            }
+        }
+    }
+
     // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
     public void fillGlobalMaterialsList() {
         /* examples */
@@ -97,63 +122,63 @@ public class MainMenu_GlobalMaterials extends Fragment {
         /* examples */
         this.listContent = new ArrayList<>();
         this.listContent.clear();
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_sillas),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_botellas),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cajas),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_herramientas),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_pinturas),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_piscina),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
-        this.listContent.add(new GlobalMaterialListItem(
+        this.listContent.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_porexpan),
                 "Porexpan",
                 "Cuanto más grande mejor",
@@ -164,9 +189,9 @@ public class MainMenu_GlobalMaterials extends Fragment {
         /* /examples */
         /* /examples */
 
-        Collections.sort(listContent, new Comparator<GlobalMaterialListItem>() {
+        Collections.sort(listContent, new Comparator<MaterialListItem>() {
             @Override
-            public int compare(GlobalMaterialListItem materialA, GlobalMaterialListItem materialB) {
+            public int compare(MaterialListItem materialA, MaterialListItem materialB) {
                 int boolean_compare = Boolean.compare(materialB.is_urgent(), materialA.is_urgent());
                 if (boolean_compare == 0)
                     return materialA.get_name().compareToIgnoreCase(materialB.get_name());
@@ -197,6 +222,9 @@ public class MainMenu_GlobalMaterials extends Fragment {
                 adapter.notifyDataSetChanged();
                 //item.setEnabled(true);
                 System.out.println("Refreshed adapter");
+
+                // Reset animation
+                resetUpdating();
             }
         }).execute();
     }

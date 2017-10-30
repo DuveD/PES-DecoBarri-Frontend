@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.ActivityResources;
+package com.decobarri.decobarri.activity_resources;
 
 import java.util.List;
 import android.view.LayoutInflater;

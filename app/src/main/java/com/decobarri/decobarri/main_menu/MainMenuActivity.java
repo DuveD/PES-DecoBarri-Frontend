@@ -1,4 +1,4 @@
-package com.decobarri.decobarri;
+package com.decobarri.decobarri.main_menu;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,14 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.decobarri.decobarri.ActivityResources.TabLayoutPagerAdapter;
+import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
+import com.decobarri.decobarri.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-public class MainMenu extends AppCompatActivity
+public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewPager viewPager;

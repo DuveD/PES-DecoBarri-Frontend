@@ -1,12 +1,12 @@
-package com.decobarri.decobarri.ActivityResources;
+package com.decobarri.decobarri.activity_resources;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.decobarri.decobarri.MainMenu_GlobalMaterials;
-import com.decobarri.decobarri.MainMenu_MyProjects;
-import com.decobarri.decobarri.MainMenu_ProjectSearch;
+import com.decobarri.decobarri.main_menu.GlobalMaterialsFragment;
+import com.decobarri.decobarri.main_menu.MyProjectsFragment;
+import com.decobarri.decobarri.main_menu.ProjectSearchFragment;
 
 public class TabLayoutPagerAdapter extends FragmentStatePagerAdapter {
     private static final int NUM_ITEMS = 3;
@@ -20,13 +20,13 @@ public class TabLayoutPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                MainMenu_ProjectSearch tab1 = new MainMenu_ProjectSearch();
+                ProjectSearchFragment tab1 = new ProjectSearchFragment();
                 return tab1;
             case 1:
-                MainMenu_MyProjects tab2 = new MainMenu_MyProjects();
+                MyProjectsFragment tab2 = new MyProjectsFragment();
                 return tab2;
             case 2:
-                MainMenu_GlobalMaterials tab3 = new MainMenu_GlobalMaterials();
+                GlobalMaterialsFragment tab3 = new GlobalMaterialsFragment();
                 return tab3;
             default:
                 return null;

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.io.UnsupportedEncodingException;
@@ -35,7 +36,7 @@ public class Login extends AppCompatActivity {
             String param = "_id=" + user + "&password=" + pass;
             String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
             if(!Objects.equals(result, "404")&&!Objects.equals(result, "500")&&!Objects.equals(result, "401")){
-                Intent i = new Intent(this, MainMenu.class);
+                Intent i = new Intent(this, MainMenuActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
@@ -80,7 +81,7 @@ public class Login extends AppCompatActivity {
                 editor.putString("password", pass);
                 editor.commit();
                 editor.apply();
-                Intent i = new Intent(this, MainMenu.class);
+                Intent i = new Intent(this, MainMenuActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
