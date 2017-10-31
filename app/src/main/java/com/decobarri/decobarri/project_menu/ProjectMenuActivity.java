@@ -55,6 +55,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_project_info)).setOnClickListener(this);
     }
 
     @Override
@@ -95,6 +96,10 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
             case R.id.bottom_sheet_map:
                 MapFragment mapFragment = new MapFragment();
                 transaction.replace(R.id.ProjectMenuLayout,mapFragment);
+                break;
+            case R.id.bottom_project_info:
+                ProjectFragment projectFragment = new ProjectFragment();
+                transaction.replace(R.id.ProjectMenuLayout,projectFragment);
                 break;
         }
         transaction.addToBackStack(null);
