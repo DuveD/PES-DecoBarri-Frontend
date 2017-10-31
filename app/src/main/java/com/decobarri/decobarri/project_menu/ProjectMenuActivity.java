@@ -1,5 +1,7 @@
 package com.decobarri.decobarri.project_menu;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,11 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -24,21 +26,16 @@ import com.decobarri.decobarri.R;
 public class ProjectMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private ViewPager viewPager;
     private ImageButton btnExpBottomSheet;
     private LinearLayout bottomSheet;
-    //private ViewPager viewPager;
     private DrawerLayout drawerLayout;
+    private BottomSheetBehavior bottomDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
-
-        //---YOU ARE TRIYING THIS---//
-        viewPager = (ViewPager) findViewById(R.id.ProjectMenuViewPager);
-        viewPager.setOffscreenPageLimit(2);
-        //---YOU ARE TRIYING THIS---//
+        startNotesFragment();
 
         //viewPager = (ViewPager) findViewById(R.id.ProjectMenuViewPager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.ProjectMenuToolbar);
@@ -57,7 +54,7 @@ public class ProjectMenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
-        final BottomSheetBehavior bottomDrawer = BottomSheetBehavior.from(bottomSheet);
+        bottomDrawer = BottomSheetBehavior.from(bottomSheet);
 
         btnExpBottomSheet = (ImageButton) findViewById(R.id.btnExpBottomSheet);
         btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
@@ -81,23 +78,20 @@ public class ProjectMenuActivity extends AppCompatActivity
             }
         });
 
-        ((LinearLayout)findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
-        ((LinearLayout)findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
-        ((LinearLayout)findViewById(R.id.bottom_sheet_inventory)).setOnClickListener(this);
-        ((LinearLayout)findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
-        ((LinearLayout)findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
-        ((LinearLayout)findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
-
+        ((LinearLayout) findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_inventory)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.ProjectMenuDrawerLayout);
-        BottomSheetBehavior bottomDrawer = BottomSheetBehavior.from(bottomSheet);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if (bottomDrawer.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        } else if (bottomDrawer.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             super.onBackPressed();
@@ -125,7 +119,7 @@ public class ProjectMenuActivity extends AppCompatActivity
             editor.apply();
 
             Intent i = new Intent(this, Login.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.ProjectMenuDrawerLayout);
@@ -135,27 +129,47 @@ public class ProjectMenuActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         int button = view.getId();
-        switch ( button ) {
-            case R.id.bottom_sheet_notes:
-                System.out.println("Selected: Notes");
+        switch (button) {
+            case R.id.bottom_sheet_notes: default:
+                NotesFragment notesFragment = new NotesFragment();
+                transaction.replace(R.id.ProjectMenuLayout,notesFragment);
                 break;
             case R.id.bottom_sheet_xat:
-                System.out.println("Selected: Xat");
+                XatFragment xatFragment = new XatFragment();
+                transaction.replace(R.id.ProjectMenuLayout,xatFragment);
                 break;
             case R.id.bottom_sheet_inventory:
-                System.out.println("Selected: Inventory");
+                InventoryFragment inventoryFragment = new InventoryFragment();
+                transaction.replace(R.id.ProjectMenuLayout,inventoryFragment);
                 break;
             case R.id.bottom_sheet_needList:
-                System.out.println("Selected: Need list");
+                NeedListFragment needListFragment = new NeedListFragment();
+                transaction.replace(R.id.ProjectMenuLayout,needListFragment);
                 break;
             case R.id.bottom_sheet_items:
-                System.out.println("Selected: Items");
+                ItemsFragment itemsFragment = new ItemsFragment();
+                transaction.replace(R.id.ProjectMenuLayout,itemsFragment);
                 break;
             case R.id.bottom_sheet_map:
-                System.out.println("Selected: Map");
+                MapFragment mapFragment = new MapFragment();
+                transaction.replace(R.id.ProjectMenuLayout,mapFragment);
                 break;
         }
+        transaction.addToBackStack(null);
+        transaction.commit();
+        bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private void startNotesFragment(){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        NotesFragment notesFragment = new NotesFragment();
+        transaction.replace(R.id.ProjectMenuLayout,notesFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
 
