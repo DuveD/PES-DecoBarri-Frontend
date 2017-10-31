@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ProjectAdapter;
 import com.decobarri.decobarri.activity_resources.ProjectItem;
-import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;

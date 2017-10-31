@@ -1,33 +1,19 @@
 package com.decobarri.decobarri.main_menu;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
-import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
+import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
-public class MainMenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainMenuActivity extends BaseActivity {
 
     private ViewPager viewPager;
-    private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +22,6 @@ public class MainMenuActivity extends AppCompatActivity
 
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
         viewPager.setOffscreenPageLimit(2);
-
-        toolbar = (Toolbar) findViewById(R.id.MainMenuToolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
-
-        //create default navigation drawer toggle
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
 
         // Set up the tabs for ViewPager
         tabLayout = (TabLayout) findViewById(R.id.MainMenuTabLayout);
@@ -59,10 +34,6 @@ public class MainMenuActivity extends AppCompatActivity
         tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        //handling navigation view item event
-        NavigationView navigationView = (NavigationView) findViewById(R.id.MainMenuNavigationView);
-        navigationView.setNavigationItemSelectedListener(this);
 
         // Set up the ViewPager with the sections adapter.
         final TabLayoutPagerAdapter adapter = new TabLayoutPagerAdapter(getSupportFragmentManager());
@@ -78,7 +49,6 @@ public class MainMenuActivity extends AppCompatActivity
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
-
             }
 
             @Override
@@ -86,40 +56,5 @@ public class MainMenuActivity extends AppCompatActivity
 
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.my_account) {
-            System.out.println("Selected: My account");
-        } else if (id == R.id.chat) {
-            System.out.println("Selected: Chat");
-        } else if (id == R.id.contact_list) {
-            System.out.println("Selected: Contact list");
-        } else if (id == R.id.logout) {
-            System.out.println("Selected: Logout");
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.MainMenuDrawerLayout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    public Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 60, out);
-        return BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
     }
 }

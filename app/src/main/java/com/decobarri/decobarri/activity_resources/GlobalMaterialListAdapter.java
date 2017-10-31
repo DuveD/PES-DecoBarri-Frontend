@@ -1,8 +1,5 @@
 package com.decobarri.decobarri.activity_resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GlobalMaterialListAdapter extends RecyclerView.Adapter<GlobalMaterialListAdapter.MaterialViewHolder> {
 

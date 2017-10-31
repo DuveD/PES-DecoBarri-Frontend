@@ -19,13 +19,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
-import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
-import com.decobarri.decobarri.activity_resources.MaterialListItem;
-import com.decobarri.decobarri.activity_resources.AsyncCustomTask;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.R.drawable;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
+import com.decobarri.decobarri.activity_resources.AsyncCustomTask;
+import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
+import com.decobarri.decobarri.activity_resources.MaterialListItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,14 +1,15 @@
 package com.decobarri.decobarri.activity_resources;
 
-import java.util.List;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+
+import java.util.List;
 
 /**
  * Created by Marc G on 24/10/2017.
