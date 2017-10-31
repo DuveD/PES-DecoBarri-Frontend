@@ -23,7 +23,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
-        startNotesFragment();
+        startProjectInfoFragment();
 
         bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
         bottomDrawer = BottomSheetBehavior.from(bottomSheet);
@@ -107,11 +107,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    private void startNotesFragment(){
+    private void startProjectInfoFragment(){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        NotesFragment notesFragment = new NotesFragment();
-        transaction.replace(R.id.ProjectMenuLayout,notesFragment);
+        ProjectFragment projectFragment = new ProjectFragment();
+        transaction.replace(R.id.ProjectMenuLayout,projectFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
