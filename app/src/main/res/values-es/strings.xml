@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">DecoBarri</string>
+
+    <string name="navigation_drawer_open">Abre navigation drawer</string>
+    <string name="navigation_drawer_close">Cierra navigation drawer</string>
+</resources>
