@@ -1,5 +1,6 @@
 package com.decobarri.decobarri.project_menu;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -19,6 +21,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private BottomSheetBehavior bottomDrawer;
     private LinearLayout bottomSheet;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +58,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_project_info)).setOnClickListener(this);
+        ((Button) findViewById(R.id.bottom_project_info_button)).setOnClickListener(this);
     }
 
     @Override
@@ -73,7 +76,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         int button = view.getId();
         switch (button) {
-            case R.id.bottom_sheet_notes: default:
+            case R.id.bottom_project_info_button: default:
+                ProjectFragment projectFragment = new ProjectFragment();
+                transaction.replace(R.id.ProjectMenuLayout,projectFragment);
+                break;
+            case R.id.bottom_sheet_notes:
                 NotesFragment notesFragment = new NotesFragment();
                 transaction.replace(R.id.ProjectMenuLayout,notesFragment);
                 break;
@@ -96,10 +103,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
             case R.id.bottom_sheet_map:
                 MapFragment mapFragment = new MapFragment();
                 transaction.replace(R.id.ProjectMenuLayout,mapFragment);
-                break;
-            case R.id.bottom_project_info:
-                ProjectFragment projectFragment = new ProjectFragment();
-                transaction.replace(R.id.ProjectMenuLayout,projectFragment);
                 break;
         }
         transaction.addToBackStack(null);

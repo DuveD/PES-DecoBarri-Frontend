@@ -243,7 +243,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/bottom_project_info_textView"
+                    android:id="@+id/bottom_project_info_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/navigationDrawer_selected_item_color"
