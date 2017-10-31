@@ -13,6 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
+import com.decobarri.decobarri.drawe_menu.ChatActivity;
+import com.decobarri.decobarri.drawe_menu.ContactListActivity;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -78,11 +82,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.my_account) {
-            System.out.println("Selected: My account");
+            startActivity(new Intent(this, AccountSettingsActivity.class));
         } else if (id == R.id.chat) {
-            System.out.println("Selected: Chat");
+            startActivity(new Intent(this, ChatActivity.class));
         } else if (id == R.id.contact_list) {
-            System.out.println("Selected: Contact list");
+            startActivity(new Intent(this, ContactListActivity.class));
         } else if (id == R.id.logout) {
 
             SharedPreferences settings = getSharedPreferences("LOGGED_USER", 0);
