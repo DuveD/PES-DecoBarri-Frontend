@@ -9,7 +9,7 @@
     <dimen name="top_menu_icon">32dp</dimen>
 
     <!--Bottom Sheet dimensions-->
-    <dimen name="left_padding">30dp</dimen>
+    <dimen name="bottom_sheet_button_height">50dp</dimen>
     <dimen name="text_padding">15dp</dimen>
     <dimen name="icon_dimensions">48dp</dimen>
     <dimen name="layout_bottom_margin">10dp</dimen>

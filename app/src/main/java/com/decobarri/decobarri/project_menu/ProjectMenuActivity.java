@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -26,7 +25,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
-        startProjectInfoFragment();
+        startMainFragment();
 
         bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
         bottomDrawer = BottomSheetBehavior.from(bottomSheet);
@@ -58,7 +57,14 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
-        ((Button) findViewById(R.id.bottom_project_info_button)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_info)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_peopleList)).setOnClickListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -74,19 +80,14 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public void onClick(@NonNull View view) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        int button = view.getId();
-        switch (button) {
-            case R.id.bottom_project_info_button: default:
-                ProjectFragment projectFragment = new ProjectFragment();
-                transaction.replace(R.id.ProjectMenuLayout,projectFragment);
+        switch (view.getId()) {
+            case R.id.bottom_sheet_info: default:
+                InfoFragment infoFragment = new InfoFragment();
+                transaction.replace(R.id.ProjectMenuLayout, infoFragment);
                 break;
             case R.id.bottom_sheet_notes:
                 NotesFragment notesFragment = new NotesFragment();
                 transaction.replace(R.id.ProjectMenuLayout,notesFragment);
-                break;
-            case R.id.bottom_sheet_xat:
-                XatFragment xatFragment = new XatFragment();
-                transaction.replace(R.id.ProjectMenuLayout,xatFragment);
                 break;
             case R.id.bottom_sheet_inventory:
                 InventoryFragment inventoryFragment = new InventoryFragment();
@@ -104,18 +105,24 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 MapFragment mapFragment = new MapFragment();
                 transaction.replace(R.id.ProjectMenuLayout,mapFragment);
                 break;
+            case R.id.bottom_sheet_xat:
+                XatFragment xatFragment = new XatFragment();
+                transaction.replace(R.id.ProjectMenuLayout,xatFragment);
+                break;
+            case R.id.bottom_sheet_peopleList:
+                ParticipantsFragment participantsFragment = new ParticipantsFragment();
+                transaction.replace(R.id.ProjectMenuLayout,participantsFragment);
+                break;
         }
-        transaction.addToBackStack(null);
-        transaction.commit();
         this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        transaction.commit();
     }
 
-    private void startProjectInfoFragment(){
+    private void startMainFragment(){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        ProjectFragment projectFragment = new ProjectFragment();
-        transaction.replace(R.id.ProjectMenuLayout,projectFragment);
-        transaction.addToBackStack(null);
+        InfoFragment infoFragment = new InfoFragment();
+        transaction.replace(R.id.ProjectMenuLayout, infoFragment);
         transaction.commit();
     }
 }

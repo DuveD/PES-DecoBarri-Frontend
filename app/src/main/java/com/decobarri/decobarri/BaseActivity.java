@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
 import com.decobarri.decobarri.drawe_menu.ChatActivity;
@@ -57,7 +59,39 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                if (itemSelected != null) {
+                    switch (itemSelected) {
+                        case R.id.my_account:
+                            startActivity(new Intent(getApplicationContext(), AccountSettingsActivity.class));
+                            break;
+                        case R.id.chat:
+                            startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                            break;
+                        case R.id.contact_list:
+                            startActivity(new Intent(getApplicationContext(), ContactListActivity.class));
+                            break;
+                        case R.id.logout:
+                            SharedPreferences settings = getSharedPreferences("LOGGED_USER", 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putString("username", "");
+                            editor.putString("password", "");
+                            editor.apply();
+                            Intent i = new Intent(getApplicationContext(), Login.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            break;
+                        default:
+                            break;
+                    }
+                    itemSelected = null;
+                }
+            }
+        };
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -76,33 +110,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    Integer itemSelected;
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.my_account) {
-            startActivity(new Intent(this, AccountSettingsActivity.class));
-        } else if (id == R.id.chat) {
-            startActivity(new Intent(this, ChatActivity.class));
-        } else if (id == R.id.contact_list) {
-            startActivity(new Intent(this, ContactListActivity.class));
-        } else if (id == R.id.logout) {
-
-            SharedPreferences settings = getSharedPreferences("LOGGED_USER", 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("username", "");
-            editor.putString("password", "");
-            editor.apply();
-
-            Intent i = new Intent(this, Login.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-        }
+        itemSelected = item.getItemId();
         drawerLayout.closeDrawer(GravityCompat.START);
-        return super.onOptionsItemSelected(item);
+        return true;
     }
-
     // OTHER FUNCTIONS
 
     public Bitmap compressImage(Bitmap image) {
