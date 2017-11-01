@@ -64,7 +64,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onStop() {
         super.onStop();
-        //this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override

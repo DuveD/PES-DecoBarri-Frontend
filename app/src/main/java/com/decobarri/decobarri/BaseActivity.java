@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream;
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
-    public DrawerLayout drawerLayout;
+    private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
     @Override
@@ -117,7 +117,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         itemSelected = item.getItemId();
         drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
+        return super.onOptionsItemSelected(item);
     }
     // OTHER FUNCTIONS
 
