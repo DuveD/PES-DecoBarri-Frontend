@@ -12,6 +12,6 @@
     <color name="navigationDrawer_background_endColor">#2f6cd6</color>
     <!--Tab Layout Colors-->
     <color name="tabLayout_selected_item_color">#ffffff</color>
-    <color name="tabLayout_unselected_item_color">#518bf0</color>
+    <color name="tabLayout_unselected_item_color">#001234</color>
     <color name="tabLayout_background_color">#2f6cd6</color>
 </resources>

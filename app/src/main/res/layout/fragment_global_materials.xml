@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/globalmaterials_recycler"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="3dp"
-    android:scrollbars="vertical"  />
+    android:layout_width="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/globalmaterials_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="3dp"
+        android:scrollbars="vertical"/>
+
+    <LinearLayout
+        android:id="@+id/empty_global_materials_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone" >
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/empty_materials_image"
+            android:scaleType="centerInside"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_global_materials_text"
+            android:layout_marginTop="@dimen/text_padding"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

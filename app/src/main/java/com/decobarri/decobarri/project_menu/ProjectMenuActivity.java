@@ -1,11 +1,11 @@
 package com.decobarri.decobarri.project_menu;
-
-import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
@@ -16,55 +16,15 @@ import com.decobarri.decobarri.R;
 
 public class ProjectMenuActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton btnExpBottomSheet;
     private BottomSheetBehavior bottomDrawer;
     private LinearLayout bottomSheet;
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_menu);
         startMainFragment();
-
-        bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
-        bottomDrawer = BottomSheetBehavior.from(bottomSheet);
-
-        btnExpBottomSheet = (ImageButton) findViewById(R.id.btnExpBottomSheet);
-        btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bottomDrawer.getState() == BottomSheetBehavior.STATE_COLLAPSED)
-                    bottomDrawer.setState(BottomSheetBehavior.STATE_EXPANDED);
-                else
-                    bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
-        });
-
-        bottomDrawer.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {}
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                btnExpBottomSheet.animate().rotation(slideOffset * 180).setInterpolator(new AccelerateDecelerateInterpolator());
-            }
-        });
-
-        ((LinearLayout) findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_inventory)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_info)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_peopleList)).setOnClickListener(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        setUpBottomSheet();
     }
 
     @Override
@@ -77,7 +37,23 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onClick(@NonNull View view) {
+    public boolean dispatchTouchEvent(MotionEvent event){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (bottomDrawer.getState()==BottomSheetBehavior.STATE_EXPANDED) {
+
+                Rect outRect = new Rect();
+                bottomSheet.getGlobalVisibleRect(outRect);
+
+                if(!outRect.contains((int)event.getRawX(), (int)event.getRawY()))
+                    bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public void onClick(View view) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch (view.getId()) {
@@ -124,6 +100,45 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         InfoFragment infoFragment = new InfoFragment();
         transaction.replace(R.id.ProjectMenuLayout, infoFragment);
         transaction.commit();
+    }
+
+    private void setUpBottomSheet() {
+        bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
+        bottomDrawer = BottomSheetBehavior.from(bottomSheet);
+
+        final ImageButton btnExpBottomSheet = (ImageButton) findViewById(R.id.btnExpBottomSheet);
+        btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bottomDrawer.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+                    bottomDrawer.setState(BottomSheetBehavior.STATE_EXPANDED);
+                else
+                    bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        bottomDrawer.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {}
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                btnExpBottomSheet.animate().rotation(slideOffset * 180).setInterpolator(new AccelerateDecelerateInterpolator());
+            }
+        });
+
+        initBottomDrawerButtons();
+    }
+
+    private void initBottomDrawerButtons() {
+        ((LinearLayout) findViewById(R.id.bottom_sheet_info)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_inventory)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_peopleList)).setOnClickListener(this);
     }
 }
 

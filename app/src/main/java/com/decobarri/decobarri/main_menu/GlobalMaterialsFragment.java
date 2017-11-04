@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
@@ -34,18 +35,18 @@ import java.util.Comparator;
 public class GlobalMaterialsFragment extends Fragment {
 
     private Adapter adapter;
-    private LayoutManager lmanager;
+    private LayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private ArrayList<MaterialListItem> listContent;
-
+    private LinearLayout emptyView;
+    private ArrayList<MaterialListItem> contentList;
     private Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
         // Activamos el menú superior para el reload
-        this.setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,13 +63,14 @@ public class GlobalMaterialsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Recojemos y guardamos la view del fragment actual
-        this.recyclerView = (RecyclerView) getView().findViewById(R.id.globalmaterials_recycler);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.globalmaterials_recycler);
+        emptyView = (LinearLayout) getView().findViewById(R.id.empty_global_materials_layout);
 
         // Rellenamos la lista con nada y asignamos el adaptador, pero esto no ahce nada en realidad...
-        lmanager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(lmanager);
-        this.listContent = new ArrayList<>();
-        adapter = new GlobalMaterialListAdapter(listContent, recyclerView);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        contentList = new ArrayList<>();
+        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         // Recargamos la lista en background y actualizamos la vista
@@ -89,7 +91,7 @@ public class GlobalMaterialsFragment extends Fragment {
                 // Do animation start
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
-                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_refresh);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
                 rotation.setRepeatCount(Animation.INFINITE);
                 iv.startAnimation(rotation);
                 item.setActionView(iv);
@@ -103,7 +105,7 @@ public class GlobalMaterialsFragment extends Fragment {
         }
     }
 
-    public void resetUpdating() {
+    public void resetUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
@@ -116,69 +118,69 @@ public class GlobalMaterialsFragment extends Fragment {
     }
 
     // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
-    public void fillGlobalMaterialsList() {
+    public void fillContentList() {
         /* examples */
         /* examples */
         /* examples */
-        this.listContent = new ArrayList<>();
-        this.listContent.clear();
-        this.listContent.add(new MaterialListItem(
+        contentList = new ArrayList<>();
+        contentList.clear();
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_sillas),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_botellas),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cajas),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_herramientas),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_pinturas),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_piscina),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
-        this.listContent.add(new MaterialListItem(
+        contentList.add(new MaterialListItem(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_porexpan),
                 "Porexpan",
                 "Cuanto más grande mejor",
@@ -189,7 +191,7 @@ public class GlobalMaterialsFragment extends Fragment {
         /* /examples */
         /* /examples */
 
-        Collections.sort(listContent, new Comparator<MaterialListItem>() {
+        Collections.sort(contentList, new Comparator<MaterialListItem>() {
             @Override
             public int compare(MaterialListItem materialA, MaterialListItem materialB) {
                 int boolean_compare = Boolean.compare(materialB.is_urgent(), materialA.is_urgent());
@@ -200,31 +202,43 @@ public class GlobalMaterialsFragment extends Fragment {
         });
     }
 
+    private void setContentView() {
+        if (contentList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
     // Con estos métodos, crearemos una Tarea asíncrona que llamará al método de recargar información
     // y luego nos recargará la lista de la view
     @SuppressLint("StaticFieldLeak")
     private void reloadAsyncTask(){
-        (new AsyncCustomTask(getContext(), "Reload Global Materials List"){
+        (new AsyncCustomTask(){
             @Override
-            public void doInBackgroundFunction() {
-                //item.setEnabled(false);
-                fillGlobalMaterialsList();
+            protected Void doInBackground(Void... voids) {
+                fillContentList();
                 System.out.println("Filled Global Materials");
+                return null;
             }
             @Override
-            public void onPostExecuteFunction() {
-                lmanager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(lmanager);
-
-                adapter = new GlobalMaterialListAdapter(listContent, recyclerView);
-
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                //item.setEnabled(true);
+            public void onPostExecute( Void nope ) {
+                setContentView();
                 System.out.println("Refreshed adapter");
 
                 // Reset animation
-                resetUpdating();
+                resetUpdatingAnimation();
             }
         }).execute();
     }

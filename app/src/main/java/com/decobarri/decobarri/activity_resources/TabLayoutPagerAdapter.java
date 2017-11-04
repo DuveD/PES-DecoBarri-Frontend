@@ -1,8 +1,8 @@
 package com.decobarri.decobarri.activity_resources;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.decobarri.decobarri.main_menu.GlobalMaterialsFragment;
 import com.decobarri.decobarri.main_menu.MyProjectsFragment;

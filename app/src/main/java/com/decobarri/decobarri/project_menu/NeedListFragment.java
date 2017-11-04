@@ -15,8 +15,6 @@ public class NeedListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_need_list, container, false);
 
-        Toast.makeText(getActivity(), "I'm in NeedList", Toast.LENGTH_SHORT);
-
         // En principio no hacemos nada
 
         return view;

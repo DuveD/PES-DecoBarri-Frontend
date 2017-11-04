@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
@@ -13,7 +12,6 @@ import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
 public class MainMenuActivity extends BaseActivity {
 
     private ViewPager viewPager;
-    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +21,11 @@ public class MainMenuActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
         viewPager.setOffscreenPageLimit(2);
 
-        // Set up the tabs for ViewPager
-        tabLayout = (TabLayout) findViewById(R.id.MainMenuTabLayout);
+        setUpTabLayout();
+    }
+
+    private void setUpTabLayout() {
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.MainMenuTabLayout);
 
         tabLayout.addTab(tabLayout.newTab().setText("Projects").setIcon(R.drawable.tab_project_search_icon));
         tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_selected_item_color), PorterDuff.Mode.SRC_IN);
@@ -36,7 +37,7 @@ public class MainMenuActivity extends BaseActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // Set up the ViewPager with the sections adapter.
-        final TabLayoutPagerAdapter adapter = new TabLayoutPagerAdapter(getSupportFragmentManager());
+        final TabLayoutPagerAdapter adapter = new TabLayoutPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -52,9 +53,7 @@ public class MainMenuActivity extends BaseActivity {
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 }

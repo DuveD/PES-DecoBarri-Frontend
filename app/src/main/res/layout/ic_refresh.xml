@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     style="?android:attr/actionButtonStyle"
     android:layout_width="@dimen/top_menu_icon"
     android:layout_height="@dimen/top_menu_icon"
-    android:clickable="true"
     android:contentDescription="Top menu icon content" >
 
     <ImageView

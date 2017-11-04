@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    Integer itemSelected;
+    private Integer itemSelected;
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -119,6 +119,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return super.onOptionsItemSelected(item);
     }
+
     // OTHER FUNCTIONS
 
     public Bitmap compressImage(Bitmap image) {
