@@ -6,7 +6,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.decobarri.decobarri.main_menu.GlobalMaterialsFragment;
 import com.decobarri.decobarri.main_menu.MyProjectsFragment;
-import com.decobarri.decobarri.main_menu.ProjectSearchFragment;
+import com.decobarri.decobarri.main_menu.ProjectsSearchFragment;
 
 public class TabLayoutPagerAdapter extends FragmentStatePagerAdapter {
     private static final int NUM_ITEMS = 3;
@@ -20,7 +20,7 @@ public class TabLayoutPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                ProjectSearchFragment tab1 = new ProjectSearchFragment();
+                ProjectsSearchFragment tab1 = new ProjectsSearchFragment();
                 return tab1;
             case 1:
                 MyProjectsFragment tab2 = new MyProjectsFragment();

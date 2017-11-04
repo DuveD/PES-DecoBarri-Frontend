@@ -9,5 +9,6 @@
     <!-- Global Materials -->
     <string name="empty_global_materials_text">Nobody needs anything!</string>
     <string name="empty_inventory_text">Go to find some materials!</string>
-    <string name="empty_need_list_text">Nothing here. You have all you ned??</string>
+    <string name="empty_need_list_text">You have all you need?</string>
+    <string name="empty_item_text">Do you work on any item?</string>
 </resources>

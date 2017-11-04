@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
@@ -20,5 +21,19 @@ public class InfoFragment extends Fragment {
         // En principio no hacemos nada
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setAlpha(0.4f);
+
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setAlpha(1f);
+
+        super.onStop();
     }
 }

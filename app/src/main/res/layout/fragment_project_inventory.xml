@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="3dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/empty_inventory_layout"
@@ -18,8 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone" >
+        android:gravity="center" >
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"

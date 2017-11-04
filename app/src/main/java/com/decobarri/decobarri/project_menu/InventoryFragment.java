@@ -2,6 +2,7 @@ package com.decobarri.decobarri.project_menu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.AsyncCustomTask;
 import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
 import com.decobarri.decobarri.activity_resources.MaterialListItem;
 
@@ -45,7 +45,7 @@ public class InventoryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_inventory, container, false);
 
         // En principio no hacemos nada
 
@@ -73,13 +73,14 @@ public class InventoryFragment extends Fragment {
 
     @Override
     public void onStart() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setEnabled(false);
+        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
+
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setEnabled(true);
+        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
 
         resetUpdatingAnimation();
 
@@ -236,19 +237,22 @@ public class InventoryFragment extends Fragment {
     // y luego nos recargará la lista de la view
     @SuppressLint("StaticFieldLeak")
     private void reloadAsyncTask(){
-        (new AsyncCustomTask(){
+        (new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
+                fillContentList();
                 System.out.println("Filled Invetory Materials");
                 return null;
             }
             @Override
             public void onPostExecute( Void nope ) {
-                setContentView();
-                System.out.println("Refreshed adapter");
+                if ( isVisible() ){
+                    setContentView();
+                    System.out.println("Refreshed adapter");
 
-                // Reset animation
-                resetUpdatingAnimation();
+                    // Reset animation
+                    resetUpdatingAnimation();
+                }
             }
         }).execute();
     }

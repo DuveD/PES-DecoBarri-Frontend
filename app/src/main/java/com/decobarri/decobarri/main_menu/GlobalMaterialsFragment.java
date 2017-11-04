@@ -3,6 +3,7 @@ package com.decobarri.decobarri.main_menu;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,6 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.R.drawable;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
-import com.decobarri.decobarri.activity_resources.AsyncCustomTask;
 import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
 import com.decobarri.decobarri.activity_resources.MaterialListItem;
 
@@ -225,7 +225,7 @@ public class GlobalMaterialsFragment extends Fragment {
     // y luego nos recargará la lista de la view
     @SuppressLint("StaticFieldLeak")
     private void reloadAsyncTask(){
-        (new AsyncCustomTask(){
+        (new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
                 fillContentList();

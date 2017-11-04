@@ -1,5 +1,4 @@
 package com.decobarri.decobarri.project_menu;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -54,40 +53,39 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.bottom_sheet_info: default:
-                InfoFragment infoFragment = new InfoFragment();
-                transaction.replace(R.id.ProjectMenuLayout, infoFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof InfoFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new InfoFragment());
                 break;
             case R.id.bottom_sheet_notes:
-                NotesFragment notesFragment = new NotesFragment();
-                transaction.replace(R.id.ProjectMenuLayout,notesFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof NotesFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new NotesFragment());
                 break;
             case R.id.bottom_sheet_inventory:
-                InventoryFragment inventoryFragment = new InventoryFragment();
-                transaction.replace(R.id.ProjectMenuLayout,inventoryFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof InventoryFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new InventoryFragment());
                 break;
-            case R.id.bottom_sheet_needList:
-                NeedListFragment needListFragment = new NeedListFragment();
-                transaction.replace(R.id.ProjectMenuLayout,needListFragment);
+            case R.id.bottom_sheet_need_list:
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof NeedListFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new NeedListFragment());
                 break;
             case R.id.bottom_sheet_items:
-                ItemsFragment itemsFragment = new ItemsFragment();
-                transaction.replace(R.id.ProjectMenuLayout,itemsFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof ItemsFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new ItemsFragment());
                 break;
             case R.id.bottom_sheet_map:
-                MapFragment mapFragment = new MapFragment();
-                transaction.replace(R.id.ProjectMenuLayout,mapFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof MapFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new MapFragment());
                 break;
             case R.id.bottom_sheet_xat:
-                XatFragment xatFragment = new XatFragment();
-                transaction.replace(R.id.ProjectMenuLayout,xatFragment);
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof XatFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new XatFragment());
                 break;
-            case R.id.bottom_sheet_peopleList:
-                ParticipantsFragment participantsFragment = new ParticipantsFragment();
-                transaction.replace(R.id.ProjectMenuLayout,participantsFragment);
+            case R.id.bottom_sheet_participants:
+                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof ParticipantsFragment))
+                    transaction.replace(R.id.ProjectMenuLayout, new ParticipantsFragment());
                 break;
         }
         this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -95,10 +93,12 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void startMainFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        InfoFragment infoFragment = new InfoFragment();
-        transaction.replace(R.id.ProjectMenuLayout, infoFragment);
+        // Begin the transaction
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        // Replace the contents of the container with the new fragment
+        transaction.replace(R.id.ProjectMenuLayout,  new InfoFragment());
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
         transaction.commit();
     }
 
@@ -134,11 +134,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_info)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_inventory)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_needList)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_need_list)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_peopleList)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_participants)).setOnClickListener(this);
     }
 }
 
