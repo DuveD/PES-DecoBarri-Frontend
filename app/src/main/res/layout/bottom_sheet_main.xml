@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="370dp"
-    android:background="#FFFFFF"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_button_background_selected_color"
     android:orientation="vertical"
     android:gravity="center_vertical"
     app:behavior_hideable="false"
@@ -25,11 +25,137 @@
             app:srcCompat="@drawable/bottom_sheet_up_icon" />
 
     </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_info_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/info_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_info_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Info" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_inventory"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_inventory_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/inventory_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_inventory_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Inventory" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_items_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/items_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_items_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Items" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_xat"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_xat_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/xat_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_xat_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Xat" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -37,276 +163,128 @@
             android:orientation="vertical">
 
         </LinearLayout>
+        -->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20"
-            android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/bottom_sheet_info"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_info_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/info_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_info_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="fill_vertical"
-                    android:text="Info" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_inventory"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_inventory_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/inventory_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_inventory_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="fill_vertical"
-                    android:text="Inventory" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_items"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_items_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/items_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_items_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Items"
-                    android:gravity="fill_vertical" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_xat"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/bottom_sheet_xat_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/xat_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_xat_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Xat"
-                    android:gravity="fill_vertical" />
-            </LinearLayout>
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/bottom_sheet_notes_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/notes_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_notes_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Notes" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_need_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_need_list_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/need_list_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_need_list_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Need list" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_map_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/map_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_map_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Map" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_sheet_participants"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/layout_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_sheet_button_background"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin_button">
+
+                    <ImageView
+                        android:id="@+id/bottom_sheet_participants_imageView"
+                        android:layout_width="@dimen/icon_dimensions"
+                        android:layout_height="@dimen/icon_dimensions"
+                        android:background="@drawable/circle_background_icon"
+                        app:srcCompat="@drawable/people_icon" />
+
+                    <TextView
+                        android:id="@+id/bottom_sheet_participants_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_vertical"
+                        android:text="Participants" />
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/bottom_sheet_notes"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_notes_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/notes_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_notes_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="fill_vertical"
-                    android:text="Notes" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_need_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_need_list_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/need_list_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_need_list_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Need list"
-                    android:gravity="fill_vertical" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_map"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_map_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/map_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_map_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Map"
-                    android:gravity="fill_vertical" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/bottom_sheet_participants"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="@dimen/layout_margin"
-                android:background="@drawable/bottom_sheet_color"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <ImageView
-                    android:id="@+id/bottom_sheet_participants_imageView"
-                    android:layout_width="@dimen/icon_dimensions"
-                    android:layout_height="@dimen/icon_dimensions"
-                    android:background="@drawable/circle_background_icon"
-                    app:srcCompat="@drawable/people_icon" />
-                <Space
-                    android:layout_width="@dimen/text_padding"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:id="@+id/bottom_sheet_participants_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Participants"
-                    android:gravity="fill_vertical" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

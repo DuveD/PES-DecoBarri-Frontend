@@ -73,18 +73,25 @@ public class InventoryFragment extends Fragment {
 
     @Override
     public void onStart() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
-
+        bottomSheetButtonCliked(true);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
-
+        bottomSheetButtonCliked(false);
         resetUpdatingAnimation();
-
         super.onStop();
+    }
+
+    void bottomSheetButtonCliked(Boolean clicked){
+        if (clicked){
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
+        } else {
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
+        }
     }
 
     @Override
