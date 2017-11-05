@@ -57,10 +57,10 @@ public class DB_library {
             System.out.println("Param: " + param);
             System.out.println("Code: " + responseCode);
 
-            /*if(responseCode!=200) {
+            if(responseCode!=200) {
                 connection.disconnect();
                 return String.valueOf(responseCode);
-            }*/
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             while ((output = reader.readLine()) != null) {
                 System.out.println(output);

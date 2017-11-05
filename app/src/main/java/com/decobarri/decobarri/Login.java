@@ -7,12 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.decobarri.decobarri.main_menu.MainMenuActivity;
+import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.DB_library;
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Login extends AppCompatActivity {
 
@@ -24,13 +33,39 @@ public class Login extends AppCompatActivity {
     DB_library httpDBlibrary;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //-----LOGIN anterior------//
+    protected void onStart() {
         SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         user = pref.getString("username", "");
         pass = pref.getString("password", "");
+
+        if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
+
+            User u = new User(user, pass);
+
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(this.getResources().getString(R.string.db_URL))
+                    .addConverterFactory(GsonConverterFactory.create());
+
+            Retrofit retrofit = builder.build();
+            UserClient client = retrofit.create(UserClient.class);
+            Call<String> call = client.LoginUser(u);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()) {
+                        Intent i = new Intent(Login.this, MainMenuActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+
+        /*
         if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass;
@@ -40,7 +75,13 @@ public class Login extends AppCompatActivity {
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
-        }
+        }*/
+        super.onStart();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setTitle("Login");
         setContentView(R.layout.activity_login);
@@ -65,6 +106,49 @@ public class Login extends AppCompatActivity {
         if (user.isEmpty() || pass.isEmpty()) {
             error.setVisibility(View.VISIBLE);
         } else {
+
+            User u = new User(user, pass);
+
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(this.getResources().getString(R.string.db_URL))
+                    .addConverterFactory(GsonConverterFactory.create());
+
+            Retrofit retrofit = builder.build();
+            UserClient client = retrofit.create(UserClient.class);
+            Call<String> call = client.LoginUser(u);
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()) {
+
+                        SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("username", user);
+                        editor.putString("password", pass);
+                        editor.apply();
+
+                        Toast.makeText(Login.this, "User: " + pref.getString("username", ""), Toast.LENGTH_LONG).show();
+
+                        Intent i = new Intent(Login.this, MainMenuActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+                    else {
+                        error.setText("Incorrect user or password");
+                        error.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    error.setText("Error");
+                    error.setVisibility(View.VISIBLE);
+                    System.out.println(t.toString());
+                }
+            });
+
+            /*
             httpDBlibrary = new DB_library(this);
             String param = "_id=" + user + "&password=" + pass;
             String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
@@ -84,7 +168,7 @@ public class Login extends AppCompatActivity {
                 Intent i = new Intent(this, MainMenuActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
-            }
+            }*/
         }
     }
 
