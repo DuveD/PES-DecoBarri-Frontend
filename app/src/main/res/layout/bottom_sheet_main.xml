@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,7 +35,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20">
+            android:layout_weight="20"
+            android:baselineAligned="false"
+            tools:ignore="NestedWeights">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -67,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Info" />
+                        android:text="@string/bottom_sheet_info_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -95,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Inventory" />
+                        android:text="@string/bottom_sheet_inventory_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -123,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Items" />
+                        android:text="@string/bottom_sheet_items_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -151,7 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Xat" />
+                        android:text="@string/bottom_sheet_xat_text" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -196,7 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Notes" />
+                        android:text="@string/bottom_sheet_notes_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -224,7 +227,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Need list" />
+                        android:text="@string/bottom_sheet_need_list_text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -280,7 +283,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="fill_vertical"
-                        android:text="Participants" />
+                        android:text="@string/bottom_sheet_participants_text" />
                 </LinearLayout>
             </LinearLayout>
 

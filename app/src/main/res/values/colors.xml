@@ -18,4 +18,6 @@
     <color name="bottomSheet_selected_item_color1">#2f6cd6</color>
     <color name="bottomSheet_selected_item_color2">#e1ecff</color>
     <color name="bottomSheet_selected_item_color_stroke">#303f9f</color>
+    <!--Layouts-->
+    <color name="urgent_color">#bb0000</color>
 </resources>

@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ProjectAdapter;
-import com.decobarri.decobarri.activity_resources.ProjectItem;
+import com.decobarri.decobarri.activity_resources.Project;
 import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;
@@ -31,23 +31,23 @@ public class ProjectsSearchFragment extends Fragment {
 
         final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.projectsearch_recycler);
 
-        items.add(new ProjectItem((BitmapFactory.decodeResource(getResources(),
+        items.add(new Project((BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_vallespir)), "Decoracio carrer Vallespi",
                 "Aquest any tornarem a participar a" +
                         " les festes de sants."));
-        items.add(new ProjectItem((BitmapFactory.decodeResource(getResources(),
+        items.add(new Project((BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_christmas_school)),
                 "Projecte de decoració de Nadal de l'escola Les Corts", "Decoració " +
                 "ambientada en temàtica de nadal per als nens fins a 3r de primaria."));
-        items.add(new ProjectItem(BitmapFactory.decodeResource(getResources(),
+        items.add(new Project(BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_festes_esplugues),
                 "Festes d' Esplugues", "Col·labora a fer millor les festes" +
                 " del nostre barri i participa en la organització de les seves activitats."));
-        items.add(new ProjectItem(BitmapFactory.decodeResource(getResources(),
+        items.add(new Project(BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_street_gracia),
                 "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
                 " amb l'objectiu de tornar a quedar com el millor carrer de les festes de gràcia, tal com vam aconseguir l'any passat."));
-        items.add(new ProjectItem(BitmapFactory.decodeResource(getResources(),
+        items.add(new Project(BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_christmas_centre_cultural),
                 "Decoració temàtica de Nadal del centre cultural Les Corts.", "" +
                 " Ajuda a decorar el nostre centre i participa en els events que tenim preparats per aquest nadal."));

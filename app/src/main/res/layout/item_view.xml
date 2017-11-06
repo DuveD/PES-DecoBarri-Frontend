@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
+
+  <RelativeLayout
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+    <com.joooonho.SelectableRoundedImageView
+        android:id="@+id/item_imageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/material_icon"
+        android:scaleType="centerCrop"
+
+        app:sriv_left_top_corner_radius="10dp"
+        app:sriv_right_top_corner_radius="10dp"
+        app:sriv_left_bottom_corner_radius="10dp"
+        app:sriv_right_bottom_corner_radius="10dp"
+
+        app:sriv_border_width="2dip"
+        app:sriv_border_color="@color/primaryColor"/>
+  </RelativeLayout>
+
+  <LinearLayout
+      android:id="@+id/item_text_layout"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:gravity="center_vertical"
+      android:layout_marginLeft="10dp">
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item name"
+        android:textSize="20sp" />
+
+      <TextView
+          android:id="@+id/item_description"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Item description"
+          android:textSize="12sp" />
+  </LinearLayout>
+</LinearLayout>

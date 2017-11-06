@@ -25,8 +25,8 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.R.drawable;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
-import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
-import com.decobarri.decobarri.activity_resources.MaterialListItem;
+import com.decobarri.decobarri.activity_resources.Material;
+import com.decobarri.decobarri.activity_resources.MaterialAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class GlobalMaterialsFragment extends Fragment {
     private LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
-    private ArrayList<MaterialListItem> contentList;
+    private ArrayList<Material> contentList;
     private Menu menu;
 
     @Override
@@ -63,14 +63,14 @@ public class GlobalMaterialsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Recojemos y guardamos la view del fragment actual
-        recyclerView = (RecyclerView) getView().findViewById(R.id.globalmaterials_recycler);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.global_materials_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_global_materials_layout);
 
         // Rellenamos la lista con nada y asignamos el adaptador, pero esto no ahce nada en realidad...
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         contentList = new ArrayList<>();
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new MaterialAdapter(contentList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         // Recargamos la lista en background y actualizamos la vista
@@ -124,63 +124,63 @@ public class GlobalMaterialsFragment extends Fragment {
         /* examples */
         contentList = new ArrayList<>();
         contentList.clear();
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_sillas),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_botellas),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_cajas),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_herramientas),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_pinturas),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_piscina),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), drawable.example_resources_porexpan),
                 "Porexpan",
                 "Cuanto más grande mejor",
@@ -191,12 +191,12 @@ public class GlobalMaterialsFragment extends Fragment {
         /* /examples */
         /* /examples */
 
-        Collections.sort(contentList, new Comparator<MaterialListItem>() {
+        Collections.sort(contentList, new Comparator<Material>() {
             @Override
-            public int compare(MaterialListItem materialA, MaterialListItem materialB) {
-                int boolean_compare = Boolean.compare(materialB.is_urgent(), materialA.is_urgent());
+            public int compare(Material materialA, Material materialB) {
+                int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
                 if (boolean_compare == 0)
-                    return materialA.get_name().compareToIgnoreCase(materialB.get_name());
+                    return materialA.getName().compareToIgnoreCase(materialB.getName());
                 else return boolean_compare;
             }
         });
@@ -215,7 +215,7 @@ public class GlobalMaterialsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new MaterialAdapter(contentList, recyclerView);
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

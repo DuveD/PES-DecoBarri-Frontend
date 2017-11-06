@@ -1,26 +1,26 @@
 <resources>
-    <item name="db_URL" type="string">http://project-pes.herokuapp.com</item>
+    <item name="db_URL" type="string" translatable="false">http://project-pes.herokuapp.com</item>
 
     <!--Main Tags-->
-    <item name="USER" type="string">user</item>
-    <item name="PROJECT" type="string">project</item>
-    <item name="MATERIAL" type="string">material</item>
+    <item name="USER" type="string" translatable="false">user</item>
+    <item name="PROJECT" type="string" translatable="false">project</item>
+    <item name="MATERIAL" type="string" translatable="false">material</item>
 
     <!--User-->
-    <item name="FIND_ALL_USERS" type="string">/user/findAll</item>
-    <item name="FIND_USER_BY_ID" type="string">/user/findByID/</item>
-    <item name="FIND_USER_BY_NAME" type="string">/user/findByName/</item>
-    <item name="ADD_USER" type="string">/user/add</item>
-    <item name="LOGIN" type="string">/user/login</item>
-    <item name="DELETE_USER" type="string">/user/delete/</item>
-    <item name="EDIT_USER" type="string">/user/edit/</item>
+    <item name="FIND_ALL_USERS" type="string" translatable="false">/user/findAll</item>
+    <item name="FIND_USER_BY_ID" type="string" translatable="false">/user/findByID/</item>
+    <item name="FIND_USER_BY_NAME" type="string" translatable="false">/user/findByName/</item>
+    <item name="ADD_USER" type="string" translatable="false">/user/add</item>
+    <item name="LOGIN" type="string" translatable="false">/user/login</item>
+    <item name="DELETE_USER" type="string" translatable="false">/user/delete/</item>
+    <item name="EDIT_USER" type="string" translatable="false">/user/edit/</item>
 
     <!--Project-->
-    <item name="FIND_ALL_PROJECTS" type="string">/project/findAll</item>
-    <item name="FIND_PROJECT_BY_ID" type="string">/project/findByID/</item>
-    <item name="ADD_PROJECT" type="string">/project/add/</item>
+    <item name="FIND_ALL_PROJECTS" type="string" translatable="false">/project/findAll</item>
+    <item name="FIND_PROJECT_BY_ID" type="string" translatable="false">/project/findByID/</item>
+    <item name="ADD_PROJECT" type="string" translatable="false">/project/add/</item>
 
     <!--Materials-->
-    <item name="FIND_ALL_MATERIALS" type="string">/material/findAll</item>
-    <item name="ADD_MATERIAL" type="string">/material/add</item>
+    <item name="FIND_ALL_MATERIALS" type="string" translatable="false">/material/findAll</item>
+    <item name="ADD_MATERIAL" type="string" translatable="false">/material/add</item>
 </resources>

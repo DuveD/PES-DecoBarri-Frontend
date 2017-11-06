@@ -16,9 +16,9 @@ import java.util.List;
  */
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
-    private List<ProjectItem> item;
+    private List<Project> item;
 
-    public ProjectAdapter(List<ProjectItem> item) {
+    public ProjectAdapter(List<Project> item) {
         this.item = item;
     }
 
