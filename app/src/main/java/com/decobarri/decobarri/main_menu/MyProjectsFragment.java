@@ -43,7 +43,7 @@ public class MyProjectsFragment extends Fragment {
         ;
         rec.setLayoutManager(lmanager);
 
-        adapter = new ProjectAdapter(items);
+        adapter = new ProjectAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);
 
         // BD_library init wiht activity context

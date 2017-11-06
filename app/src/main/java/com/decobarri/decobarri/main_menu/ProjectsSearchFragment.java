@@ -54,7 +54,7 @@ public class ProjectsSearchFragment extends Fragment {
         lmanager = new LinearLayoutManager(getActivity());
         ;
         rec.setLayoutManager(lmanager);
-        adapter = new ProjectAdapter(items);
+        adapter = new ProjectAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);
     }
 
