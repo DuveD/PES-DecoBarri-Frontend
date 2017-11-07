@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.ProjectAdapter;
+import com.decobarri.decobarri.activity_resources.AllProjectsAdapter;
 import com.decobarri.decobarri.activity_resources.Project;
 import com.decobarri.decobarri.db_resources.DB_library;
 
@@ -54,7 +54,7 @@ public class ProjectsSearchFragment extends Fragment {
         lmanager = new LinearLayoutManager(getActivity());
         ;
         rec.setLayoutManager(lmanager);
-        adapter = new ProjectAdapter(items, getActivity(), rec);
+        adapter = new AllProjectsAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);
     }
 

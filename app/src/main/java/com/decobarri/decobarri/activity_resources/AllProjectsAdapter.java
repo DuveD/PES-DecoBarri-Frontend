@@ -19,25 +19,25 @@ import java.util.List;
  * Created by Marc G on 24/10/2017.
  */
 
-public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
+public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.AllProjectsViewHolder> {
     private List<Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
 
-    public ProjectAdapter(List<Project> item, Context mContext, RecyclerView rec) {
+    public AllProjectsAdapter(List<Project> item, Context mContext, RecyclerView rec) {
         this.projectList = item;
         this.context = mContext;
         this.recyclerView = rec;
     }
 
 
-    public static class ProjectViewHolder extends RecyclerView.ViewHolder {
+    public static class AllProjectsViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un projectList
         public ImageView imagen;
         public TextView nombre;
         public TextView descripcion;
 
-        public ProjectViewHolder(View v) {
+        public AllProjectsViewHolder(View v) {
             super(v);
             imagen = (ImageView) v.findViewById(R.id.imagen);
             nombre = (TextView) v.findViewById(R.id.nombreProyecto);
@@ -46,9 +46,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     }
 
     @Override
-    public ProjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_card, parent, false);
-        ProjectViewHolder project = new ProjectViewHolder(v);
+        AllProjectsViewHolder project = new AllProjectsViewHolder(v);
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -59,7 +59,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
                 builder1.setCancelable(true);
 
                 builder1.setPositiveButton(
-                        "Yes",
+                        "Si",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 CharSequence text = "Solicitud enviada";
@@ -91,7 +91,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
     }
 
     @Override
-    public void onBindViewHolder(ProjectViewHolder viewHolder, int i) {
+    public void onBindViewHolder(AllProjectsViewHolder viewHolder, int i) {
         viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
         viewHolder.nombre.setText(projectList.get(i).get_name());
         viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).get_description()));

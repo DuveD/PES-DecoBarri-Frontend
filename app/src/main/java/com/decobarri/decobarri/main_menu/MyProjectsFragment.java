@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.ProjectAdapter;
+import com.decobarri.decobarri.activity_resources.AllProjectsAdapter;
+import com.decobarri.decobarri.activity_resources.MyProjectsAdapter;
 import com.decobarri.decobarri.activity_resources.Project;
 import com.decobarri.decobarri.db_resources.DB_library;
 
@@ -43,7 +44,7 @@ public class MyProjectsFragment extends Fragment {
         ;
         rec.setLayoutManager(lmanager);
 
-        adapter = new ProjectAdapter(items, getActivity(), rec);
+        adapter = new MyProjectsAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);
 
         // BD_library init wiht activity context
