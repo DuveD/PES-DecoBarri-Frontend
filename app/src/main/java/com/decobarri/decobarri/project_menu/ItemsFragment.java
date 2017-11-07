@@ -3,6 +3,7 @@ package com.decobarri.decobarri.project_menu;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
-import com.decobarri.decobarri.activity_resources.MaterialListItem;
+import com.decobarri.decobarri.activity_resources.Item;
+import com.decobarri.decobarri.activity_resources.ItemAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class ItemsFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
-    private ArrayList<MaterialListItem> contentList;
+    private ArrayList<Item> contentList;
     private Menu menu;
 
     @Override
@@ -64,7 +65,7 @@ public class ItemsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         contentList = new ArrayList<>();
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new ItemAdapter(contentList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         // Recargamos la lista en background y actualizamos la vista
@@ -73,18 +74,25 @@ public class ItemsFragment extends Fragment {
 
     @Override
     public void onStart() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setAlpha(0.4f);
-
+        bottomSheetButtonCliked(true);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setAlpha(1f);
-
+        bottomSheetButtonCliked(false);
         resetUpdatingAnimation();
-
         super.onStop();
+    }
+
+    void bottomSheetButtonCliked(Boolean clicked){
+        if (clicked){
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setAlpha(0.4f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
+        } else {
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setAlpha(1f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_items)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
+        }
     }
 
     @Override
@@ -132,84 +140,35 @@ public class ItemsFragment extends Fragment {
         /* examples */
         /* examples */
         /* examples */
-        /*
+
         contentList = new ArrayList<>();
         contentList.clear();
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
-                "Sillas",
-                "Sillas sobrantes",
-                true,
-                5,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
-                "Botellas",
-                "Botellas sobrantes",
-                false,
-                5,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
-                "Cables",
-                "Cables sobrantes",
-                false,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),
-                "Cajas",
-                "Cajas Grandes",
-                false,
-                20,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),
-                "Herramientas",
-                "Herramientas sobrantes",
-                false,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
-                "Neumaticos",
-                "Neumaticos sobrantes",
-                true,
-                4,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),
-                "Pinturas",
-                "Pinturas roja, azul, verde y más...",
-                true,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),
-                "Piscina",
-                "Piscina hinchable pequeña",
-                true,
-                1,
-                "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),
-                "Porexpan",
-                "Cuanto más grande mejor",
-                false,
-                0,
-                "C/Exemple nº123"));
-        */
+        contentList.add(new Item(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_banco_palets),
+                "Banco",
+                "Bancos hechos de palets",
+                "Null",
+                new ArrayList<String>()));
+        contentList.add(new Item(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_cortina_bolsa),
+                "Cortina",
+                "Cortinas hechas con bolsas de basura",
+                "Null",
+                new ArrayList<String>()));
+        contentList.add(new Item(
+                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_flor_botella),
+                "Flor",
+                "Flores hechas con botellas recicladas",
+                "Null",
+                new ArrayList<String>()));
         /* /examples */
         /* /examples */
         /* /examples */
 
-        Collections.sort(contentList, new Comparator<MaterialListItem>() {
+        Collections.sort(contentList, new Comparator<Item>() {
             @Override
-            public int compare(MaterialListItem materialA, MaterialListItem materialB) {
-                int boolean_compare = Boolean.compare(materialB.is_urgent(), materialA.is_urgent());
-                if (boolean_compare == 0)
-                    return materialA.get_name().compareToIgnoreCase(materialB.get_name());
-                else return boolean_compare;
+            public int compare(Item itemA, Item itemB) {
+                return itemA.getName().compareToIgnoreCase(itemB.getName());
             }
         });
     }
@@ -227,7 +186,7 @@ public class ItemsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new ItemAdapter(contentList, recyclerView);
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

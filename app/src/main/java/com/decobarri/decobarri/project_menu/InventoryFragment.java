@@ -2,6 +2,7 @@ package com.decobarri.decobarri.project_menu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -19,8 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.GlobalMaterialListAdapter;
-import com.decobarri.decobarri.activity_resources.MaterialListItem;
+import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.activity_resources.Material;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ public class InventoryFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
-    private ArrayList<MaterialListItem> contentList;
+    private ArrayList<Material> contentList;
     private Menu menu;
 
     @Override
@@ -64,7 +65,7 @@ public class InventoryFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         contentList = new ArrayList<>();
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new MaterialAdapter(contentList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         // Recargamos la lista en background y actualizamos la vista
@@ -73,18 +74,25 @@ public class InventoryFragment extends Fragment {
 
     @Override
     public void onStart() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
-
+        bottomSheetButtonCliked(true);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
-
+        bottomSheetButtonCliked(false);
         resetUpdatingAnimation();
-
         super.onStop();
+    }
+
+    void bottomSheetButtonCliked(Boolean clicked){
+        if (clicked){
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
+        } else {
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
+            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
+        }
     }
 
     @Override
@@ -135,80 +143,79 @@ public class InventoryFragment extends Fragment {
         /*
         contentList = new ArrayList<>();
         contentList.clear();
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),
                 "Sillas",
                 "Sillas sobrantes",
                 true,
                 5,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),
                 "Botellas",
                 "Botellas sobrantes",
                 false,
                 5,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),
                 "Cables",
                 "Cables sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),
                 "Cajas",
                 "Cajas Grandes",
                 false,
                 20,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),
                 "Herramientas",
                 "Herramientas sobrantes",
                 false,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),
                 "Neumaticos",
                 "Neumaticos sobrantes",
                 true,
                 4,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),
                 "Pinturas",
                 "Pinturas roja, azul, verde y más...",
                 true,
                 0,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),
                 "Piscina",
                 "Piscina hinchable pequeña",
                 true,
                 1,
                 "C/Exemple nº123"));
-        contentList.add(new MaterialListItem(
+        contentList.add(new Material(
                 BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),
                 "Porexpan",
                 "Cuanto más grande mejor",
                 false,
                 0,
                 "C/Exemple nº123"));
-        */
         /* /examples */
         /* /examples */
         /* /examples */
 
-        Collections.sort(contentList, new Comparator<MaterialListItem>() {
+        Collections.sort(contentList, new Comparator<Material>() {
             @Override
-            public int compare(MaterialListItem materialA, MaterialListItem materialB) {
-                int boolean_compare = Boolean.compare(materialB.is_urgent(), materialA.is_urgent());
+            public int compare(Material materialA, Material materialB) {
+                int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
                 if (boolean_compare == 0)
-                    return materialA.get_name().compareToIgnoreCase(materialB.get_name());
+                    return materialA.getName().compareToIgnoreCase(materialB.getName());
                 else return boolean_compare;
             }
         });
@@ -227,7 +234,7 @@ public class InventoryFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new GlobalMaterialListAdapter(contentList, recyclerView);
+        adapter = new MaterialAdapter(contentList, recyclerView);
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

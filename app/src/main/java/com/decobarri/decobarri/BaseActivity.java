@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
 import com.decobarri.decobarri.drawe_menu.ChatActivity;
@@ -26,7 +25,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +51,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private void setUpNav() {
         drawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
 
-        navigationView = (NavigationView) findViewById(R.id.NavigationView);
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open_description, R.string.navigation_drawer_close_description){
 
             @Override
             public void onDrawerClosed(View drawerView) {

@@ -1,14 +1,31 @@
 <resources>
-    <string name="app_name">DecoBarri</string>
+    <string name="app_name" translatable="false">DecoBarri</string>
 
-    <!-- Navigation drawer -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_account_settings">Acount settings activity</string>
+    <!--Navigation drawer-->
+    <string name="navigation_drawer_open_description">Open navigation drawer</string>
+    <string name="navigation_drawer_close_description">Close navigation drawer</string>
+    <string name="title_activity_account_settings">Account settings activity</string>
 
-    <!-- Global Materials -->
-    <string name="empty_global_materials_text">Nobody needs anything!</string>
-    <string name="empty_inventory_text">Go to find some materials!</string>
-    <string name="empty_need_list_text">You have all you need?</string>
-    <string name="empty_item_text">Do you work on any item?</string>
+    <!--Main Menu-->
+        <!--Global Materials-->
+        <string name="empty_global_materials_text">Nobody needs anything!</string>
+
+    <!--Project Menu-->
+        <!--Bottom Sheet-->
+        <string name="bottom_sheet_info_text">Info</string>
+        <string name="bottom_sheet_inventory_text">Inventory</string>
+        <string name="bottom_sheet_items_text">Items</string>
+        <string name="bottom_sheet_xat_text">Xat</string>
+        <string name="bottom_sheet_notes_text">Notes</string>
+        <string name="bottom_sheet_need_list_text">Need list</string>
+        <string name="bottom_sheet_participants_text">Participants</string>
+
+        <!--Inventory Fragment-->
+        <string name="empty_inventory_text">Go to find some materials!</string>
+
+        <!--Need list Fragment-->
+        <string name="empty_need_list_text">You have all you need?</string>
+
+        <!--Item Fragment-->
+        <string name="empty_item_text">Do you work on any item?</string>
 </resources>

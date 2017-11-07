@@ -2,7 +2,7 @@ package com.decobarri.decobarri.activity_resources;
 
 import android.graphics.Bitmap;
 
-public class MaterialListItem {
+public class Material {
     /*
     StructureMaterial {
         name: string
@@ -19,7 +19,7 @@ public class MaterialListItem {
     private int quantity;
     private String address;
 
-    public MaterialListItem(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+    public Material(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
         this.image = image;
         this.name = name;
         this.description = description;
@@ -28,27 +28,27 @@ public class MaterialListItem {
         this.address = address;
     }
 
-    public Bitmap get_image() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public String get_name() {
+    public String getName() {
         return name;
     }
 
-    public String get_description() {
+    public String getDescription() {
         return description;
     }
 
-    public boolean is_urgent(){
+    public boolean isUrgent(){
         return urgent;
     }
 
-    public int get_quantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public String get_address() {
+    public String getAddress() {
         return address;
     }
 }

@@ -15,8 +15,9 @@
     <color name="tabLayout_unselected_item_color">#001234</color>
     <color name="tabLayout_background_color">#2f6cd6</color>
     <!--Bottom Sheet Colors-->
-
-    <color name="bottomSheet_selected_item_color1">#632f6cd6</color>
-    <color name="bottomSheet_selected_item_color2">#63557abb</color>
+    <color name="bottomSheet_selected_item_color1">#2f6cd6</color>
+    <color name="bottomSheet_selected_item_color2">#e1ecff</color>
     <color name="bottomSheet_selected_item_color_stroke">#303f9f</color>
+    <!--Layouts-->
+    <color name="urgent_color">#bb0000</color>
 </resources>
