@@ -58,11 +58,11 @@ public class Register extends AppCompatActivity {
 
             Retrofit retrofit = builder.build();
             UserClient client = retrofit.create(UserClient.class);
-            Call<User> call = client.CreateAccount(u);
+            Call<String> call = client.CreateAccount(u);
 
-            call.enqueue(new Callback<User>() {
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
                     if(response.isSuccessful()){
                         ContentValues values = new ContentValues();
                         values.put("username", user);
@@ -77,7 +77,7 @@ public class Register extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<String> call, Throwable t) {
                     error.setText("Error");
                     error.setVisibility(View.VISIBLE);
                 }
