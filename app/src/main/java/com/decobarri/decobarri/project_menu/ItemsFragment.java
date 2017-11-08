@@ -3,7 +3,6 @@ package com.decobarri.decobarri.project_menu;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,8 +23,6 @@ import com.decobarri.decobarri.activity_resources.Item;
 import com.decobarri.decobarri.activity_resources.ItemAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class ItemsFragment extends Fragment {
 
@@ -38,51 +35,32 @@ public class ItemsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Activamos el menú superior para el reload
         setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_items, container, false);
-
-        // En principio no hacemos nada
-
+        bottomSheetButtonCliked(true);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        bottomSheetButtonCliked(false);
+        stopUpdatingAnimation();
+        super.onDestroyView();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Recojemos y guardamos la view del fragment actual
         recyclerView = (RecyclerView) getView().findViewById(R.id.item_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_item_layout);
 
-        // Rellenamos la lista con nada y asignamos el adaptador, pero esto no ahce nada en realidad...
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        contentList = new ArrayList<>();
-        adapter = new ItemAdapter(contentList, recyclerView);
-        recyclerView.setAdapter(adapter);
-
-        // Recargamos la lista en background y actualizamos la vista
-        reloadAsyncTask();
-    }
-
-    @Override
-    public void onStart() {
-        bottomSheetButtonCliked(true);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        bottomSheetButtonCliked(false);
-        resetUpdatingAnimation();
-        super.onStop();
+        setContentView();
     }
 
     void bottomSheetButtonCliked(Boolean clicked){
@@ -99,31 +77,55 @@ public class ItemsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_menu, optionsMenu);
         menu = optionsMenu;
+
+        if (ProjectMenuActivity.updatingItemList)
+            startUpdatingAnimation();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-
-                // Do animation start
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
-                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
-                rotation.setRepeatCount(Animation.INFINITE);
-                iv.startAnimation(rotation);
-                item.setActionView(iv);
-
-                // Recargamos la lista en background y actualizamos la vista
-                System.out.println("Selected: refresh");
-                reloadAsyncTask();
+                getItems();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void resetUpdatingAnimation() {
+    private void setContentView() {
+        if (isVisible()) {
+            if (((ProjectMenuActivity) this.getActivity()).itemsIsEmpty()) {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            } else {
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+            }
+
+            layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+            contentList = ((ProjectMenuActivity) this.getActivity()).getItemList();
+            adapter = new ItemAdapter(contentList, recyclerView);
+
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void startUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu.findItem(R.id.action_refresh) != null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+            rotation.setRepeatCount(Animation.INFINITE);
+            iv.startAnimation(rotation);
+            menu.findItem(R.id.action_refresh).setActionView(iv);
+        }
+    }
+
+    public void stopUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
         if (menu.findItem(R.id.action_refresh) != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
@@ -135,83 +137,26 @@ public class ItemsFragment extends Fragment {
         }
     }
 
-    // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
-    public void fillContentList() {
-        /* examples */
-        /* examples */
-        /* examples */
-
-        contentList = new ArrayList<>();
-        contentList.clear();
-        contentList.add(new Item(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_banco_palets),
-                "Banco",
-                "Bancos hechos de palets",
-                "Null",
-                new ArrayList<String>()));
-        contentList.add(new Item(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_cortina_bolsa),
-                "Cortina",
-                "Cortinas hechas con bolsas de basura",
-                "Null",
-                new ArrayList<String>()));
-        contentList.add(new Item(
-                BitmapFactory.decodeResource(getResources(), R.drawable.example_item_flor_botella),
-                "Flor",
-                "Flores hechas con botellas recicladas",
-                "Null",
-                new ArrayList<String>()));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(contentList, new Comparator<Item>() {
-            @Override
-            public int compare(Item itemA, Item itemB) {
-                return itemA.getName().compareToIgnoreCase(itemB.getName());
-            }
-        });
-    }
-
-    private void setContentView() {
-        if (contentList.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new ItemAdapter(contentList, recyclerView);
-
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    // Con estos métodos, crearemos una Tarea asíncrona que llamará al método de recargar información
-    // y luego nos recargará la lista de la view
     @SuppressLint("StaticFieldLeak")
-    private void reloadAsyncTask(){
+    public void getItems(){
         (new AsyncTask<Void, Void, Void>(){
             @Override
+            protected void onPreExecute(){
+                System.out.println("Loading Items...");
+                startUpdatingAnimation();
+                ProjectMenuActivity.updatingItemList = true;
+            }
+            @Override
             protected Void doInBackground(Void... voids) {
-                fillContentList();
-                System.out.println("Filled Items");
+                ((ProjectMenuActivity)getActivity()).fillItemList();
                 return null;
             }
             @Override
             public void onPostExecute( Void nope ) {
-                if ( isVisible() ){
-                    setContentView();
-                    System.out.println("Refreshed adapter");
-
-                    // Reset animation
-                    resetUpdatingAnimation();
-                }
+                setContentView();
+                ProjectMenuActivity.updatingItemList = false;
+                stopUpdatingAnimation();
+                System.out.println("Done");
             }
         }).execute();
     }
