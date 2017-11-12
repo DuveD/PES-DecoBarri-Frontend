@@ -57,6 +57,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open_description, R.string.navigation_drawer_close_description){
+            @Override
+            public void onDrawerOpened(View draweView) {
+            }
 
             @Override
             public void onDrawerClosed(View drawerView) {

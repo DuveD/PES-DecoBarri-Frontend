@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.ItemAdapter;
 import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.MaterialAdapter;
 
@@ -43,13 +42,12 @@ public class InventoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_inventory, container, false);
-        bottomSheetButtonCliked(true);
+        getActivity().setTitle("Invetory");
         return view;
     }
 
     @Override
     public void onDestroyView() {
-        bottomSheetButtonCliked(false);
         stopUpdatingAnimation();
         super.onDestroyView();
     }
@@ -64,22 +62,12 @@ public class InventoryFragment extends Fragment {
         setContentView();
     }
 
-    void bottomSheetButtonCliked(Boolean clicked){
-        if (clicked){
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(0.4f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
-        } else {
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setAlpha(1f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_inventory)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
-        }
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.top_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu, optionsMenu);
         menu = optionsMenu;
 
-        if (ProjectMenuActivity.updatingInventoryList)
+        if (ProjectMenuActivity.getUpdatingInventoryList())
             startUpdatingAnimation();
     }
 
@@ -116,7 +104,7 @@ public class InventoryFragment extends Fragment {
 
     public void startUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
-        if (menu.findItem(R.id.action_refresh) != null) {
+        if (menu != null) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
@@ -128,7 +116,7 @@ public class InventoryFragment extends Fragment {
 
     public void stopUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
-        if (menu.findItem(R.id.action_refresh) != null) {
+        if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
             if (menuItem.getActionView() != null) {
                 // Remove the animation.
@@ -145,7 +133,7 @@ public class InventoryFragment extends Fragment {
             protected void onPreExecute(){
                 System.out.println("Loading Inventory...");
                 startUpdatingAnimation();
-                ProjectMenuActivity.updatingInventoryList = true;
+                ProjectMenuActivity.setUpdatingInventoryList(true);
             }
             @Override
             protected Void doInBackground(Void... voids) {
@@ -155,7 +143,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void onPostExecute( Void nope ) {
                 setContentView();
-                ProjectMenuActivity.updatingInventoryList = false;
+                ProjectMenuActivity.setUpdatingInventoryList(false);
                 stopUpdatingAnimation();
                 System.out.println("Done");
             }

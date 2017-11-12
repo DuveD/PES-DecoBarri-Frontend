@@ -79,7 +79,7 @@ public class GlobalMaterialsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.top_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu, optionsMenu);
         menu = optionsMenu;
     }
 
