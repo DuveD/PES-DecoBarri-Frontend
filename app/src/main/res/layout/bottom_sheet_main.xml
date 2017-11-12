@@ -29,7 +29,7 @@
                 android:id="@+id/bottom_sheet_info_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/info_icon" />
 
             <Space
@@ -63,7 +63,7 @@
                 android:id="@+id/bottom_sheet_notes_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/notes_icon" />
 
             <Space
@@ -96,7 +96,7 @@
                 android:id="@+id/bottom_sheet_map_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/map_icon" />
 
             <Space
@@ -138,7 +138,7 @@
                 android:id="@+id/bottom_sheet_inventory_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/inventory_icon" />
 
             <Space
@@ -171,7 +171,7 @@
                 android:id="@+id/bottom_sheet_need_list_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/need_list_icon" />
 
             <Space
@@ -204,7 +204,7 @@
                 android:id="@+id/bottom_sheet_items_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/items_icon" />
 
             <Space
@@ -246,7 +246,7 @@
                 android:id="@+id/bottom_sheet_xat_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/xat_icon" />
 
             <Space
@@ -279,7 +279,7 @@
                 android:id="@+id/bottom_sheet_group_imageView"
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
-                android:background="@drawable/circle_background_icon"
+                android:tint="@android:color/darker_gray"
                 app:srcCompat="@drawable/group_icon" />
 
             <Space
