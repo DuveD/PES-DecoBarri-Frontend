@@ -45,9 +45,14 @@ public class GlobalMaterialsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Activamos el menú superior para el reload
+        initVars();
         setHasOptionsMenu(true);
+    }
+
+    private void initVars() {
+        contentList = new ArrayList<>();
+
+        fillContentList();
     }
 
     @Override

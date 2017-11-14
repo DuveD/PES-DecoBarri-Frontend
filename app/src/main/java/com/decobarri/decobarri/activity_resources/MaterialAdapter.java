@@ -127,7 +127,7 @@ public class MaterialAdapter
 
     @Override
     public boolean onLongClick(View view) {
-        if (LIST.equals(null)){
+        if (LIST == null){
             onLongClickRead( view );
         } else {
             onLongClickEdit( view );

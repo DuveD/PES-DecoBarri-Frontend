@@ -1,6 +1,10 @@
 package com.decobarri.decobarri.activity_resources;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 
@@ -52,6 +55,10 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                /*Fragment createFragment = new CreateProjectFragment();
+                FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();*/
+                //fragmentTransaction.add(R.id.ProjectMenuLayout, createFragment);
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
@@ -62,10 +69,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                         "Si",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                CharSequence text = "Abrir nueva vista";
-                                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                                toast.show();
-                                dialog.cancel();
+
+
                             }
                         });
 

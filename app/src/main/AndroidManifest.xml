@@ -11,19 +11,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".project_menu.ProjectMenuActivity">
+        <activity android:name=".main_menu.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main_menu.MainMenuActivity" />
+        <activity android:name=".activity_resources.CreateProject"/>
         <activity android:name=".Register" />
         <activity android:name=".Login" />
         <activity android:name=".drawe_menu.AccountSettingsActivity" />
         <activity android:name=".drawe_menu.ChatActivity" />
         <activity android:name=".drawe_menu.ContactListActivity" />
+        <activity android:name=".project_menu.ProjectMenuActivity"/>
         <activity android:name=".project_menu.edit_items.EditItemActivity" />
         <activity android:name=".project_menu.edit_items.EditMaterialActivity" />
     </application>
