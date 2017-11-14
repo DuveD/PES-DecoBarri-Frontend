@@ -17,6 +17,7 @@ import com.decobarri.decobarri.db_resources.DB_library;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.main_menu.MainMenuActivity;
+import com.google.gson.GsonBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
@@ -123,7 +124,7 @@ public class Login extends AppCompatActivity {
             u = new User(user, pass);
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
-                    .addConverterFactory(GsonConverterFactory.create());
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
             Retrofit retrofit = builder.build();
             UserClient client = retrofit.create(UserClient.class);
             Call<String> call = client.LoginUser(u);

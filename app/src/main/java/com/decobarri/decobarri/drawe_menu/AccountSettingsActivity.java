@@ -2,15 +2,19 @@ package com.decobarri.decobarri.drawe_menu;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,13 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.decobarri.decobarri.Login;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Password;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.db_resources.UserEdit;
+import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +44,12 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
     User user; //user logged
     String username, password;
     String name, email;
+    boolean success;
+    ViewPager ViewPager;
+    ProgressDialog progressDialog;
+    UserEdit new_user;
+    String old_password, new_password;
+    Fragment f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +57,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
 
         setContentView(R.layout.activity_account_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.settingsToolbar);
+        ViewPager = (ViewPager) findViewById(R.id.AccountViewPager);
         toolbar.setTitle("My Account");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,11 +66,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
         password = pref.getString("password", "");
-
-        //-----------Pruebas-------------
-
-        username = "aaa";
-        password = "aaa";
 
         if(Objects.equals(username, "") && Objects.equals(password, "")){
             Toast.makeText(this, "Not logged", Toast.LENGTH_LONG).show();
@@ -89,7 +98,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 args.putString("name", name);
                 args.putString("email", email);
 
-                Fragment f = new UserProfileFragment();
+                f = new UserProfileFragment();
                 f.setArguments(args);
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -116,139 +125,171 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         return true;
     }
 
-    @Override
-    public Integer ProfileInteraction (Integer mode, User u, String old_password){
-        Fragment f = null;
-        Integer code = 0;
-        boolean change = true;
+    public void ChangeFragment (Integer mode){
+        f = null;
         switch (mode){
             case 1:
-                //Edit: change fragment
                 f = new EditProfileFragment();
                 break;
             case 2:
-                change=false;
-                //save changes
-                code = edit_profile(u, old_password);
-                //change fragment
-                cargar_datos();
                 f = new UserProfileFragment();
-                if(code == 401){
-                    Toast.makeText(this,"Bad password", Toast.LENGTH_SHORT);
-                }
                 break;
             case 3:
-                //change fragment
                 f = new UserProfileFragment();
+                break;
+            case 4:
+                f = new EditPasswordFragment();
                 break;
         }
 
-        if(change) {
-            Bundle b = new Bundle();
-            b.putString("id", username);
-            b.putString("password", password);
-            b.putString("name", name);
-            b.putString("email", email);
-            f.setArguments(b);
+        Bundle b = new Bundle();
+        b.putString("id", username);
+        b.putString("password", password);
+        b.putString("name", name);
+        b.putString("email", email);
+        f.setArguments(b);
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction =
-                    fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.Framelayout, f);
-            fragmentTransaction.commit();
-        }
-        return code;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =
+                fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.Framelayout, f);
+        fragmentTransaction.commit();
     }
 
-    @SuppressLint("ShowToast")
-    public Integer edit_profile(User new_user, String old_password) {
-
-        final Integer[] code = {0};
-
-        String old_pass = old_password;
-        String new_pass = new_user.getPassword();
-
-        if (Objects.equals(new_pass, "")){ //No cambia la pass
-            code[0]=edit_user(new_user);
-        }
-        else {
-            if(Objects.equals(old_pass, password)){ //Cambia el user y la pass
-                code[0]=edit_user(new_user);
-                if(code[0]==200){
-                    code[0]=edit_password(username, old_pass, new_pass);
-                }
-            }
-            else { //Quiere cambiar la pass pero ha introducido una old_password diferente
-                Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG);
-            }
-        }
-
-        return code[0];
-    }
-
-    private Integer edit_user(User new_user) {
-        final int[] code = new int[1];
-        String new_name = new_user.getName();
-        String new_email = new_user.getEmail();
+    public boolean EditUser(User u) {
+        success=false;
+        String new_name = u.getName();
+        String new_email = u.getEmail();
 
         if (new_name.isEmpty()) new_name = name;
         if (new_email.isEmpty()) new_email = email;
 
-        UserEdit u = new UserEdit(new_name, new_email);
+        new_user = new UserEdit(new_name, new_email);
 
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        UserClient client = retrofit.create(UserClient.class);
-        Call<String> call = client.EditUser(username, u);
+        EditUserTask et = new EditUserTask();
+        et.execute();
+        try {
+            et.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("success: " + success);
 
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                code[0] = response.code();
-                System.out.println("Error code: " + response.code());
-                System.out.println("Error msg: " + response.message());
-                System.out.println("Error body: " + response.body());
-                System.out.println("Error errorbody: " + response.errorBody());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-            }
-        });
-        System.out.println("code: " + code[0]);
-        return code[0];
+        return success;
     }
 
-    private Integer edit_password(String username, String old_pass, String new_pass) {
-        final int[] code = new int[1];
+    class EditUserTask extends AsyncTask<Integer, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(AccountSettingsActivity.this, R.style.MyTheme);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.getWindow().setGravity(Gravity.CENTER);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            super.onPreExecute();
+        }
 
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        UserClient client = retrofit.create(UserClient.class);
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
 
-        Password p = new Password(old_pass, new_pass);
-        Call<String> call = client.EditPassword(username, p);
+        @Override
+        protected String doInBackground(Integer... integers) {
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+            Retrofit retrofit = builder.build();
+            UserClient client = retrofit.create(UserClient.class);
+            Call<String> call = client.EditUser(username, new_user);
 
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                code[0] = response.code();
-                System.out.println("Error code: " + response.code());
-                System.out.println("Error msg: " + response.message());
-                System.out.println("Error body: " + response.body());
-                System.out.println("Error errorbody: " + response.errorBody());
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()) {
+                        success = true;
+                        System.out.println("Edit user: " + response.errorBody());
+                        progressDialog.dismiss();
+                        cargar_datos();
+                    }
+                    else {
+                        success = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    System.out.println("Edit user error: " + t.getMessage());
+                    success=false;
+                    progressDialog.dismiss();
+                }
+            });
+            return null;
+        }
+    }
+
+    public boolean EditPassword(String username, String old_pass, String new_pass) {
+        success=false;
+        old_password=old_pass;
+        new_password=new_pass;
+
+        if (!old_password.equals("") && !new_password.equals("")) {
+            EditPasswordTask ep = new EditPasswordTask();
+            try {
+                ep.execute().get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
             }
+        }
+        return success;
+    }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-            }
-        });
+    class EditPasswordTask extends AsyncTask<Integer, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(AccountSettingsActivity.this, R.style.MyTheme);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressDialog.getWindow().setGravity(Gravity.CENTER);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            super.onPreExecute();
+        }
 
-        return code[0];
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+            Retrofit retrofit = builder.build();
+            UserClient client = retrofit.create(UserClient.class);
+
+            Password p = new Password(old_password, new_password);
+            Call<String> call = client.EditPassword(username, p);
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        success = true;
+                        progressDialog.dismiss();
+                        cargar_datos();
+                    }
+                    else {
+                        success = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+            return null;
+        }
     }
 
 }

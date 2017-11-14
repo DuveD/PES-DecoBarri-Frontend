@@ -73,8 +73,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.button){
-            User u = null;
-            listener.ProfileInteraction(1, u, "");
+            listener.ChangeFragment(1);
         }
     }
 }

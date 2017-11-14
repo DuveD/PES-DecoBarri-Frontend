@@ -12,14 +12,14 @@
 
     <!--Project Menu-->
     <string name="bottom_sheet_participants_text">Participants</string>
-        <!--Bottom Sheet-->
-        <string name="bottom_sheet_info_text">Info</string>
-        <string name="bottom_sheet_inventory_text">Inventory</string>
-        <string name="bottom_sheet_items_text">Items</string>
-        <string name="bottom_sheet_xat_text">Xat</string>
-        <string name="bottom_sheet_notes_text">Notes</string>
-        <string name="bottom_sheet_need_list_text">Need list</string>
-        <string name="bottom_sheet_group_text">Group</string>
+    <!--Bottom Sheet-->
+    <string name="bottom_sheet_info_text">Info</string>
+    <string name="bottom_sheet_inventory_text">Inventory</string>
+    <string name="bottom_sheet_items_text">Items</string>
+    <string name="bottom_sheet_xat_text">Xat</string>
+    <string name="bottom_sheet_notes_text">Notes</string>
+    <string name="bottom_sheet_need_list_text">Need list</string>
+    <string name="bottom_sheet_group_text">Group</string>
 
     <!--Inventory Fragment-->
     <string name="empty_inventory_text">Go to find some materials!</string>

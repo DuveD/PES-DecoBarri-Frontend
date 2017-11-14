@@ -18,9 +18,9 @@ import com.decobarri.decobarri.db_resources.User;
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
 
     private ProfileFragmentInteraction listener;
-    EditText name, email, old_pass, new_pass;
+    EditText name, email;
     TextView id, error;
-    Button save, cancel;
+    Button save, cancel, edit_pass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,13 +36,13 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         id = (TextView) view.findViewById(R.id.textView1) ;
         name = (EditText) view.findViewById(R.id.editText3);
         email = (EditText) view.findViewById(R.id.editText5);
-        old_pass = (EditText) view.findViewById(R.id.editText7);
-        new_pass = (EditText) view.findViewById(R.id.editText9);
         error = (TextView) view.findViewById(R.id.error);
         save = (Button) view.findViewById(R.id.button_save);
         cancel = (Button) view.findViewById(R.id.button_cancel);
+        edit_pass = (Button) view.findViewById(R.id.button_pass);
         save.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        edit_pass.setOnClickListener(this);
 
         Bundle args = this.getArguments();
 
@@ -78,18 +78,21 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.button_save){
             String in_name = name.getText().toString();
-            String in_pass = new_pass.getText().toString();
             String in_email = email.getText().toString();
-            String pass = old_pass.getText().toString();
 
-            User u = new User(id.getText().toString(), in_name, in_pass, in_email);
-            Integer code = listener.ProfileInteraction(2, u, pass);
-            if(code!=200){
-                error.setText("Invalid old password");
-            }
+            User u = new User(id.getText().toString(), in_name, in_email);
+
+            listener.EditUser(u);
+
+
+            error.setText("Wrong email");
+            error.setVisibility(View.VISIBLE);
         }
-        if (view.getId() == R.id.button_cancel){
-            listener.ProfileInteraction(3, null, "");
+        else if (view.getId() == R.id.button_cancel){
+            listener.ChangeFragment(3);
+        }
+        else if (view.getId() == R.id.button_pass){
+            listener.ChangeFragment(4);
         }
     }
 }

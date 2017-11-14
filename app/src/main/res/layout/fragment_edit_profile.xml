@@ -99,61 +99,33 @@
             </LinearLayout>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@android:style/TextAppearance.Large"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Old password:" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/editText7"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="New password:"
-                        android:layout_weight="1"
-                        style="@android:style/TextAppearance.Large"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:id="@+id/editText9"/>
-
-                </LinearLayout>
-
-
             <TextView
+                android:id="@+id/error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Error: "
-                android:visibility="invisible"
-                android:id="@+id/error"/>
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:orientation="horizontal"
+                android:paddingBottom="1dp">
+
+                <Button
+                    android:id="@+id/button_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/tabLayout_background_color"
+                    android:text="Edit Password" />
+            </LinearLayout>
 
 
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

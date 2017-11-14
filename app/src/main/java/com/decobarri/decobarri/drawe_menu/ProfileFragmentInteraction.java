@@ -7,5 +7,8 @@ import com.decobarri.decobarri.db_resources.User;
  */
 
 public interface ProfileFragmentInteraction {
-    Integer ProfileInteraction(Integer mode, User u, String old_password); //mode: 1(edit) 2(save) 3(cancel)
+    void ChangeFragment (Integer mode);//mode: 1(edit) 2(save) 3(cancel) 4(editpassword)
+    boolean EditUser(User u);
+    boolean EditPassword(String username, String old_password, String new_password);
+
 }
