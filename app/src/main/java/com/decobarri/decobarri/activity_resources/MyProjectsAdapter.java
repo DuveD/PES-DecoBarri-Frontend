@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
 import java.util.List;
 
@@ -55,13 +57,12 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                /*Fragment createFragment = new CreateProjectFragment();
-                FragmentManager fragmentManager = ((Activity)context).getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();*/
-                //fragmentTransaction.add(R.id.ProjectMenuLayout, createFragment);
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
+                //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto
+                context.startActivity(projectMenu);
+                /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                 builder1.setMessage("Abrir menu de gestión del proyecto " + p.get_name() + "?");
                 builder1.setCancelable(true);
 
@@ -69,8 +70,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                         "Si",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
-
+                                Intent create = new Intent(this.context, CreateProject.class);
+                                startActivity(create);
                             }
                         });
 
@@ -83,7 +84,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                         });
 
                 AlertDialog alert11 = builder1.create();
-                alert11.show();
+                alert11.show();*/
             }
 
         });

@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/add_people_icon" />
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus_icon" />
 
 </RelativeLayout>
