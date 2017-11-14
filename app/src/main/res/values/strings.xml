@@ -7,25 +7,28 @@
     <string name="title_activity_account_settings">Account settings activity</string>
 
     <!--Main Menu-->
-        <!--Global Materials-->
-        <string name="empty_global_materials_text">Nobody needs anything!</string>
+    <!--Global Materials-->
+    <string name="empty_global_materials_text">Nobody needs anything!</string>
 
     <!--Project Menu-->
-        <!--Bottom Sheet-->
-        <string name="bottom_sheet_info_text">Info</string>
-        <string name="bottom_sheet_inventory_text">Inventory</string>
-        <string name="bottom_sheet_items_text">Items</string>
-        <string name="bottom_sheet_xat_text">Xat</string>
-        <string name="bottom_sheet_notes_text">Notes</string>
-        <string name="bottom_sheet_need_list_text">Need list</string>
-        <string name="bottom_sheet_participants_text">Participants</string>
+    <!--Bottom Sheet-->
+    <string name="bottom_sheet_info_text">Info</string>
+    <string name="bottom_sheet_inventory_text">Inventory</string>
+    <string name="bottom_sheet_items_text">Items</string>
+    <string name="bottom_sheet_xat_text">Xat</string>
+    <string name="bottom_sheet_notes_text">Notes</string>
+    <string name="bottom_sheet_need_list_text">Need list</string>
+    <string name="bottom_sheet_participants_text">Participants</string>
 
-        <!--Inventory Fragment-->
-        <string name="empty_inventory_text">Go to find some materials!</string>
+    <!--Inventory Fragment-->
+    <string name="empty_inventory_text">Go to find some materials!</string>
 
-        <!--Need list Fragment-->
-        <string name="empty_need_list_text">You have all you need?</string>
+    <!--Need list Fragment-->
+    <string name="empty_need_list_text">You have all you need?</string>
 
-        <!--Item Fragment-->
-        <string name="empty_item_text">Do you work on any item?</string>
+    <!--Item Fragment-->
+    <string name="empty_item_text">Do you work on any item?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

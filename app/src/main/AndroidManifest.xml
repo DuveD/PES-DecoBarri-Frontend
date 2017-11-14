@@ -12,15 +12,17 @@
         android:theme="@style/AppTheme">
         <activity android:name=".project_menu.ProjectMenuActivity"></activity>
         <activity android:name=".Register" />
-        <activity android:name=".Login"/>
-        <activity android:name=".main_menu.MainMenuActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Login">
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
-        <activity android:name=".drawe_menu.AccountSettingsActivity" />
+        <activity android:name=".main_menu.MainMenuActivity"/>
+        <activity android:name=".drawe_menu.AccountSettingsActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".drawe_menu.ChatActivity" />
         <activity android:name=".drawe_menu.ContactListActivity" />
     </application>
