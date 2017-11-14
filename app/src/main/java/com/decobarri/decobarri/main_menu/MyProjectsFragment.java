@@ -1,8 +1,10 @@
 package com.decobarri.decobarri.main_menu;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.AllProjectsAdapter;
+import com.decobarri.decobarri.activity_resources.CreateProject;
 import com.decobarri.decobarri.activity_resources.MyProjectsAdapter;
 import com.decobarri.decobarri.activity_resources.Project;
 import com.decobarri.decobarri.db_resources.DB_library;
@@ -41,8 +44,17 @@ public class MyProjectsFragment extends Fragment {
                 " del nostre barri i participa en la organització de les seves activitats."));
 
         lmanager = new LinearLayoutManager(getActivity());
-        ;
         rec.setLayoutManager(lmanager);
+
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
+        fab.bringToFront();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent create = new Intent(getActivity().getApplicationContext(), CreateProject.class);
+                startActivity(create);
+            }
+        });
 
         adapter = new MyProjectsAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);

@@ -20,6 +20,7 @@ import com.decobarri.decobarri.main_menu.MainMenuActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,53 +41,24 @@ public class Login extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        final SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
-        user = pref.getString("username", "");
-        pass = pref.getString("password", "");
 
-        if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
-
-            u = new User(user, pass);
-
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl(this.getResources().getString(R.string.db_URL))
-                    .addConverterFactory(GsonConverterFactory.create());
-
-            Retrofit retrofit = builder.build();
-            UserClient client = retrofit.create(UserClient.class);
-            Call<String> call = client.LoginUser(u);
-            call.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if(response.isSuccessful()) {
-                        Intent i = new Intent(Login.this, MainMenuActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
-                    }
-                }
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                }
-            });
-        }
-
-        /*
-        if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
-            httpDBlibrary = new DB_library(this);
-            String param = "_id=" + user + "&password=" + pass;
-            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.LOGIN), param, "POST");
-            if(!Objects.equals(result, "404")&&!Objects.equals(result, "500")&&!Objects.equals(result, "401")){
-                Intent i = new Intent(this, MainMenuActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-            }
-        }*/
         super.onStart();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        user = pref.getString("username", "");
+        pass = pref.getString("password", "");
+        if (!Objects.equals(user, "") && !Objects.equals(pass, "")){
+            MyTask task = new MyTask();
+            try {
+                task.execute(4).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
 
         setTitle("Login");
         setContentView(R.layout.activity_login);
@@ -94,12 +66,19 @@ public class Login extends AppCompatActivity {
         username = (EditText) findViewById(R.id.editText);
         password = (EditText) findViewById(R.id.editText2);
 
-        error.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        username.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onClick(View view) {
                 error.setVisibility(View.INVISIBLE);
             }
         });
+        password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                error.setVisibility(View.INVISIBLE);
+            }
+        });
+
         login = (Button) findViewById(R.id.button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +104,8 @@ public class Login extends AppCompatActivity {
     private class MyTask extends AsyncTask<Integer, Integer, String> {
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(Login.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog = new ProgressDialog(Login.this, R.style.MyTheme);
+            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             progressDialog.getWindow().setGravity(Gravity.CENTER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
@@ -135,7 +114,7 @@ public class Login extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if (progressDialog.isShowing()) progressDialog.dismiss();
+            //if (progressDialog.isShowing()) progressDialog.dismiss();
             super.onPostExecute(s);
         }
 
@@ -148,11 +127,12 @@ public class Login extends AppCompatActivity {
             Retrofit retrofit = builder.build();
             UserClient client = retrofit.create(UserClient.class);
             Call<String> call = client.LoginUser(u);
+
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    System.out.println(response.body());
                     if (response.isSuccessful()) {
+                        System.out.println("Success : " + response.body());
                         SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("username", user);
@@ -163,14 +143,20 @@ public class Login extends AppCompatActivity {
 
                         startActivity(i);
                     } else {
+                        System.out.println("Error: " + response.body());
                         error.setText("Incorrect user or password");
+                        error.setVisibility(View.VISIBLE);
                     }
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+                    progressDialog.dismiss();
                     error.setText("Error");
-                    System.out.println(t.toString());
+                    error.setVisibility(View.VISIBLE);
+                    System.out.println("Error call : " + call.request().toString());
+                    System.out.println("Error throwable: " + t.getMessage());
                 }
             });
             return null;

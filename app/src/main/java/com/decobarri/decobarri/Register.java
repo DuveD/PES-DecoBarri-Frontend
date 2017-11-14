@@ -52,6 +52,8 @@ public class Register extends AppCompatActivity {
 
             User u = new User(user, n, pass, e);
 
+            System.out.println("User: " + user + ", " + n + ", " + pass + ", " + e);
+
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl(this.getResources().getString(R.string.db_URL))
                     .addConverterFactory(GsonConverterFactory.create());
@@ -60,10 +62,13 @@ public class Register extends AppCompatActivity {
             UserClient client = retrofit.create(UserClient.class);
             Call<String> call = client.CreateAccount(u);
 
+            System.out.println(call.request().toString());
+
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if(response.isSuccessful()){
+                        System.out.println("Success : " + response.body());
                         ContentValues values = new ContentValues();
                         values.put("username", user);
                         values.put("password", pass);

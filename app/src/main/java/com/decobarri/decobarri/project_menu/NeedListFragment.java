@@ -23,8 +23,6 @@ import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.MaterialAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class NeedListFragment extends Fragment {
 
@@ -44,13 +42,12 @@ public class NeedListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_need_list, container, false);
-        bottomSheetButtonCliked(true);
+        getActivity().setTitle("Need list");
         return view;
     }
 
     @Override
     public void onDestroyView() {
-        bottomSheetButtonCliked(false);
         stopUpdatingAnimation();
         super.onDestroyView();
     }
@@ -65,22 +62,12 @@ public class NeedListFragment extends Fragment {
         setContentView();
     }
 
-    void bottomSheetButtonCliked(Boolean clicked){
-        if (clicked){
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_need_list)).setAlpha(0.4f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_need_list)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
-        } else {
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_need_list)).setAlpha(1f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_need_list)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
-        }
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.top_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu, optionsMenu);
         menu = optionsMenu;
 
-        if (ProjectMenuActivity.updatingNeedList)
+        if (ProjectMenuActivity.getUpdatingNeedList())
             startUpdatingAnimation();
     }
 
@@ -117,7 +104,7 @@ public class NeedListFragment extends Fragment {
 
     public void startUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
-        if (menu.findItem(R.id.action_refresh) != null) {
+        if (menu != null) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
@@ -129,7 +116,7 @@ public class NeedListFragment extends Fragment {
 
     public void stopUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
-        if (menu.findItem(R.id.action_refresh) != null) {
+        if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
             if (menuItem.getActionView() != null) {
                 // Remove the animation.
@@ -146,7 +133,7 @@ public class NeedListFragment extends Fragment {
             protected void onPreExecute(){
                 System.out.println("Loading Need List...");
                 startUpdatingAnimation();
-                ProjectMenuActivity.updatingNeedList = true;
+                ProjectMenuActivity.setUpdatingNeedList(true);
             }
             @Override
             protected Void doInBackground(Void... voids) {
@@ -156,7 +143,7 @@ public class NeedListFragment extends Fragment {
             @Override
             public void onPostExecute( Void nope ) {
                 setContentView();
-                ProjectMenuActivity.updatingNeedList = false;
+                ProjectMenuActivity.setUpdatingNeedList(false);
                 stopUpdatingAnimation();
                 System.out.println("Done");
             }

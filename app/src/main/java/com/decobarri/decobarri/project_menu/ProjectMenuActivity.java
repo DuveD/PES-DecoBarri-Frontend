@@ -1,17 +1,19 @@
 package com.decobarri.decobarri.project_menu;
-import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
@@ -28,11 +30,14 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout bottomSheet;
 
     private ArrayList<Material> inventoryList;
-    public static Boolean updatingInventoryList;
+    private static Boolean updatingInventoryList;
     private ArrayList<Material> needList;
-    public static Boolean updatingNeedList;
+    private static Boolean updatingNeedList;
     private ArrayList<Item> itemList;
-    public static Boolean updatingItemList;
+    private static Boolean updatingItemList;
+
+    private int previousBottomSheetClickedItem;
+    private int lastBottomSheetClickedItem;
 
     private void initVars() {
         inventoryList = new ArrayList<>();
@@ -44,6 +49,10 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         fillInvetoryList();
         fillNeedList();
         fillItemList();
+
+        // Initialized by default
+        previousBottomSheetClickedItem = R.id.bottom_sheet_info;
+        lastBottomSheetClickedItem = R.id.bottom_sheet_info;
     }
 
     @Override
@@ -83,59 +92,80 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        switch (view.getId()) {
+        previousBottomSheetClickedItem = lastBottomSheetClickedItem;
+        lastBottomSheetClickedItem = view.getId();
+        switch (lastBottomSheetClickedItem) {
             case R.id.bottom_sheet_info: default:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof InfoFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new InfoFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InfoFragment))
+                    transaction.replace(R.id.fragment_view, new InfoFragment());
                 break;
             case R.id.bottom_sheet_notes:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof NotesFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new NotesFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NotesFragment))
+                    transaction.replace(R.id.fragment_view, new NotesFragment());
                 break;
             case R.id.bottom_sheet_inventory:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof InventoryFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new InventoryFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InventoryFragment))
+                    transaction.replace(R.id.fragment_view, new InventoryFragment());
                 break;
             case R.id.bottom_sheet_need_list:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof NeedListFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new NeedListFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NeedListFragment))
+                    transaction.replace(R.id.fragment_view, new NeedListFragment());
                 break;
             case R.id.bottom_sheet_items:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof ItemsFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new ItemsFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ItemsFragment))
+                    transaction.replace(R.id.fragment_view, new ItemsFragment());
                 break;
             case R.id.bottom_sheet_map:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof MapFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new MapFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof MapFragment))
+                    transaction.replace(R.id.fragment_view, new MapFragment());
                 break;
             case R.id.bottom_sheet_xat:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof XatFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new XatFragment());
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof XatFragment))
+                    transaction.replace(R.id.fragment_view, new XatFragment());
                 break;
-            case R.id.bottom_sheet_participants:
-                if (!(getFragmentManager().findFragmentById(R.id.ProjectMenuLayout) instanceof ParticipantsFragment))
-                    transaction.replace(R.id.ProjectMenuLayout, new ParticipantsFragment());
+            case R.id.bottom_sheet_group:
+                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
+                    transaction.replace(R.id.fragment_view, new ParticipantsFragment());
                 break;
         }
-        this.bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetButtonCliked();
+        bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
         transaction.commit();
+        resetViewPosition();
+    }
+
+    void bottomSheetButtonCliked(){
+        ((LinearLayout) findViewById(previousBottomSheetClickedItem)).setAlpha(1f);
+        ((LinearLayout) findViewById(lastBottomSheetClickedItem)).setAlpha(0.4f);
+    }
+
+    void resetViewPosition() {
+        CoordinatorLayout coordinator = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.appBarLayout);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appbar.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        /* int[] consumed = new int[2];
+         * behavior.onNestedPreScroll(coordinator, appbar, null, 0, -1000, consumed);
+         */
+        behavior.onNestedFling(coordinator, appbar, null, 0, -1000, true);
     }
 
     private void startMainFragment(){
         // Begin the transaction
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
-        transaction.replace(R.id.ProjectMenuLayout,  new InfoFragment());
+        transaction.replace(R.id.fragment_view,  new InfoFragment());
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         transaction.commit();
+        bottomSheetButtonCliked();
     }
 
     private void setUpBottomSheet() {
-        bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
+        bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomDrawer = BottomSheetBehavior.from(bottomSheet);
 
-        final ImageButton btnExpBottomSheet = (ImageButton) findViewById(R.id.btnExpBottomSheet);
+        final FloatingActionButton btnExpBottomSheet = (FloatingActionButton) findViewById(R.id.btnExpBottomSheet);
         btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,15 +197,21 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_items)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_participants)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_group)).setOnClickListener(this);
     }
 
+    public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }
+    public static void setUpdatingInventoryList(Boolean updating) { updatingInventoryList = updating; }
     public ArrayList<Material> getInventoryList() { return inventoryList; }
     public Boolean inventoriIsEmpty() { return inventoryList.isEmpty(); }
 
+    public static Boolean getUpdatingNeedList() { return updatingNeedList; }
+    public static void setUpdatingNeedList(Boolean updating) { updatingNeedList = updating; }
     public ArrayList<Material> getNeedsList() { return needList; }
     public Boolean needListIsEmpty() { return needList.isEmpty(); }
 
+    public static Boolean getUpdatingItemList() { return updatingItemList; }
+    public static void setUpdatingItemList(Boolean updating) { updatingItemList = updating; }
     public ArrayList<Item> getItemList() { return itemList; }
     public Boolean itemsIsEmpty() { return itemList.isEmpty(); }
 

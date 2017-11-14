@@ -8,11 +8,13 @@
     <dimen name="title">30dp</dimen>
     <dimen name="top_menu_icon">32dp</dimen>
 
+    <dimen name="padding_text_empty_list_icons">18dp</dimen>
+
     <!--Bottom Sheet dimensions-->
-    <dimen name="bottom_sheet_button_height">50dp</dimen>
-    <dimen name="text_padding">15dp</dimen>
+    <dimen name="bottom_sheet_button_height">40dp</dimen>
+    <dimen name="bottom_sheet_padding">24dp</dimen>
+    <dimen name="bottom_text_padding">8dp</dimen>
     <dimen name="icon_dimensions">48dp</dimen>
     <dimen name="layout_margin_button">10dp</dimen>
-    <dimen name="layout_margin">1dp</dimen>
 
 </resources>

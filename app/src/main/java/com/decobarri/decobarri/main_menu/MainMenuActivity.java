@@ -18,6 +18,8 @@ public class MainMenuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+
+
         viewPager = (ViewPager) findViewById(R.id.MainMenuViewPager);
         viewPager.setOffscreenPageLimit(2);
 

@@ -12,9 +12,9 @@ import java.util.List;
 
 public class User {
 
-    @SerializedName("_id")
+    @SerializedName("username")
     @Expose
-    private String id;
+    private String username;
     @SerializedName("name")
     @Expose
     private String name;
@@ -29,23 +29,24 @@ public class User {
     private List<String> projects = null;
 
     public User(String id, String name, String password, String email) {
-        this.id = id;
+        this.username = id;
         this.name = name;
         this.password = password;
         this.email = email;
     }
 
     public User(String id, String password) {
-        this.id = id;
+        this.username = id;
         this.password = password;
     }
 
+
     public String getId() {
-        return id;
+        return username;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.username = id;
     }
 
     public String getName() {

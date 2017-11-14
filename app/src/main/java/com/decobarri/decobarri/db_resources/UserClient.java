@@ -3,8 +3,8 @@ package com.decobarri.decobarri.db_resources;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -21,4 +21,10 @@ public interface UserClient {
 
     @GET("/user/findByID/{username}")
     Call<User> FindByID(@Path("username") String username);
+
+    @PUT("/user/edit/{username}")
+    Call<String> EditUser(@Path("username") String username, @Body UserEdit user);
+
+    @PUT("/user/editPassword/{username}")
+    Call<String> EditPassword(@Path("username") String username, @Body Password password);
 }

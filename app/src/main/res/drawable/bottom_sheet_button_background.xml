@@ -10,6 +10,6 @@
     <item android:state_focused="true"                                android:state_pressed="true" android:drawable="@drawable/bottom_sheet_button_background_selected_color" />
     <item android:state_focused="false"                               android:state_pressed="true" android:drawable="@drawable/bottom_sheet_button_background_selected_color" />
     <item android:state_focused="true"                                                             android:drawable="@drawable/bottom_sheet_button_background_selected_color" />
-    <item android:drawable="@drawable/bottom_sheet_button_background_color" />
+    <item android:drawable="@android:color/transparent" />
 
 </selector>
