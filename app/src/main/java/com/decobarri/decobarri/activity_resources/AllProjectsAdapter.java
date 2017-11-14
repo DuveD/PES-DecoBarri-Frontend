@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.activity_resources;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
+import com.decobarri.decobarri.main_menu.ProjectsSearchFragment;
 
 import java.util.List;
 
@@ -54,7 +58,12 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                //crear popup con la info del proyecto
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.popup_project_info);
+                dialog.setTitle("Title...");
+                dialog.show();
+                /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                 builder1.setMessage("Quieres enviar una solicitud para participar en el proyecto " + p.get_name() + "?");
                 builder1.setCancelable(true);
 
@@ -78,7 +87,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                         });
 
                 AlertDialog alert11 = builder1.create();
-                alert11.show();
+                alert11.show();*/
             }
 
         });
