@@ -27,6 +27,7 @@ import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
 import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,15 +67,7 @@ public class GlobalMaterialsFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.global_materials_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_global_materials_layout);
 
-        // Rellenamos la lista con nada y asignamos el adaptador, pero esto no ahce nada en realidad...
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        contentList = new ArrayList<>();
-        adapter = new MaterialAdapter(contentList, recyclerView);
-        recyclerView.setAdapter(adapter);
-
-        // Recargamos la lista en background y actualizamos la vista
-        reloadAsyncTask();
+        setContentView();
     }
 
     @Override
@@ -87,33 +80,10 @@ public class GlobalMaterialsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case id.action_refresh:
-
-                // Do animation start
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
-                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
-                rotation.setRepeatCount(Animation.INFINITE);
-                iv.startAnimation(rotation);
-                item.setActionView(iv);
-
-                // Recargamos la lista en background y actualizamos la vista
-                System.out.println("Selected: refresh");
                 reloadAsyncTask();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void resetUpdatingAnimation() {
-        // Get our refresh item from the menu if it are initialized
-        if (menu != null) {
-            MenuItem menuItem = menu.findItem(R.id.action_refresh);
-            if (menuItem.getActionView() != null) {
-                // Remove the animation.
-                menuItem.getActionView().clearAnimation();
-                menuItem.setActionView(null);
-            }
         }
     }
 
@@ -124,69 +94,15 @@ public class GlobalMaterialsFragment extends Fragment {
         /* examples */
         contentList = new ArrayList<>();
         contentList.clear();
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_sillas),
-                "Sillas",
-                "Sillas sobrantes",
-                true,
-                5,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_botellas),
-                "Botellas",
-                "Botellas sobrantes",
-                false,
-                5,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_cables),
-                "Cables",
-                "Cables sobrantes",
-                false,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_cajas),
-                "Cajas",
-                "Cajas Grandes",
-                false,
-                20,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_herramientas),
-                "Herramientas",
-                "Herramientas sobrantes",
-                false,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_neumaticos),
-                "Neumaticos",
-                "Neumaticos sobrantes",
-                true,
-                4,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_pinturas),
-                "Pinturas",
-                "Pinturas roja, azul, verde y más...",
-                true,
-                0,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_piscina),
-                "Piscina",
-                "Piscina hinchable pequeña",
-                true,
-                1,
-                "C/Exemple nº123"));
-        contentList.add(new Material(
-                BitmapFactory.decodeResource(getResources(), drawable.example_resources_porexpan),
-                "Porexpan",
-                "Cuanto más grande mejor",
-                false,
-                0,
-                "C/Exemple nº123"));
+        contentList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        contentList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        contentList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        contentList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        contentList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        contentList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        contentList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        contentList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        contentList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -215,10 +131,34 @@ public class GlobalMaterialsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MaterialAdapter(contentList, recyclerView);
+        adapter = new MaterialAdapter(contentList, recyclerView, getActivity(), null);
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    public void startUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+            rotation.setRepeatCount(Animation.INFINITE);
+            iv.startAnimation(rotation);
+            menu.findItem(R.id.action_refresh).setActionView(iv);
+        }
+    }
+
+    public void stopUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem.getActionView() != null) {
+                // Remove the animation.
+                menuItem.getActionView().clearAnimation();
+                menuItem.setActionView(null);
+            }
+        }
     }
 
     // Con estos métodos, crearemos una Tarea asíncrona que llamará al método de recargar información
@@ -227,18 +167,21 @@ public class GlobalMaterialsFragment extends Fragment {
     private void reloadAsyncTask(){
         (new AsyncTask<Void, Void, Void>(){
             @Override
+            protected void onPreExecute(){
+                System.out.println("Loading Global List...");
+                startUpdatingAnimation();
+                ProjectMenuActivity.setUpdatingNeedList(true);
+            }
+            @Override
             protected Void doInBackground(Void... voids) {
                 fillContentList();
-                System.out.println("Filled Global Materials");
                 return null;
             }
             @Override
             public void onPostExecute( Void nope ) {
                 setContentView();
-                System.out.println("Refreshed adapter");
-
-                // Reset animation
-                resetUpdatingAnimation();
+                stopUpdatingAnimation();
+                System.out.println("Done");
             }
         }).execute();
     }

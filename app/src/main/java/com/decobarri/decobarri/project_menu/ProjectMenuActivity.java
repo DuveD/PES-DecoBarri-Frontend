@@ -11,9 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
@@ -39,6 +37,15 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_project_menu);
+        initVars();
+        startMainFragment();
+        setUpBottomSheet();
+    }
+
     private void initVars() {
         inventoryList = new ArrayList<>();
         updatingInventoryList = false;
@@ -56,16 +63,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_menu);
-        initVars();
-        startMainFragment();
-        setUpBottomSheet();
-    }
-
-    @Override
-    public Boolean onBackPressedStatement() {
+    public Boolean onBackPressedExtraAction() {
         if (bottomDrawer.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return true;
@@ -92,6 +90,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        activePlusFloatingButton(false);
         previousBottomSheetClickedItem = lastBottomSheetClickedItem;
         lastBottomSheetClickedItem = view.getId();
         switch (lastBottomSheetClickedItem) {
@@ -104,14 +103,17 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                     transaction.replace(R.id.fragment_view, new NotesFragment());
                 break;
             case R.id.bottom_sheet_inventory:
+                activePlusFloatingButton(true);
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InventoryFragment))
                     transaction.replace(R.id.fragment_view, new InventoryFragment());
                 break;
             case R.id.bottom_sheet_need_list:
+                activePlusFloatingButton(true);
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NeedListFragment))
                     transaction.replace(R.id.fragment_view, new NeedListFragment());
                 break;
             case R.id.bottom_sheet_items:
+                activePlusFloatingButton(true);
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ItemsFragment))
                     transaction.replace(R.id.fragment_view, new ItemsFragment());
                 break;
@@ -132,6 +134,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
         transaction.commit();
         resetViewPosition();
+    }
+
+    private void activePlusFloatingButton(boolean active) {
+        if (active) ((FloatingActionButton) findViewById(R.id.fabPlus)).setVisibility(View.VISIBLE);
+        else ((FloatingActionButton) findViewById(R.id.fabPlus)).setVisibility(View.GONE);
     }
 
     void bottomSheetButtonCliked(){
@@ -165,7 +172,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomDrawer = BottomSheetBehavior.from(bottomSheet);
 
-        final FloatingActionButton btnExpBottomSheet = (FloatingActionButton) findViewById(R.id.btnExpBottomSheet);
+        final FloatingActionButton btnExpBottomSheet = (FloatingActionButton) findViewById(R.id.fabBottomSheet);
         btnExpBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,6 +196,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         initBottomDrawerButtons();
     }
 
+
     private void initBottomDrawerButtons() {
         ((LinearLayout) findViewById(R.id.bottom_sheet_info)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_notes)).setOnClickListener(this);
@@ -203,7 +211,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }
     public static void setUpdatingInventoryList(Boolean updating) { updatingInventoryList = updating; }
     public ArrayList<Material> getInventoryList() { return inventoryList; }
-    public Boolean inventoriIsEmpty() { return inventoryList.isEmpty(); }
+    public Boolean inventoryIsEmpty() { return inventoryList.isEmpty(); }
 
     public static Boolean getUpdatingNeedList() { return updatingNeedList; }
     public static void setUpdatingNeedList(Boolean updating) { updatingNeedList = updating; }
@@ -215,23 +223,20 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public ArrayList<Item> getItemList() { return itemList; }
     public Boolean itemsIsEmpty() { return itemList.isEmpty(); }
 
-
-
-    // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
     public void fillInvetoryList() {
         /* examples */
         /* examples */
         /* examples */
         inventoryList.clear();
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        inventoryList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        inventoryList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        inventoryList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        inventoryList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        inventoryList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        inventoryList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -247,21 +252,20 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
     public void fillNeedList() {
         /* examples */
         /* examples */
         /* examples */
         needList.clear();
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"NeedListItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"NeedListItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"NeedListItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"NeedListItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"NeedListItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"NeedListItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"NeedListItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"NeedListItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        needList.add(new Material(BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"NeedListItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
+        needList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"NeedListItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        needList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"NeedListItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        needList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"NeedListItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        needList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"NeedListItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        needList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"NeedListItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        needList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"NeedListItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        needList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"NeedListItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        needList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"NeedListItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        needList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"NeedListItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -282,9 +286,9 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         /* examples */
         /* examples */
         itemList.clear();
-        itemList.add(new Item(BitmapFactory.decodeResource(getResources(), R.drawable.example_item_banco_palets),"Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
-        itemList.add(new Item(BitmapFactory.decodeResource(getResources(), R.drawable.example_item_cortina_bolsa),"Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
-        itemList.add(new Item(BitmapFactory.decodeResource(getResources(), R.drawable.example_item_flor_botella),"Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
+        itemList.add(new Item("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_banco_palets),"Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
+        itemList.add(new Item("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_cortina_bolsa),"Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
+        itemList.add(new Item("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_flor_botella),"Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
         /* /examples */
         /* /examples */
         /* /examples */

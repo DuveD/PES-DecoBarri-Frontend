@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 public class Material {
     /*
     StructureMaterial {
+        id: string
         name: string
         description: string
         urgent: boolean
@@ -12,6 +13,7 @@ public class Material {
         address: string
     }
     */
+    private String id;
     private Bitmap image;
     private String name;
     private String description;
@@ -19,7 +21,8 @@ public class Material {
     private int quantity;
     private String address;
 
-    public Material(Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+    public Material(String id, Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+        this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
@@ -27,6 +30,8 @@ public class Material {
         this.quantity = quantity;
         this.address = address;
     }
+
+    public String getID() { return id; }
 
     public Bitmap getImage() {
         return image;
