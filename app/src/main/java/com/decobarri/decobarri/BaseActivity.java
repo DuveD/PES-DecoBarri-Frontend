@@ -58,7 +58,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open_description, R.string.navigation_drawer_close_description){
             @Override
-            public void onDrawerOpened(View draweView) {
+            public void onDrawerStateChanged(int newState) {
+                onBackPressedExtraAction();
             }
 
             @Override
@@ -100,13 +101,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (onBackPressedStatement()) {
+        } else if (onBackPressedExtraAction()) {
         } else {
             super.onBackPressed();
         }
     }
 
-    public Boolean onBackPressedStatement() {
+    public Boolean onBackPressedExtraAction() {
         return false;
     }
 
@@ -118,13 +119,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         itemSelected = item.getItemId();
         drawerLayout.closeDrawer(GravityCompat.START);
         return super.onOptionsItemSelected(item);
-    }
-
-    // OTHER FUNCTIONS
-
-    public Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 60, out);
-        return BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
     }
 }

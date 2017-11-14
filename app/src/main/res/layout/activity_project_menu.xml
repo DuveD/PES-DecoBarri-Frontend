@@ -32,12 +32,29 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="86dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_gravity="bottom|end"
+            app:srcCompat="@drawable/plus_icon"
+            android:visibility="gone"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabBottomSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_gravity="bottom|end"
+            app:srcCompat="@drawable/bottom_sheet_up_icon" />
+
         <LinearLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:weightSum="1"
             app:behavior_hideable="true"
             app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
             android:orientation="vertical">
@@ -53,15 +70,6 @@
                 android:id="@+id/bottom_sheet_content"
                 layout="@layout/bottom_sheet_main"/>
         </LinearLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btnExpBottomSheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/bottom_sheet_up_icon"
-            app:layout_anchor="@id/bottom_sheet"
-            app:layout_anchorGravity="top|right|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 

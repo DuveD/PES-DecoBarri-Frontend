@@ -50,4 +50,9 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
+    <style name="Theme.white_style" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarSize">64dp</item>
+        <item name="actionBarSize">64dp</item>
+    </style>
+
 </resources>

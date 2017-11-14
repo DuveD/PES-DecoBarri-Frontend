@@ -299,9 +299,32 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
+        <!-- ICON 2x1 -->
         <LinearLayout
+            android:id="@+id/bottom_sheet_return"
+            style="@style/AppTheme.BottomSheetBoton"
             android:layout_width="72dp"
-            android:layout_height="@dimen/icon_dimensions">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_return_imageView"
+                android:layout_width="@dimen/icon_dimensions"
+                android:layout_height="@dimen/icon_dimensions"
+                android:tint="@android:color/darker_gray"
+                app:srcCompat="@drawable/return_icon" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/bottom_text_padding" />
+
+            <TextView
+                android:id="@+id/bottom_sheet_return_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="fill_vertical"
+                android:text="@string/bottom_sheet_back_text" />
         </LinearLayout>
 
     </LinearLayout>

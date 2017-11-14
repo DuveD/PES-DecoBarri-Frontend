@@ -29,7 +29,6 @@
 
     <!--Item Fragment-->
     <string name="empty_item_text">Do you work on any item?</string>
+    <string name="bottom_sheet_back_text">Back</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

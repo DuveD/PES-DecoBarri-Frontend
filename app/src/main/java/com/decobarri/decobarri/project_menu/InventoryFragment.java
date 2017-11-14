@@ -3,10 +3,13 @@ package com.decobarri.decobarri.project_menu;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,23 +22,23 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Material;
+import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
 
-import java.util.ArrayList;
+public class InventoryFragment extends Fragment implements View.OnClickListener {
 
-public class InventoryFragment extends Fragment {
-
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private Adapter adapter;
+    private LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
-    private ArrayList<Material> contentList;
     private Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        getActivity().findViewById(R.id.fabPlus).setOnClickListener(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -84,21 +87,35 @@ public class InventoryFragment extends Fragment {
 
     private void setContentView() {
         if (isVisible()) {
-            if (((ProjectMenuActivity) this.getActivity()).inventoriIsEmpty()) {
-                recyclerView.setVisibility(View.GONE);
-                emptyView.setVisibility(View.VISIBLE);
-            } else {
-                recyclerView.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
-            }
+            setVisibleList();
 
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            contentList = ((ProjectMenuActivity) this.getActivity()).getInventoryList();
-            adapter = new MaterialAdapter(contentList, recyclerView);
+            adapter = new MaterialAdapter(
+                    ((ProjectMenuActivity) this.getActivity()).getInventoryList(),
+                    recyclerView,
+                    getActivity(),
+                    Const.INVENTORY_MATERIAL){
+
+                @Override
+                public void customNotifyDataSetChanged(){
+                    setVisibleList();
+                    super.customNotifyDataSetChanged();
+                }
+            };
 
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void setVisibleList() {
+        if (((ProjectMenuActivity) getActivity()).inventoryIsEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         }
     }
 
@@ -148,5 +165,13 @@ public class InventoryFragment extends Fragment {
                 System.out.println("Done");
             }
         }).execute();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), EditMaterialActivity.class);
+        intent.putExtra(Const.FROM, Const.INVENTORY_MATERIAL);
+        intent.putExtra(Const.FROM, Const.INVENTORY_MATERIAL);
+        this.startActivity(intent);
     }
 }
