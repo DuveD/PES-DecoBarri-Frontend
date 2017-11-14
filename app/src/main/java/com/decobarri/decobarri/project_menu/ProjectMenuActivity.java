@@ -129,6 +129,9 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
                     transaction.replace(R.id.fragment_view, new ParticipantsFragment());
                 break;
+            case R.id.bottom_sheet_return:
+                finish();
+                break;
         }
         bottomSheetButtonCliked();
         bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -206,6 +209,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_group)).setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.bottom_sheet_return)).setOnClickListener(this);
     }
 
     public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }

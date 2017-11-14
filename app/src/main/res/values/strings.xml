@@ -28,5 +28,6 @@
 
     <!--Item Fragment-->
     <string name="empty_item_text">Do you work on any item?</string>
+    <string name="bottom_sheet_back_text">Back</string>
 
 </resources>
