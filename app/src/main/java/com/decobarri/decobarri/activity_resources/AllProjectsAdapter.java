@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,12 +57,17 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                //Afegir imatge i dos botons per enciar solicitud o cancelar.
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
                 //crear popup con la info del proyecto
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.popup_project_info);
-                dialog.setTitle("Title...");
+                dialog.setTitle("Información del proyecto");
+                TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
+                //ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
+                //imagen.setImageBitmap(p.get_Imagen());
+                description.setText(p.get_description());
                 dialog.show();
                 /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                 builder1.setMessage("Quieres enviar una solicitud para participar en el proyecto " + p.get_name() + "?");
