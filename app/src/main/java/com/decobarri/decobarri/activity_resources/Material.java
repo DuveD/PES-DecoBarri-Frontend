@@ -14,14 +14,14 @@ public class Material {
     }
     */
     private String id;
-    private Bitmap image;
+    private String image;
     private String name;
     private String description;
     private boolean urgent;
     private int quantity;
     private String address;
 
-    public Material(String id, Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+    public Material(String id, String image, String name, String description, boolean urgent, int quantity, String address) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -33,7 +33,7 @@ public class Material {
 
     public String getID() { return id; }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 

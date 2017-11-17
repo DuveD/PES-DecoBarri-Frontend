@@ -97,17 +97,16 @@ public class GlobalMaterialsFragment extends Fragment {
         /* examples */
         /* examples */
         /* examples */
-        contentList = new ArrayList<>();
         contentList.clear();
-        contentList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        contentList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        contentList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        contentList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        contentList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        contentList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        contentList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        contentList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        contentList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
+        contentList.add(new Material("1", "http://i.imgur.com/I86rTVl.jpg","InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        contentList.add(new Material("2", "http://i.imgur.com/I86rTVl.jpg","InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        contentList.add(new Material("3", "http://i.imgur.com/I86rTVl.jpg","InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        contentList.add(new Material("4", "http://i.imgur.com/I86rTVl.jpg","InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        contentList.add(new Material("5", "http://i.imgur.com/I86rTVl.jpg","InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        contentList.add(new Material("6", "http://i.imgur.com/I86rTVl.jpg","InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        contentList.add(new Material("7", "http://i.imgur.com/I86rTVl.jpg","InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        contentList.add(new Material("8", "http://i.imgur.com/I86rTVl.jpg","InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        contentList.add(new Material("9", "http://i.imgur.com/I86rTVl.jpg","InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */

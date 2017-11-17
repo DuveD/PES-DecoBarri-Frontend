@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,12 @@ public class MaterialAdapter
     public void onBindViewHolder(MaterialViewHolder viewHolder, int position) {
 
         /* SET GLOBAL MATERIAL IMAGE */
-        viewHolder.image.setImageBitmap(materialList.get(position).getImage());
+        Picasso.with(context)
+                .load(materialList.get(position).getImage())
+                .resize(70, 70)
+                .centerCrop()
+                .into(viewHolder.image);
+
 
         /* SET GLOBAL MATERIAL NAME */
         viewHolder.name.setText(materialList.get(position).getName());

@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -44,6 +45,26 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         initVars();
         startMainFragment();
         setUpBottomSheet();
+    }
+
+    @Override
+    public void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.Toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.setDrawerIndicatorEnabled(false);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void initVars() {
@@ -129,9 +150,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
                     transaction.replace(R.id.fragment_view, new ParticipantsFragment());
                 break;
-            case R.id.bottom_sheet_return:
-                finish();
-                break;
         }
         bottomSheetButtonCliked();
         bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -209,7 +227,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_map)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_xat)).setOnClickListener(this);
         ((LinearLayout) findViewById(R.id.bottom_sheet_group)).setOnClickListener(this);
-        ((LinearLayout) findViewById(R.id.bottom_sheet_return)).setOnClickListener(this);
     }
 
     public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }
@@ -232,15 +249,15 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         /* examples */
         /* examples */
         inventoryList.clear();
-        inventoryList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        inventoryList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        inventoryList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        inventoryList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        inventoryList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        inventoryList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("1", "http://i.imgur.com/I86rTVl.jpg","InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        inventoryList.add(new Material("2", "http://i.imgur.com/I86rTVl.jpg","InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        inventoryList.add(new Material("3", "http://i.imgur.com/I86rTVl.jpg","InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("4", "http://i.imgur.com/I86rTVl.jpg","InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        inventoryList.add(new Material("5", "http://i.imgur.com/I86rTVl.jpg","InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("6", "http://i.imgur.com/I86rTVl.jpg","InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        inventoryList.add(new Material("7", "http://i.imgur.com/I86rTVl.jpg","InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        inventoryList.add(new Material("8", "http://i.imgur.com/I86rTVl.jpg","InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        inventoryList.add(new Material("9", "http://i.imgur.com/I86rTVl.jpg","InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -261,15 +278,15 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         /* examples */
         /* examples */
         needList.clear();
-        needList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"NeedListItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        needList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"NeedListItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        needList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"NeedListItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"NeedListItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        needList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"NeedListItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"NeedListItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        needList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"NeedListItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        needList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"NeedListItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        needList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"NeedListItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
+        needList.add(new Material("1", "http://i.imgur.com/I86rTVl.jpg","NeedListItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
+        needList.add(new Material("2", "http://i.imgur.com/I86rTVl.jpg","NeedListItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
+        needList.add(new Material("3", "http://i.imgur.com/I86rTVl.jpg","NeedListItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
+        needList.add(new Material("4", "http://i.imgur.com/I86rTVl.jpg","NeedListItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
+        needList.add(new Material("5", "http://i.imgur.com/I86rTVl.jpg","NeedListItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
+        needList.add(new Material("6", "http://i.imgur.com/I86rTVl.jpg","NeedListItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
+        needList.add(new Material("7", "http://i.imgur.com/I86rTVl.jpg","NeedListItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
+        needList.add(new Material("8", "http://i.imgur.com/I86rTVl.jpg","NeedListItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
+        needList.add(new Material("9", "http://i.imgur.com/I86rTVl.jpg","NeedListItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
         /* /examples */
         /* /examples */
         /* /examples */
@@ -290,9 +307,9 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         /* examples */
         /* examples */
         itemList.clear();
-        itemList.add(new Item("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_banco_palets),"Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
-        itemList.add(new Item("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_cortina_bolsa),"Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
-        itemList.add(new Item("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_item_flor_botella),"Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
+        itemList.add(new Item("1", "http://i.imgur.com/I86rTVl.jpg","Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
+        itemList.add(new Item("2", "http://i.imgur.com/I86rTVl.jpg","Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
+        itemList.add(new Item("3", "http://i.imgur.com/I86rTVl.jpg","Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
         /* /examples */
         /* /examples */
         /* /examples */

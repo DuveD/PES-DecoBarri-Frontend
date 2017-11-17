@@ -10,19 +10,20 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <!-- AppBar Layout   -->
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/AppTheme.AppBarOverlay">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/Toolbar"
                 android:layout_width="fill_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="enterAlways|scroll"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextColor="@android:color/white" />
         </android.support.design.widget.AppBarLayout>
 
@@ -78,6 +79,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemIconTint="@color/navigation_drawer_color"
+        app:itemTextColor="@color/navigation_drawer_color"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/navigation_drawer_header_main"
         app:menu="@menu/main_activity_drawer" />

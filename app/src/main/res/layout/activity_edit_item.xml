@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:gravity="center"
-                android:text="Default title"
+                android:text="Default item title"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -80,88 +80,34 @@
                     android:scaleType="centerCrop"/>
             </RelativeLayout>
 
-            <TextView
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Name"
-                android:textColor="@android:color/darker_gray"/>
-            <EditText
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/edit_text_size"
+                    android:hint="Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_text_empty_list_icons" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:padding="3dp"
-                android:text="Name"
-                android:inputType="text"
-                android:background="@android:color/transparent"/>
-
-        <View android:background="@android:color/darker_gray"
-            android:layout_width = "match_parent"
-            android:layout_height="1dp"/>
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/padding_text_empty_list_icons" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Quantity (optional)"
-                android:textColor="@android:color/darker_gray"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Quantity"
-                android:inputType="number"
-                android:background="@android:color/transparent"/>
-
-        <View android:background="@android:color/darker_gray"
-            android:layout_width = "match_parent"
-            android:layout_height="1dp"/>
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/padding_text_empty_list_icons" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Adress"
-                android:textColor="@android:color/darker_gray"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Adress"/>
-
-        <View android:background="@android:color/darker_gray"
-            android:layout_width = "match_parent"
-            android:layout_height="1dp"/>
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/padding_text_empty_list_icons" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="Description"
-                android:textColor="@android:color/darker_gray"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
-                android:gravity="start"
-                android:inputType="text"
-                android:padding="3dp"
-                android:singleLine="false"
-                android:text="Little description of the item..." />
-
-        <View android:background="@android:color/darker_gray"
-            android:layout_width = "match_parent"
-            android:layout_height="1dp"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:textSize="@dimen/edit_text_size"
+                    android:gravity="start"
+                    android:hint="Little description of the material..." />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -172,7 +118,10 @@
             android:layout_weight="2"
             android:layout_alignParentBottom="true"
             android:paddingBottom="@dimen/bottom_text_padding"
-            android:text="Add Material"
+            android:text="Add Item"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/edit_text_size"
             android:textColor="@color/primaryColor"
             android:gravity="bottom|center"
             android:layout_gravity="bottom|center"/>

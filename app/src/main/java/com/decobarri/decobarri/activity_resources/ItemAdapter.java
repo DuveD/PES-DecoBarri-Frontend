@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,11 @@ public class ItemAdapter
     public void onBindViewHolder(ItemViewHolder viewHolder, int position) {
 
         /* SET ITEM IMAGE */
-        viewHolder.image.setImageBitmap(itemList.get(position).getImage());
+        Picasso.with(context)
+                .load(itemList.get(position).getImage())
+                .resize(70, 70)
+                .centerCrop()
+                .into(viewHolder.image);
 
         /* SET ITEM NAME */
         viewHolder.name.setText(itemList.get(position).getName());
