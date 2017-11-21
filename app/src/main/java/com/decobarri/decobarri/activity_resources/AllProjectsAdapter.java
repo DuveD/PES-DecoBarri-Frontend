@@ -65,8 +65,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                 dialog.setContentView(R.layout.popup_project_info);
                 dialog.setTitle("Información del proyecto");
                 TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
-                //ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
-                //imagen.setImageBitmap(p.get_Imagen());
+                ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
+                imagen.setImageBitmap(p.get_Imagen());
                 description.setText(p.get_description());
                 dialog.show();
                 /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
