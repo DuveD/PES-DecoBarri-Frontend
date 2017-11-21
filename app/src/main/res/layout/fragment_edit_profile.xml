@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,12 +18,34 @@
             android:layout_weight="1"
             android:layout_gravity="center">
 
-            <ImageView
-                android:id="@+id/imageView3"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/menu_account_image_icon" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/menu_account_image_icon" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/imageView3"
+                    android:layout_alignParentBottom="false"
+                    android:background="@color/cardview_shadow_start_color">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="Set image"
+                        android:src="@android:drawable/ic_menu_camera" />
+                </RelativeLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,54 +73,33 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@android:color/transparent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:inputType="text"
+                android:hint="Name"/>
 
-                <TextView
-                    android:id="@+id/textView2"
-                    style="@android:style/TextAppearance.Large"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Name:" />
+            </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/editText3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="text" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/editText5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@android:color/transparent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:inputType="text"
+                android:hint="Email"/>
 
-                <TextView
-                    android:id="@+id/textView4"
-                    style="@android:style/TextAppearance.Large"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Email:" />
-
-                <EditText
-                    android:id="@+id/editText5"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="text" />
-
-            </LinearLayout>
-
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/error"
@@ -105,24 +107,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Error: "
+                android:textColor="@android:color/holo_red_dark"
                 android:visibility="invisible" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/button_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:orientation="horizontal"
-                android:paddingBottom="1dp">
-
-                <Button
-                    android:id="@+id/button_pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/tabLayout_background_color"
-                    android:text="Edit Password" />
-            </LinearLayout>
+                android:text="Edit Password" />
 
 
             <LinearLayout
@@ -131,25 +124,19 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/button_cancel"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/tabLayout_background_color"
-                        android:text="Cancel"
-                        android:textSize="25sp" />
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
 
-                    <Button
-                        android:id="@+id/button_save"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/tabLayout_background_color"
-                        android:text="Save changes"
-                        android:textSize="25sp" />
+                <Button
+                    android:id="@+id/button_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Save changes" />
 
                 </LinearLayout>
 

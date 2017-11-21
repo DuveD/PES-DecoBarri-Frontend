@@ -20,7 +20,8 @@ import java.util.List;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class EditItemActivity extends AppCompatActivity {
+public class
+EditItemActivity extends AppCompatActivity {
 
     private String title;
     private Boolean edit;

@@ -1,13 +1,9 @@
 package com.decobarri.decobarri.drawe_menu;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,19 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
-import com.decobarri.decobarri.Login;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Password;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
-import com.decobarri.decobarri.db_resources.UserEdit;
 import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
@@ -47,9 +36,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
     boolean success;
     ViewPager ViewPager;
     ProgressDialog progressDialog;
-    UserEdit new_user;
+    User new_user;
     String old_password, new_password;
     Fragment f;
+    String currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +87,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 args.putString("password", password);
                 args.putString("name", name);
                 args.putString("email", email);
+                args.putBoolean("success", success);
+
+                currentFragment = "userProfile";
 
                 f = new UserProfileFragment();
                 f.setArguments(args);
@@ -112,11 +105,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(AccountSettingsActivity.this, "Error", Toast.LENGTH_LONG).show();
                 System.out.println("Error call : " + call.request().toString());
-                System.out.println("Error throwable: " + t.getMessage());
+                System.
+                        out.println("Error throwable: " + t.getMessage());
             }
         });
-
-
     }
 
     @Override
@@ -130,15 +122,19 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         switch (mode){
             case 1:
                 f = new EditProfileFragment();
+                currentFragment= "editProfile";
                 break;
             case 2:
                 f = new UserProfileFragment();
+                currentFragment= "userProfile";
                 break;
             case 3:
                 f = new UserProfileFragment();
+                currentFragment= "userProfile";
                 break;
             case 4:
                 f = new EditPasswordFragment();
+                currentFragment= "editPassword";
                 break;
         }
 
@@ -147,6 +143,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         b.putString("password", password);
         b.putString("name", name);
         b.putString("email", email);
+        b.putBoolean("success", success);
         f.setArguments(b);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -164,7 +161,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         if (new_name.isEmpty()) new_name = name;
         if (new_email.isEmpty()) new_email = email;
 
-        new_user = new UserEdit(new_name, new_email);
+        new_user = new User();
+        new_user.setName(new_name);
+        new_user.setEmail(new_email);
+
 
         EditUserTask et = new EditUserTask();
         et.execute();
@@ -292,4 +292,20 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        switch(currentFragment){
+            case "editProfile":
+                ChangeFragment(3);
+                break;
+            case "editPassword":
+                ChangeFragment(3);
+                break;
+            case "userProfile":
+                super.onBackPressed();
+                break;
+            default:
+                break;
+        }
+    }
 }

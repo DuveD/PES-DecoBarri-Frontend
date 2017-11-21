@@ -19,12 +19,13 @@
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:gravity="center" >
+
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:scaleType="centerInside"
             android:src="@drawable/empty_items_image"
-            android:tint="@android:color/darker_gray"
-            android:scaleType="centerInside"/>
+            android:tint="@android:color/darker_gray" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
