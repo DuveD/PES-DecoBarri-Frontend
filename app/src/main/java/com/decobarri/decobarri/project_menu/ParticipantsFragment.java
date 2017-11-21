@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Project;
+import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.db_resources.UserClient;
 
 import retrofit2.Call;
@@ -19,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ParticipantsFragment extends Fragment {
 
     String project_id;
-    UserClient client;
+    ProjectClient client;
     RecyclerView member_list;
 
     @Override
@@ -37,7 +38,7 @@ public class ParticipantsFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
-        client = retrofit.create(UserClient.class);
+        client = retrofit.create(ProjectClient.class);
 
         //TODO: Retrofit call to get project info
         //TODO: Get participants from project info

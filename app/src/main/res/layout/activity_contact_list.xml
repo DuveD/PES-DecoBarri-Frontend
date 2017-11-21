@@ -42,7 +42,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:id="@+id/emptyText">
+            android:id="@+id/emptyText"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView5"

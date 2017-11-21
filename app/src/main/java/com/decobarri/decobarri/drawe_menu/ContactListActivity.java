@@ -81,6 +81,24 @@ public class ContactListActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 userlogged = response.body();
                 System.out.println("Success: " + response.body().toString());
+
+                if (response.isSuccessful()) {
+                    List<String> contactlist = userlogged.getContacts();
+
+                    if (contactlist != null) {
+
+                        list.setVisibility(View.VISIBLE);
+
+                        layoutManager = new LinearLayoutManager(ContactListActivity.this);
+                        list.setLayoutManager(layoutManager);
+
+                        adapter = new ContactsAdapter(contactlist, list, ContactListActivity.this, "contacts");
+                        list.setAdapter(adapter);
+                    }
+                    else {
+                        emptyText.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -90,24 +108,7 @@ public class ContactListActivity extends AppCompatActivity {
             }
         });
 
-        List<String> contactlist = userlogged.getContacts();
 
-        //--------------Prueba------------
-        contactlist = new ArrayList<String>();
-        contactlist.add("Jordi");
-
-        if(contactlist!=null) {
-
-            emptyText.setVisibility(View.GONE);
-            list.setVisibility(View.VISIBLE);
-
-            layoutManager = new LinearLayoutManager(this);
-            list.setLayoutManager(layoutManager);
-
-            adapter = new ContactsAdapter(contactlist, list, this, "contacts");
-            list.setAdapter(adapter);
-        }
-        System.out.println("Success!!!");
     }
 
     @Override
