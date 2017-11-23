@@ -7,7 +7,9 @@
     android:gravity="center_vertical"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:id="@+id/item_container"
+    android:visibility="gone">
 
     <RelativeLayout
         android:layout_width="60dp"
@@ -44,5 +46,12 @@
             android:layout_height="wrap_content"
             android:text="Contact name"
             android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_id"
+            android:text="id"/>
     </LinearLayout>
+
 </LinearLayout>

@@ -30,4 +30,7 @@ public interface UserClient {
 
     @PUT("/user/addContact/{username}")
     Call<String> AddContact(@Path("username") String username, @Body User contact);
+
+    @PUT("/user/deleteContact/{username}")
+    Call<String> DeleteContact(@Path("username") String username, @Body User contact);
 }

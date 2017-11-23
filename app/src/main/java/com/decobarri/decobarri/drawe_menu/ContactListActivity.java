@@ -15,8 +15,10 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ContactsAdapter;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ public class ContactListActivity extends AppCompatActivity {
         //Initialize Retrofit
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
 
         Retrofit retrofit = builder.build();
         client = retrofit.create(UserClient.class);
@@ -103,7 +105,7 @@ public class ContactListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(ContactListActivity.this, "Error", Toast.LENGTH_SHORT);
+                Toast.makeText(ContactListActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 System.out.println("Error: " + t.getMessage());
             }
         });
