@@ -129,7 +129,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         if ( LIST.equals("members") ) {
             //TODO: The delete member option has to do an admin check
             //TODO: Test this functionality
-            //TODO: Check if the user already have this contact. In that case don't show the addContact option
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(context.getResources().getString(R.string.db_URL))
@@ -137,23 +136,51 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     .build();
 
             final int itemPosition = recyclerView.getChildLayoutPosition(view);
-            final CharSequence[] items = {"Add to contacts", "Remove from project"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Select an action");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            UserClient client = retrofit.create(UserClient.class);
+            Call<User> call = client.FindByID(username);
+            call.enqueue(new Callback<User>() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    switch (i){
-                        case 0:
-                            addContact(itemPosition);
-                            break;
-                        case 1:
-                            removeMember(itemPosition);
-                            break;
+                public void onResponse(Call<User> call, Response<User> response) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Select an action");
+                    if (response.body().getContacts().contains(getContact(itemPosition))) {
+                        final CharSequence[] items = {"Remove from project"};
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (i){
+                                    case 0:
+                                        removeMember(itemPosition);
+                                        break;
+                                }
+                            }
+                        });
                     }
+                    else {
+                        final CharSequence[] items = {"Add to contacts", "Remove from project"};
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (i){
+                                    case 0:
+                                        addContact(itemPosition);
+                                        break;
+                                    case 1:
+                                        removeMember(itemPosition);
+                                        break;
+                                }
+                            }
+                        });
+                    }
+                    builder.show();
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
                 }
             });
-            builder.show();
         }
         if ( LIST.equals("contacts")){
             //TODO: Redirect to chat with the contact
@@ -216,7 +243,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     }
 
     private void removeContact(int itemPosition) {
-        //TODO: delete contact from contact list. Test
         UserClient client = retrofit.create(UserClient.class);
         User newContact = new User();
         newContact.setId(getContact(itemPosition));
