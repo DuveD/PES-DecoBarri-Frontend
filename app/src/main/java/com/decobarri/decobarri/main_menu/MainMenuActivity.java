@@ -7,7 +7,21 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
+import com.decobarri.decobarri.db_resources.MaterialsInterface;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainMenuActivity extends BaseActivity {
 
@@ -27,11 +41,11 @@ public class MainMenuActivity extends BaseActivity {
     private void setUpTabLayout() {
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.MainMenuTabLayout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Projects").setIcon(R.drawable.tab_project_search_icon));
+        tabLayout.addTab(tabLayout.newTab().setText("Projects").setIcon(R.drawable.ic_world));
         tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_selected_item_color), PorterDuff.Mode.SRC_IN);
-        tabLayout.addTab(tabLayout.newTab().setText("My projects").setIcon(R.drawable.tab_my_projects_icon));
+        tabLayout.addTab(tabLayout.newTab().setText("My projects").setIcon(R.drawable.ic_project));
         tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
-        tabLayout.addTab(tabLayout.newTab().setText("Materials").setIcon(R.drawable.tab_wanted_materials_icon));
+        tabLayout.addTab(tabLayout.newTab().setText("Materials").setIcon(R.drawable.ic_box));
         tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

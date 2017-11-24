@@ -4,11 +4,10 @@
 
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/top_menu_reload"
+        android:icon="@drawable/ic_reload"
         android:layout_width="@dimen/top_menu_icon"
         android:layout_height="@dimen/top_menu_icon"
         android:actionLayout="@layout/ic_refresh"
-        style="@android:style/Widget.ActionButton"
         app:showAsAction="ifRoom"
         android:title="ActionRefresh" />
 

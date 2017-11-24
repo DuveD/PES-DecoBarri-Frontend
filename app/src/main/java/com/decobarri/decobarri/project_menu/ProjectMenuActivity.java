@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,17 +23,18 @@ import com.decobarri.decobarri.activity_resources.Material;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class ProjectMenuActivity extends BaseActivity implements View.OnClickListener {
 
     private BottomSheetBehavior bottomDrawer;
     private LinearLayout bottomSheet;
 
-    private ArrayList<Material> inventoryList;
+    private List<Material> inventoryList;
     private static Boolean updatingInventoryList;
-    private ArrayList<Material> needList;
+    private List<Material> needList;
     private static Boolean updatingNeedList;
-    private ArrayList<Item> itemList;
+    private List<Item> itemList;
     private static Boolean updatingItemList;
 
     private int previousBottomSheetClickedItem;
@@ -51,8 +53,16 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.Toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getSupportActionBar().setTitle(null);
+
+        LinearLayout tvSave = (LinearLayout) findViewById(R.id.Toolbar_icon);
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -231,17 +241,17 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }
     public static void setUpdatingInventoryList(Boolean updating) { updatingInventoryList = updating; }
-    public ArrayList<Material> getInventoryList() { return inventoryList; }
+    public List<Material> getInventoryList() { return inventoryList; }
     public Boolean inventoryIsEmpty() { return inventoryList.isEmpty(); }
 
     public static Boolean getUpdatingNeedList() { return updatingNeedList; }
     public static void setUpdatingNeedList(Boolean updating) { updatingNeedList = updating; }
-    public ArrayList<Material> getNeedsList() { return needList; }
+    public List<Material> getNeedsList() { return needList; }
     public Boolean needListIsEmpty() { return needList.isEmpty(); }
 
     public static Boolean getUpdatingItemList() { return updatingItemList; }
     public static void setUpdatingItemList(Boolean updating) { updatingItemList = updating; }
-    public ArrayList<Item> getItemList() { return itemList; }
+    public List<Item> getItemList() { return itemList; }
     public Boolean itemsIsEmpty() { return itemList.isEmpty(); }
 
     public void fillInvetoryList() {

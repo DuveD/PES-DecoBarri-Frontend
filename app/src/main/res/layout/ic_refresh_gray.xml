@@ -9,6 +9,6 @@
         android:layout_width="@dimen/top_menu_icon"
         android:layout_height="@dimen/top_menu_icon"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_reload" />
+        android:src="@drawable/ic_reload_gray" />
 
 </RelativeLayout>

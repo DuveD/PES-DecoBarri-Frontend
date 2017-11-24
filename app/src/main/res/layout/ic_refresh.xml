@@ -3,14 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="?android:attr/actionButtonStyle"
     android:layout_width="@dimen/top_menu_icon"
-    android:layout_height="@dimen/top_menu_icon"
-    android:contentDescription="Top menu icon content" >
+    android:layout_height="@dimen/top_menu_icon">
 
     <ImageView
         android:layout_width="@dimen/top_menu_icon"
         android:layout_height="@dimen/top_menu_icon"
         android:scaleType="centerInside"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/top_menu_reload" />
+        android:src="@drawable/ic_reload" />
 
 </RelativeLayout>

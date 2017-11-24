@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
@@ -44,7 +45,7 @@ public class NeedListFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_need_list, container, false);
-        getActivity().setTitle("Need list");
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Need list");
         return view;
     }
 
@@ -57,16 +58,14 @@ public class NeedListFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         recyclerView = (RecyclerView) getView().findViewById(R.id.need_list_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_need_list_layout);
-
         setContentView();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.reload_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu_gray, optionsMenu);
         menu = optionsMenu;
 
         if (ProjectMenuActivity.getUpdatingNeedList())
@@ -122,7 +121,7 @@ public class NeedListFragment extends Fragment implements View.OnClickListener {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh_gray, null);
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
             rotation.setRepeatCount(Animation.INFINITE);
             iv.startAnimation(rotation);

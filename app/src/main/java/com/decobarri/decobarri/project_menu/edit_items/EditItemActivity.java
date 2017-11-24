@@ -122,7 +122,7 @@ public class EditItemActivity extends AppCompatActivity {
         findViewById(R.id.saveChanges).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onBackPressed();
             }
         });
     }

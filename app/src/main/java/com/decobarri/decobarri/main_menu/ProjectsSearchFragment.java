@@ -13,14 +13,12 @@ import android.widget.Toast;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.AllProjectsAdapter;
 import com.decobarri.decobarri.activity_resources.Project;
-import com.decobarri.decobarri.db_resources.DB_library;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectsSearchFragment extends Fragment {
     List items = new ArrayList();
-    private DB_library httpDBlibrary;
     private RecyclerView rec;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lmanager;
@@ -62,8 +60,6 @@ public class ProjectsSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_projects_search, container, false);
-        // BD_library init wiht activity context
-        httpDBlibrary = new DB_library(this.getActivity());
 
         return view;
     }

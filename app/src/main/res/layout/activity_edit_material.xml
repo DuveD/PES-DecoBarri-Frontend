@@ -24,7 +24,7 @@
                 android:layout_centerVertical="true"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/close_icon"
+                android:src="@drawable/ic_close"
                 android:tint="@android:color/darker_gray"
                 android:background="?android:attr/selectableItemBackground"/>
 
@@ -33,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:gravity="center"
-                android:text="Default material title"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -60,7 +59,7 @@
                 android:layout_height="120dp"
                 android:padding="10dp"
                 android:layout_gravity="center"
-                android:src="@drawable/camera_icon"
+                android:src="@drawable/ic_camera"
                 android:tint="@android:color/darker_gray"
                 android:scaleType="centerCrop"
                 android:background="@drawable/dotted_frame"/>

@@ -30,7 +30,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/info_icon" />
+                app:srcCompat="@drawable/ic_info" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/notes_icon" />
+                app:srcCompat="@drawable/ic_notes" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/map_icon" />
+                app:srcCompat="@drawable/ic_map" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/inventory_icon" />
+                app:srcCompat="@drawable/ic_inventory" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -172,7 +172,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/need_list_icon" />
+                app:srcCompat="@drawable/ic_need_list" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -205,7 +205,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/items_icon" />
+                app:srcCompat="@drawable/ic_items" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -247,7 +247,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/xat_icon" />
+                app:srcCompat="@drawable/ic_chat_globe" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -280,7 +280,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/group_icon" />
+                app:srcCompat="@drawable/ic_group" />
 
             <Space
                 android:layout_width="wrap_content"
