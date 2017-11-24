@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.main_menu.MainMenuActivity;
-import com.decobarri.decobarri.db_resources.DB_library;
 import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
@@ -26,7 +25,6 @@ public class Register extends AppCompatActivity {
 
     TextView error;
     EditText username, password, name, email;
-    DB_library httpDBlibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,9 @@ public class ItemAdapter
     private List<Item> itemList;
     private RecyclerView recyclerView;
     Context context;
+    private static final String TAG = "ItemAdapter";
 
-    public ItemAdapter(ArrayList<Item> itemList, RecyclerView recyclerView, Context context) {
+    public ItemAdapter(List<Item> itemList, RecyclerView recyclerView, Context context) {
         this.itemList = itemList;
         this.recyclerView = recyclerView;
         this.context = context;
@@ -79,7 +82,11 @@ public class ItemAdapter
     public void onBindViewHolder(ItemViewHolder viewHolder, int position) {
 
         /* SET ITEM IMAGE */
-        viewHolder.image.setImageBitmap(itemList.get(position).getImage());
+        Picasso.with(context)
+                .load(itemList.get(position).getImage())
+                .resize(70, 70)
+                .centerCrop()
+                .into(viewHolder.image);
 
         /* SET ITEM NAME */
         viewHolder.name.setText(itemList.get(position).getName());
@@ -103,18 +110,18 @@ public class ItemAdapter
     public boolean onLongClick(View view) {
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
-        final CharSequence[] items = {"Delete", "Edit"};
+        final CharSequence[] items = {"Edit", "Delete"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select an action");
+        //builder.setTitle("Select an action");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item){
                     case 0:
-                        doOnDelete(itemPosition);
+                        onLongClickEdit(itemPosition);
                         break;
                     case 1:
-                        doOnEdit(itemPosition);
+                        onLongClickDelete(itemPosition);
                         break;
                 }
             }
@@ -123,17 +130,19 @@ public class ItemAdapter
         return true;
     }
 
-    private void doOnDelete( int itemPosition ) {
-        deleteItem(itemPosition);
-        customNotifyDataSetChanged();
-    }
-
-    private void doOnEdit( int itemPosition ) {
+    private void onLongClickEdit( int itemPosition ) {
+        Log.i(TAG, "Edit Item");
         Intent intent = new Intent(context, EditItemActivity.class);
         intent.putExtra(Const.EDIT_ITEM, true);
         intent.putExtra(Const.ID, getItem( itemPosition ).getID());
         context.startActivity(intent);
 
+        customNotifyDataSetChanged();
+    }
+
+    private void onLongClickDelete( int itemPosition ) {
+        Log.i(TAG, "Delete Material");
+        deleteItem(itemPosition);
         customNotifyDataSetChanged();
     }
 

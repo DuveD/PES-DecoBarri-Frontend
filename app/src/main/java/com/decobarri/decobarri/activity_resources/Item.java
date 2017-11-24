@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class Item {
 
     private String id;
-    private Bitmap image;
+    private String image;
     private String name;
     private String description;
     private String localization;
     private ArrayList<String> materials;
 
-    public Item (String id, Bitmap image, String name, String description, String localization, ArrayList<String> materials){
+    public Item (String id, String image, String name, String description, String localization, ArrayList<String> materials){
         this.id = id;
         this.image = image;
         this.name = name;
@@ -24,7 +24,7 @@ public class Item {
 
     public String getID() { return id; }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 

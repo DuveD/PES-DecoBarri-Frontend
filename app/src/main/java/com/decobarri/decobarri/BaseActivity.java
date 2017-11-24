@@ -25,6 +25,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    public ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +44,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         setUpNav();
     }
 
-    private void initToolbar() {
+    public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.Toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void setUpNav() {
+    public void setUpNav() {
         drawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
         //create default navigation drawer toggle
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open_description, R.string.navigation_drawer_close_description){
             @Override
             public void onDrawerStateChanged(int newState) {
@@ -95,6 +96,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         };
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override

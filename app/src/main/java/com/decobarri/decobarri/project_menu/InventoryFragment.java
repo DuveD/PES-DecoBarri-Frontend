@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
@@ -45,7 +46,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_inventory, container, false);
-        getActivity().setTitle("Invetory");
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Inventory");
         return view;
     }
 
@@ -67,7 +68,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.reload_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu_gray, optionsMenu);
         menu = optionsMenu;
 
         if (ProjectMenuActivity.getUpdatingInventoryList())
@@ -123,7 +124,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh_gray, null);
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
             rotation.setRepeatCount(Animation.INFINITE);
             iv.startAnimation(rotation);

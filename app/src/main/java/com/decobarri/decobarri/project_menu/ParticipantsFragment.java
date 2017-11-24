@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
@@ -103,10 +103,8 @@ public class ParticipantsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_participants, container, false);
-        getActivity().setTitle("Participants");
-
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Participants");
         member_list = (RecyclerView) view.findViewById(R.id.lista_participantes);
-
         return view;
     }
 
