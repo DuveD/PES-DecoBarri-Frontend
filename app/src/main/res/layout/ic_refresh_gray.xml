@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:attr/actionButtonStyle"
+    android:layout_width="@dimen/top_menu_icon"
+    android:layout_height="@dimen/top_menu_icon">
+
+    <ImageView
+        android:layout_width="@dimen/top_menu_icon"
+        android:layout_height="@dimen/top_menu_icon"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_reload" />
+
+</RelativeLayout>
