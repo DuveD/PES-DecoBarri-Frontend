@@ -45,6 +45,9 @@ public class EditPasswordFragment extends Fragment implements View.OnClickListen
         error=(TextView) view.findViewById(R.id.textView13);
 
         Bundle args = this.getArguments();
+        if(!args.getBoolean("success", true)){
+            error.setText("Wrong email");
+        }
         username=args.getString("username");
 
 
@@ -79,7 +82,6 @@ public class EditPasswordFragment extends Fragment implements View.OnClickListen
         else if (view.getId() == R.id.button4){ //save
             mListener.EditPassword(username, old_password.getText().toString(), new_password.getText().toString());
 
-            error.setText("Wrong password");
             error.setVisibility(View.VISIBLE);
         }
     }

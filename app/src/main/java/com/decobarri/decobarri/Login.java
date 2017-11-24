@@ -3,6 +3,8 @@ package com.decobarri.decobarri;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -109,6 +111,7 @@ public class Login extends AppCompatActivity {
             progressDialog.getWindow().setGravity(Gravity.CENTER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
+            findViewById(R.id.screen).setBackgroundColor(Login.this.getResources().getColor(R.color.cardview_shadow_start_color));
             super.onPreExecute();
         }
 
@@ -148,11 +151,13 @@ public class Login extends AppCompatActivity {
                         error.setVisibility(View.VISIBLE);
                     }
                     progressDialog.dismiss();
+                    findViewById(R.id.screen).setBackground(Drawable.createFromPath("@color/transparent"));
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     progressDialog.dismiss();
+                    findViewById(R.id.screen).setBackground(Drawable.createFromPath("@color/transparent"));
                     error.setText("Error");
                     error.setVisibility(View.VISIBLE);
                     System.out.println("Error call : " + call.request().toString());

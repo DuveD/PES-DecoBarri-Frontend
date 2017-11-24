@@ -27,6 +27,13 @@ public class User {
     @SerializedName("projects")
     @Expose
     private List<String> projects = null;
+    @SerializedName("contacts")
+    @Expose
+    private List<String> contacts = null;
+
+    public User() {
+
+    }
 
     public User(String id, String name, String password, String email) {
         this.username = id;
@@ -85,5 +92,13 @@ public class User {
 
     public void setProjects(List<String> projects) {
         this.projects = projects;
+    }
+
+    public List<String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<String> projects) {
+        this.contacts = contacts;
     }
 }

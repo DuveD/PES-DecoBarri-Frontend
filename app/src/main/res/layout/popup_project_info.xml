@@ -5,12 +5,43 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/item_name"
+        android:id="@+id/descripcion_popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Project Information"
+        android:layout_margin="5dp"
         android:gravity="center"
-        android:layout_margin="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/imageView1"
         android:textSize="20sp" />
+
+    <View
+        android:id="@+id/lineaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/imageView1"
+        android:layout_toRightOf="@+id/imagen"
+        android:background="#ffd5d5d5">
+
+    </View>
+
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="150dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_height="150dp"
+        />
+
+    <Button
+        android:id="@+id/button_solicitar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" Solicitar participación "
+        android:layout_marginTop="5dp"
+
+        android:layout_below="@+id/descripcion_popup"
+        />
 
 </RelativeLayout>

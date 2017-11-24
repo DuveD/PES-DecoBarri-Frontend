@@ -44,7 +44,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         cancel.setOnClickListener(this);
         edit_pass.setOnClickListener(this);
 
+
+
         Bundle args = this.getArguments();
+        if(!args.getBoolean("success", true)){
+            error.setText("Wrong email");
+        }
 
         if(args != null){
             id.setText(args.getString("id"));
@@ -85,7 +90,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             listener.EditUser(u);
 
 
-            error.setText("Wrong email");
             error.setVisibility(View.VISIBLE);
         }
         else if (view.getId() == R.id.button_cancel){
@@ -95,4 +99,5 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             listener.ChangeFragment(4);
         }
     }
+
 }

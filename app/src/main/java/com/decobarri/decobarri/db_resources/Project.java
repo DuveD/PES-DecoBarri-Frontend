@@ -43,6 +43,10 @@ public class Project {
     @Expose
     private List<Nota> notes = null;
 
+    @SerializedName("members")
+    @Expose
+    private List<String> members = null;
+
     public Project(String id, String name, String theme, String description, String city, String address) {
         this.id = id;
         this.name = name;
@@ -114,5 +118,13 @@ public class Project {
 
     public void setNotes(List<Nota> notes) {
         this.notes = notes;
+    }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
     }
 }

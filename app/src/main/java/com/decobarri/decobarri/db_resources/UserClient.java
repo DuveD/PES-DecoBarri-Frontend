@@ -23,8 +23,14 @@ public interface UserClient {
     Call<User> FindByID(@Path("username") String username);
 
     @PUT("/user/edit/{username}")
-    Call<String> EditUser(@Path("username") String username, @Body UserEdit user);
+    Call<String> EditUser(@Path("username") String username, @Body User user);
 
     @PUT("/user/editPassword/{username}")
     Call<String> EditPassword(@Path("username") String username, @Body Password password);
+
+    @PUT("/user/addContact/{username}")
+    Call<String> AddContact(@Path("username") String username, @Body User contact);
+
+    @PUT("/user/deleteContact/{username}")
+    Call<String> DeleteContact(@Path("username") String username, @Body User contact);
 }
