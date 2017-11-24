@@ -1,27 +1,39 @@
 package com.decobarri.decobarri.activity_resources;
 
-import android.graphics.Bitmap;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Material {
-    /*
-    StructureMaterial {
-        id: string
-        name: string
-        description: string
-        urgent: boolean
-        quantity: integer
-        address: string
-    }
-    */
+
+    //@SerializedName("_id")
+    //@Expose
     private String id;
-    private Bitmap image;
+
+    //@SerializedName("image")
+    //@Expose
+    private String image;
+
+    //@SerializedName("name")
+    //@Expose
     private String name;
+
+    //@SerializedName("description")
+    //@Expose
     private String description;
+
+    //@SerializedName("urgent")
+    //@Expose
     private boolean urgent;
+
+    //@SerializedName("quantity")
+    //@Expose
     private int quantity;
+
+    //@SerializedName("address")
+    //@Expose
     private String address;
 
-    public Material(String id, Bitmap image, String name, String description, boolean urgent, int quantity, String address) {
+    public Material(String id, String image, String name, String description, boolean urgent, int quantity, String address) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -33,7 +45,7 @@ public class Material {
 
     public String getID() { return id; }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 

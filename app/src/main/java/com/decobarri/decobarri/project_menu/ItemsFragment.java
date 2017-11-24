@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.project_menu;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Item;
@@ -46,7 +48,7 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_items, container, false);
-        getActivity().setTitle("Items");
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Items");
         return view;
     }
 
@@ -59,16 +61,14 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         recyclerView = (RecyclerView) getView().findViewById(R.id.item_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_item_layout);
-
         setContentView();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.reload_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu_gray, optionsMenu);
         menu = optionsMenu;
 
         if (ProjectMenuActivity.getUpdatingItemList())
@@ -122,7 +122,7 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh_gray, null);
             Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
             rotation.setRepeatCount(Animation.INFINITE);
             iv.startAnimation(rotation);
@@ -135,7 +135,6 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
         if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
             if (menuItem.getActionView() != null) {
-                // Remove the animation.
                 menuItem.getActionView().clearAnimation();
                 menuItem.setActionView(null);
             }

@@ -2,7 +2,8 @@ package com.decobarri.decobarri.main_menu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.LayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,16 +24,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.R.drawable;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
+import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.db_resources.MaterialsInterface;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GlobalMaterialsFragment extends Fragment {
 
@@ -39,39 +50,35 @@ public class GlobalMaterialsFragment extends Fragment {
     private LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
-    private ArrayList<Material> contentList;
     private Menu menu;
+
+    private List<Material> globalMaterialList;
+    private static Boolean updatingGlobalMaterialList;
+    private static final String TAG = "GlobalMaterialsFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initVars();
         setHasOptionsMenu(true);
+        initVars();
     }
 
     private void initVars() {
-        contentList = new ArrayList<>();
-
-        fillContentList();
+        globalMaterialList = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(layout.fragment_global_materials, container, false);
-
-        // En principio no hacemos nada
-
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // Recojemos y guardamos la view del fragment actual
         recyclerView = (RecyclerView) getView().findViewById(R.id.global_materials_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_global_materials_layout);
-
+        fillContentList();
         setContentView();
     }
 
@@ -85,61 +92,43 @@ public class GlobalMaterialsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case id.action_refresh:
-                reloadAsyncTask();
+                fillContentList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
-    public void fillContentList() {
-        /* examples */
-        /* examples */
-        /* examples */
-        contentList = new ArrayList<>();
-        contentList.clear();
-        contentList.add(new Material("1", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_sillas),"InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        contentList.add(new Material("2", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_botellas),"InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        contentList.add(new Material("3", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cables),"InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        contentList.add(new Material("4", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_cajas),"InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        contentList.add(new Material("5", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_herramientas),"InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        contentList.add(new Material("6", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_neumaticos),"InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        contentList.add(new Material("7", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_pinturas),"InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        contentList.add(new Material("8", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_piscina),"InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        contentList.add(new Material("9", BitmapFactory.decodeResource(getResources(), R.drawable.example_resources_porexpan),"InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(contentList, new Comparator<Material>() {
-            @Override
-            public int compare(Material materialA, Material materialB) {
-                int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
-                if (boolean_compare == 0)
-                    return materialA.getName().compareToIgnoreCase(materialB.getName());
-                else return boolean_compare;
-            }
-        });
-    }
-
     private void setContentView() {
-        if (contentList.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
+        setVisibleList();
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        adapter = new MaterialAdapter(
+                globalMaterialList,
+                recyclerView,
+                getActivity(),
+                null){
 
-        adapter = new MaterialAdapter(contentList, recyclerView, getActivity(), null);
+            @Override
+            public void customNotifyDataSetChanged(){
+                setVisibleList();
+                super.customNotifyDataSetChanged();
+            }
+        };
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    private void setVisibleList() {
+        if (globalMaterialList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     public void startUpdatingAnimation() {
@@ -166,28 +155,70 @@ public class GlobalMaterialsFragment extends Fragment {
         }
     }
 
-    // Con estos métodos, crearemos una Tarea asíncrona que llamará al método de recargar información
-    // y luego nos recargará la lista de la view
-    @SuppressLint("StaticFieldLeak")
-    private void reloadAsyncTask(){
-        (new AsyncTask<Void, Void, Void>(){
+    // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
+    public void fillContentList() {
+        updatingGlobalMaterialList = true;
+        startUpdatingAnimation();
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit =builder
+                .client(httpClient.build())
+                .build();
+        MaterialsInterface client =  retrofit.create(MaterialsInterface.class);
+
+
+        Call<List<Material>> call = client.contentList();
+
+        // Execute the call asynchronously. Get a positive or negative callback.
+        call.enqueue(new Callback<List<Material>>() {
             @Override
-            protected void onPreExecute(){
-                System.out.println("Loading Global List...");
-                startUpdatingAnimation();
-                ProjectMenuActivity.setUpdatingNeedList(true);
-            }
-            @Override
-            protected Void doInBackground(Void... voids) {
-                fillContentList();
-                return null;
-            }
-            @Override
-            public void onPostExecute( Void nope ) {
-                setContentView();
+            public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
+                // The network call was a success and we got a response
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Success : " + response.body());
+                    globalMaterialList = response.body();
+                    /*
+                    Collections.sort(globalMaterialList, new Comparator<Material>() {
+                        @Override
+                        public int compare(Material materialA, Material materialB) {
+                            int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
+                            if (boolean_compare == 0)
+                                return materialA.getName().compareToIgnoreCase(materialB.getName());
+                            else return boolean_compare;
+                        }
+                    });
+                    */
+                    setContentView();
+                }
+                else {
+                    Log.e(TAG, "Response failed: " + response.body());
+                }
+                updatingGlobalMaterialList = false;
                 stopUpdatingAnimation();
-                System.out.println("Done");
             }
-        }).execute();
+
+            @Override
+            public void onFailure(Call<List<Material>> call, Throwable t) {
+                // the network call was a failure
+                Log.e(TAG, "Call failed: " + call.request());
+                Log.e(TAG, "Error: " + t.getMessage());
+
+                if (!isOnline())  Log.e(TAG, "No internet connection.");
+                else Log.w(TAG, "Please check your internet connection and try again.");
+
+                updatingGlobalMaterialList = false;
+                stopUpdatingAnimation();
+            }
+        });
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,11 @@ public class MaterialAdapter
 
     private List<Material> materialList;
     private RecyclerView recyclerView;
-    Context context;
-
+    private Context context;
     private String LIST;
+    private static final String TAG = "MaterialAdapter";
 
-    public MaterialAdapter(ArrayList<Material> materialList, RecyclerView recyclerView, Context context, String LIST) {
+    public MaterialAdapter(List<Material> materialList, RecyclerView recyclerView, Context context, String LIST) {
         this.materialList = materialList;
         this.recyclerView = recyclerView;
         this.context = context;
@@ -92,7 +94,12 @@ public class MaterialAdapter
     public void onBindViewHolder(MaterialViewHolder viewHolder, int position) {
 
         /* SET GLOBAL MATERIAL IMAGE */
-        viewHolder.image.setImageBitmap(materialList.get(position).getImage());
+        Picasso.with(context)
+                .load(materialList.get(position).getImage())
+                .resize(70, 70)
+                .centerCrop()
+                .into(viewHolder.image);
+
 
         /* SET GLOBAL MATERIAL NAME */
         viewHolder.name.setText(materialList.get(position).getName());
@@ -130,7 +137,7 @@ public class MaterialAdapter
         if (LIST == null){
             onLongClickRead( view );
         } else {
-            onLongClickEdit( view );
+            onLongClickOptions( view );
         }
         return true;
     }
@@ -138,21 +145,28 @@ public class MaterialAdapter
     private void onLongClickRead(View view) {
     }
 
-    private void onLongClickEdit(View view) {
+    private void onLongClickOptions(View view) {
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
-        final CharSequence[] items = {"Delete", "Edit"};
+        String listToMove = "NULL";
+        if (LIST.equals(Const.INVENTORY_MATERIAL)) listToMove = "Need List";
+        else if (LIST.equals(Const.NEED_LIST_MATERIAL)) listToMove = "Inventory";
+
+        final CharSequence[] items = {"Edit",  "Move to "+listToMove, "Delete"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select an action");
+        //builder.setTitle("Select an action");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item){
                     case 0:
-                        doOnDelete(itemPosition);
+                        onLongClickEdit(itemPosition);
                         break;
                     case 1:
-                        doOnEdit(itemPosition);
+                        onLongClickMove(itemPosition);
+                        break;
+                    case 2:
+                        onLongClickDelete(itemPosition);
                         break;
                 }
             }
@@ -160,18 +174,26 @@ public class MaterialAdapter
         builder.show();
     }
 
-    private void doOnDelete( int itemPosition ) {
-        deleteMaterial(itemPosition);
-        customNotifyDataSetChanged();
-    }
-
-    private void doOnEdit( int itemPosition ) {
-        Intent intent = new Intent(context, EditMaterialActivity.class);
+    private void onLongClickEdit( int itemPosition ) {
+        Log.i(TAG+" "+LIST, "Edit Material");
+                Intent intent = new Intent(context, EditMaterialActivity.class);
         intent.putExtra(Const.FROM, LIST);
         intent.putExtra(Const.EDIT_MATERIAL, true);
         intent.putExtra(Const.ID, getMaterial( itemPosition ).getID());
         context.startActivity(intent);
 
+        customNotifyDataSetChanged();
+    }
+
+    private void onLongClickMove( int itemPosition ) {
+        Log.i(TAG+" "+LIST, "Move Material");
+        //TODO: CALL MOVE
+    }
+
+    private void onLongClickDelete( int itemPosition ) {
+        Log.i(TAG+" "+LIST, "Delete Material");
+        //TODO: CALL DELETE
+        deleteMaterial(itemPosition);
         customNotifyDataSetChanged();
     }
 

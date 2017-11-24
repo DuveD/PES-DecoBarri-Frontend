@@ -17,4 +17,9 @@
     <dimen name="icon_dimensions">48dp</dimen>
     <dimen name="layout_margin_button">10dp</dimen>
 
+    <!-- Text sizes -->
+    <dimen name="edit_text_size">15sp</dimen>
+
+
+
 </resources>
