@@ -128,7 +128,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         System.out.println("OnClick members");
         if ( LIST.equals("members") ) {
             //TODO: The delete member option has to do an admin check
-            //TODO: Test this functionality
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(context.getResources().getString(R.string.db_URL))

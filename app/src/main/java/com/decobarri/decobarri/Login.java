@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,13 +45,6 @@ public class Login extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         final SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         user = pref.getString("username", "");
         pass = pref.getString("password", "");
@@ -62,8 +56,18 @@ public class Login extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        super.onStart();
 
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setTitle("Login");
+
+
+
         setContentView(R.layout.activity_login);
         error = (TextView) findViewById(R.id.textView3);
         username = (EditText) findViewById(R.id.editText);
@@ -112,7 +116,8 @@ public class Login extends AppCompatActivity {
             progressDialog.getWindow().setGravity(Gravity.CENTER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-            findViewById(R.id.screen).setBackgroundColor(Login.this.getResources().getColor(R.color.cardview_shadow_start_color));
+            RelativeLayout screen = (RelativeLayout) findViewById(R.id.screen);
+            screen.setBackgroundColor(Login.this.getResources().getColor(R.color.cardview_shadow_start_color));
             super.onPreExecute();
         }
 

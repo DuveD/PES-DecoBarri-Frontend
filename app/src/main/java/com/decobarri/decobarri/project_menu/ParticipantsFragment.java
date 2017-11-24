@@ -7,9 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
@@ -30,17 +36,68 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ParticipantsFragment extends Fragment {
 
-    String project_id;
-    ProjectClient client;
-    RecyclerView member_list;
-    LinearLayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
-    Context context;
+    private String project_id;
+    private ProjectClient client;
+    private RecyclerView member_list;
+    private LinearLayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    private Context context;
+    private Menu menu;
 
     @Override
     public void onAttach(Context context) {
         this.context = context;
         super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(R.menu.reload_menu, optionsMenu);
+        menu = optionsMenu;
+
+        if (ProjectMenuActivity.getUpdatingItemList())
+            startUpdatingAnimation();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                loadList();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void startUpdatingAnimation() {
+        // Get our refresh item from the menu if it is initialized
+        if (menu != null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
+            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+            rotation.setRepeatCount(Animation.INFINITE);
+            iv.startAnimation(rotation);
+            menu.findItem(R.id.action_refresh).setActionView(iv);
+        }
+    }
+
+    public void stopUpdatingAnimation() {
+        // Get our refresh item from the menu if it is initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem.getActionView() != null) {
+                // Remove the animation.
+                menuItem.getActionView().clearAnimation();
+                menuItem.setActionView(null);
+            }
+        }
     }
 
     @Override
@@ -67,6 +124,14 @@ public class ParticipantsFragment extends Fragment {
         Retrofit retrofit = builder.build();
         client = retrofit.create(ProjectClient.class);
 
+        loadList();
+
+        //TODO: Get Project Id from arguments
+        //loadMembers(ProjectId);
+
+    }
+
+    private void loadList (){
         //------------Prueba-----------------
         //TODO: Remove this part
         Call<List<Project>> call = client.FindAllProjects();
@@ -81,10 +146,6 @@ public class ParticipantsFragment extends Fragment {
 
             }
         });
-
-        //TODO: Get Project Id from arguments
-        //loadMembers(ProjectId);
-
     }
 
     private void loadMembers(String ProjectId) {

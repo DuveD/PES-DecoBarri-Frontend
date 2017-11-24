@@ -12,6 +12,7 @@ import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.decobarri.decobarri.db_resources.DB_library;
+import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
@@ -56,7 +57,7 @@ public class Register extends AppCompatActivity {
 
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl(this.getResources().getString(R.string.db_URL))
-                    .addConverterFactory(GsonConverterFactory.create());
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
 
             Retrofit retrofit = builder.build();
             UserClient client = retrofit.create(UserClient.class);
@@ -87,27 +88,6 @@ public class Register extends AppCompatActivity {
                     error.setVisibility(View.VISIBLE);
                 }
             });
-
-            /*httpDBlibrary = new DB_library(this);
-            String param = "_id=" + user + "&password=" + pass + "&name=" + n + "&email=" + e;
-            String result = httpDBlibrary.db_call(this.getResources().getString(R.string.ADD_USER), param, "POST");
-            if (Objects.equals(result, "409")) {
-                error.setVisibility(View.VISIBLE);
-            } else if (Objects.equals(result, "500")) {
-                error.setText("Internal server error");
-                error.setVisibility(View.VISIBLE);
-            }
-            if (Objects.equals(result, "404")) {
-                error.setText("Not found error");
-                error.setVisibility(View.VISIBLE);
-            } else {
-                ContentValues values = new ContentValues();
-                values.put("username", user);
-                values.put("password", pass);
-                Intent i = new Intent(this, MainMenuActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-            }*/
 
         }
 
