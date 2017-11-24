@@ -28,6 +28,7 @@
         <activity android:name=".drawe_menu.ContactListActivity" />
         <activity android:name=".project_menu.edit_items.EditItemActivity" />
         <activity android:name=".project_menu.edit_items.EditMaterialActivity" />
+        <activity android:name=".main_menu.ProjectActivity"/>
     </application>
 
 </manifest>
