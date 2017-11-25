@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,8 +24,15 @@ import java.util.List;
 public class ProjectsSearchFragment extends Fragment {
     List items = new ArrayList();
     private RecyclerView rec;
-    private RecyclerView.Adapter adapter;
+    private AllProjectsAdapter adapter;
     private RecyclerView.LayoutManager lmanager;
+
+    private SearchView searchView;
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -71,4 +82,59 @@ public class ProjectsSearchFragment extends Fragment {
         Toast toast = Toast.makeText(view.getContext(), result, Toast.LENGTH_SHORT);
         toast.show();
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search, optionsMenu);
+
+        MenuItem myActionMenuItem = optionsMenu.findItem(R.id.options_search);
+        searchView = (SearchView) myActionMenuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // collapse the view ?
+                //menu.findItem(R.id.menu_search).collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final List<Project> filteredModelList = filter(items, newText);
+                adapter.setFilter(filteredModelList);
+                return true;
+            }
+
+
+        });
+        super.onCreateOptionsMenu(optionsMenu, inflater);
+    }
+
+
+    /*@Override
+    public boolean onQueryTextChange(String newText) {
+        final List<Project> filteredModelList = filter(items, newText);
+        adapter.setFilter(filteredModelList);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }*/
+
+    private List<Project> filter(List<Project>projects, String query) {
+        query = query.toLowerCase();final List<Project> filteredModelList = new ArrayList<>();
+        for (Project p : projects) {
+            final String text = p.get_name().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(p);
+            }
+        }
+        return filteredModelList;
+    }
+
+
 }
