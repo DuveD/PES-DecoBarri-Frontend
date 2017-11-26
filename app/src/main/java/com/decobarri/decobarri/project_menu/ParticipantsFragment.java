@@ -69,7 +69,7 @@ public class ParticipantsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                loadList();
+                loadMembers();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -112,8 +112,7 @@ public class ParticipantsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle arg = this.getArguments();
-        //project_id = arg.getString("project");
+        project_id = this.getArguments().getString("project", "");
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
@@ -122,32 +121,12 @@ public class ParticipantsFragment extends Fragment {
         Retrofit retrofit = builder.build();
         client = retrofit.create(ProjectClient.class);
 
-        loadList();
-
-        //TODO: Get Project Id from arguments
-        //loadMembers(ProjectId);
+        loadMembers();
 
     }
 
-    private void loadList (){
-        //------------Prueba-----------------
-        //TODO: Remove this part
-        Call<List<Project>> call = client.FindAllProjects();
-        call.enqueue(new Callback<List<Project>>() {
-            @Override
-            public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
-                loadMembers(response.body().get(0).getId());
-            }
-
-            @Override
-            public void onFailure(Call<List<Project>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void loadMembers(String ProjectId) {
-        Call<Project> call = client.FindProjectById(ProjectId);
+    private void loadMembers() {
+        Call<Project> call = client.FindProjectById(project_id);
         call.enqueue(new Callback<Project>() {
             @Override
             public void onResponse(Call<Project> call, Response<Project> response) {
@@ -156,12 +135,12 @@ public class ParticipantsFragment extends Fragment {
                     layoutManager = new LinearLayoutManager(context);
                     member_list.setLayoutManager(layoutManager);
 
-                    adapter = new ContactsAdapter(list, member_list, getActivity(), "members");
+                    adapter = new ContactsAdapter(list, member_list, getActivity(), "members", project_id);
                     member_list.setAdapter(adapter);
                 }
                 else {
-                    System.out.println("Error: " + response.errorBody());
-                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    System.out.println("Error: " + response.code());
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }
 

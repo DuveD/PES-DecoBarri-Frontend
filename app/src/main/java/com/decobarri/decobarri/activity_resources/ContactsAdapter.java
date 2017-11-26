@@ -1,6 +1,8 @@
 package com.decobarri.decobarri.activity_resources;
 
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.db_resources.UserProject;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -45,12 +49,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     String LIST;
     String username;
     Retrofit retrofit;
+    String projectId; //Null if Contact list
 
-    public ContactsAdapter(List<String> contactList, RecyclerView recyclerView, Context context, String l) {
+    public ContactsAdapter(List<String> contactList, RecyclerView recyclerView, Context context, String l, String project) {
         this.contactList = contactList;
         this.recyclerView = recyclerView;
         this.context = context;
         this.LIST = l;
+        this.projectId = project;
         SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
     }
@@ -186,9 +192,30 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         }
     }
 
-    private void removeMember(int itemPosition) {
-        ProjectClient client = retrofit.create(ProjectClient.class);
-        //TODO: Delete member from project member list
+    private void removeMember(final int itemPosition) {
+        UserClient client = retrofit.create(UserClient.class);
+        System.out.println("Project id: " + projectId);
+        System.out.println("User id: " + getContact(itemPosition));
+        UserProject p = new UserProject(projectId);
+        Call<String> call = client.DeleteProject(getContact(itemPosition), p);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()){
+                    deleteContact(itemPosition);
+                    notifyDataSetChanged();
+                }
+                System.out.println("Success: " + response.body());
+                System.out.println("Code: " + response.code());
+                System.out.println("Error: " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("Error: " + t.getMessage());
+                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void addContact(int itemPosition) {
@@ -241,7 +268,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         return false;
     }
 
-    private void removeContact(int itemPosition) {
+    private void removeContact(final int itemPosition) {
         UserClient client = retrofit.create(UserClient.class);
         User newContact = new User();
         newContact.setId(getContact(itemPosition));
@@ -251,6 +278,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("Success: " + response.body());
                 if(response.isSuccessful()){
+                    deleteContact(itemPosition);
                     notifyDataSetChanged();
                 }
             }

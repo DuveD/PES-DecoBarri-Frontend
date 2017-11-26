@@ -45,7 +45,8 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     private void loadProjectInfo() {
-        Call<Project> call = client.FindP   rojectById("5a0f1bf1b42109137235a5e3");
+
+        Call<Project> call = client.FindProjectById("5a0f1bf1b42109137235a5e3");
 
         call.enqueue(new Callback<Project>() {
             @Override

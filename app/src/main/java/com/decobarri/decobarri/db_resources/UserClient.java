@@ -33,4 +33,7 @@ public interface UserClient {
 
     @PUT("/user/deleteContact/{username}")
     Call<String> DeleteContact(@Path("username") String username, @Body User contact);
+
+    @PUT("/user/deleteProject/{username}")
+    Call<String> DeleteProject(@Path("username") String username, @Body UserProject p);
 }

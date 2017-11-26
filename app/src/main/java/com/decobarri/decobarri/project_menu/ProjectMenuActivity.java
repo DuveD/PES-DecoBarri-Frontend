@@ -1,4 +1,5 @@
 package com.decobarri.decobarri.project_menu;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -120,6 +121,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        Fragment f = new Fragment();
+        String project_id = getIntent().getExtras().getString("project", "");
+        Bundle args = new Bundle();
+        //TODO: Get project id from args
+        args.putString("project", "5a0f1cbbb42109137235a5e6");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         activePlusFloatingButton(false);
         previousBottomSheetClickedItem = lastBottomSheetClickedItem;
@@ -127,7 +133,9 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         switch (lastBottomSheetClickedItem) {
             case R.id.bottom_sheet_info: default:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InfoFragment))
-                    transaction.replace(R.id.fragment_view, new InfoFragment());
+                    f = new InfoFragment();
+                    f.setArguments(args);
+                    transaction.replace(R.id.fragment_view, f);
                 break;
             case R.id.bottom_sheet_notes:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NotesFragment))
@@ -158,7 +166,9 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.bottom_sheet_group:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
-                    transaction.replace(R.id.fragment_view, new ParticipantsFragment());
+                    f = new ParticipantsFragment();
+                    f.setArguments(args);
+                    transaction.replace(R.id.fragment_view, f );
                 break;
         }
         bottomSheetButtonCliked();

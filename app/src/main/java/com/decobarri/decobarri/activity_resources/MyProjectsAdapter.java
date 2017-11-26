@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,11 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
+
                 Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
+                Bundle args = new Bundle();
+                args.putString("project", p.get_name());
+                projectMenu.putExtras(args);
                 //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto
                 context.startActivity(projectMenu);
                 /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);

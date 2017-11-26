@@ -94,7 +94,7 @@ public class ContactListActivity extends AppCompatActivity {
                         layoutManager = new LinearLayoutManager(ContactListActivity.this);
                         list.setLayoutManager(layoutManager);
 
-                        adapter = new ContactsAdapter(contactlist, list, ContactListActivity.this, "contacts");
+                        adapter = new ContactsAdapter(contactlist, list, ContactListActivity.this, "contacts", null);
                         list.setAdapter(adapter);
                     }
                     else {
