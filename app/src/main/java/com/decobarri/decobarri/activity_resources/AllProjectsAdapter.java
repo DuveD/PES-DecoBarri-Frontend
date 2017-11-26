@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,13 +20,15 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.decobarri.decobarri.main_menu.ProjectsSearchFragment;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Marc G on 24/10/2017.
  */
 
-public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.AllProjectsViewHolder> {
+public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.AllProjectsViewHolder> implements Filterable{
     private List<Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
@@ -33,6 +37,11 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         this.projectList = item;
         this.context = mContext;
         this.recyclerView = rec;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
 
@@ -103,6 +112,11 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     @Override
     public int getItemCount() {
         return projectList.size();
+    }
+
+    public void setFilter(List<Project> filteredList) {
+        this.projectList = filteredList;
+        notifyDataSetChanged();
     }
 
     @Override
