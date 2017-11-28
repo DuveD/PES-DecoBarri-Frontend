@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main_menu.MainMenuActivity"/>
+        <activity android:name=".main_menu.MainMenuActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".drawe_menu.AccountSettingsActivity"/>
         <activity android:name=".activity_resources.CreateProject"/>
         <activity android:name=".drawe_menu.ChatActivity" />
