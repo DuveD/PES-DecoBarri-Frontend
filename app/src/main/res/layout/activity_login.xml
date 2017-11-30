@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,98 +11,106 @@
     android:id="@+id/screen"
     tools:context="com.decobarri.decobarri.Login">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="145dp"
-            android:layout_height="157dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:textSize="@dimen/title"
-            android:textColor="@color/navigationDrawer_selected_item_color"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:text="LOGIN" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="Password"/>
-
-        </android.support.design.widget.TextInputLayout>
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="41dp"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="LogIn"
-            android:textSize="@dimen/fab_margin"
-            android:id="@+id/button"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/tabLayout_background_color"
-            />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="I don't have an account. Register me!"
-            android:textSize="@dimen/fab_margin"
-            android:textColor="@color/navigationDrawer_selected_item_color"
-            android:background="@android:color/transparent"
-            android:onClick="registre"
-            android:id="@+id/button2" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="145dp"
+                android:layout_height="157dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/logo" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wrong username or password"
-            android:textColor="@android:color/holo_red_dark"
-            style="@android:style/TextAppearance.Medium"
-            android:id="@+id/textView3"
-            android:visibility="invisible"
-            android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/textView8"
+                android:textSize="@dimen/title"
+                android:textColor="@color/navigationDrawer_selected_item_color"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:text="LOGIN" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Success!"
-            android:id="@+id/textView5"
-            android:visibility="invisible"
-            android:layout_gravity="center_horizontal"
-            style="@android:style/TextAppearance.Medium" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
-</RelativeLayout>
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Password"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:orientation="vertical"></LinearLayout>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="LogIn"
+                android:textSize="@dimen/fab_margin"
+                android:id="@+id/button"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@color/tabLayout_background_color"
+                />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="I don't have an account. Register me!"
+                android:textSize="@dimen/fab_margin"
+                android:textColor="@color/navigationDrawer_selected_item_color"
+                android:background="@android:color/transparent"
+                android:onClick="registre"
+                android:id="@+id/button2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wrong username or password"
+                android:textColor="@android:color/holo_red_dark"
+                style="@android:style/TextAppearance.Medium"
+                android:id="@+id/textView3"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Success!"
+                android:id="@+id/textView5"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                style="@android:style/TextAppearance.Medium" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

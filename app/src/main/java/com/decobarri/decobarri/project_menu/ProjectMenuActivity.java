@@ -125,7 +125,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         String project_id = getIntent().getExtras().getString("project", "");
         Bundle args = new Bundle();
         //TODO: Get project id from args
-        args.putString("project", "5a0f1cbbb42109137235a5e6");
+        args.putString("project", "5a0f1e7a9837bb158a4f0a6b");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         activePlusFloatingButton(false);
         previousBottomSheetClickedItem = lastBottomSheetClickedItem;

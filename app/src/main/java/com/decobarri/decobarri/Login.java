@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,16 +58,12 @@ public class Login extends AppCompatActivity {
             }
         }
         super.onStart();
-
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Login");
-
-
 
         setContentView(R.layout.activity_login);
         error = (TextView) findViewById(R.id.textView3);
@@ -111,12 +109,15 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(Login.this, R.style.MyTheme);
-            progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             progressDialog.getWindow().setGravity(Gravity.CENTER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-            RelativeLayout screen = (RelativeLayout) findViewById(R.id.screen);
-            screen.setBackgroundColor(Login.this.getResources().getColor(R.color.cardview_shadow_start_color));
+            ScrollView screen = (ScrollView) findViewById(R.id.screen);
+            //screen.setBackgroundColor(Login.this.getResources().getColor(R.color.));
+
+            screen.setAnimation(new AlphaAnimation(1f, 0f));
+
+
             super.onPreExecute();
         }
 

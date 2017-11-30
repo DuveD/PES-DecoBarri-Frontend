@@ -27,6 +27,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,6 +65,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, id;
+        ImageView friend;
         LinearLayout item_container;
 
         public ContactsViewHolder (View view) {
@@ -71,6 +73,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             item_container = (LinearLayout) view.findViewById(R.id.item_container);
             name = (TextView) view.findViewById(R.id.contact_name);
             id = (TextView) view.findViewById(R.id.user_id);
+            friend = (ImageView) view.findViewById(R.id.friend_image);
         }
     }
 
@@ -101,7 +104,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 .baseUrl(context.getResources().getString(R.string.db_URL))
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
                 .build();
-        UserClient client = retrofit.create(UserClient.class);
+        final UserClient client = retrofit.create(UserClient.class);
         Call<User> call = client.FindByID(contactList.get(position));
         call.enqueue(new Callback<User>() {
             @Override
@@ -109,8 +112,32 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 if (response.isSuccessful()) {
                     holder.id.setText(contactList.get(position));
                     holder.name.setText(response.body().getName());
+                    holder.item_container.setVisibility(View.VISIBLE);
+
+                    if (Objects.equals(LIST, "members")){
+                        if (!Objects.equals(username, contactList.get(position))) {
+
+                            call = client.FindByID(username);
+                            call.enqueue(new Callback<User>() {
+
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    if (response.isSuccessful()) {
+                                        if (response.body().getContacts().contains(contactList.get(position))) {
+                                            holder.friend.setVisibility(View.VISIBLE);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+                                    System.out.println("Error: " + t.getMessage());
+                                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
                 }
-                holder.item_container.setVisibility(View.VISIBLE);
                 System.out.println("Success: " + response.body());
                 System.out.println("Code: " + response.code());
             }
@@ -218,7 +245,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         });
     }
 
-    private void addContact(int itemPosition) {
+    private void addContact(final int itemPosition) {
         UserClient client = retrofit.create(UserClient.class);
 
         User newContact = new User();
@@ -229,6 +256,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             public void onResponse(Call<String> call, Response<String> response) {
                 System.out.println("Success: " + response.body());
                 System.out.println("Code: " + response.code());
+
+                notifyDataSetChanged();
                 //TODO: Redirect to chat with this contact
             }
 
