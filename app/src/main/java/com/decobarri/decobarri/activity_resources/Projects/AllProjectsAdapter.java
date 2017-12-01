@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.*;
 
 import java.util.List;
 
@@ -20,11 +21,11 @@ import java.util.List;
  */
 
 public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.AllProjectsViewHolder> implements Filterable{
-    private List<Project> projectList;
+    private List<com.decobarri.decobarri.db_resources.Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
 
-    public AllProjectsAdapter(List<Project> item, Context mContext, RecyclerView rec) {
+    public AllProjectsAdapter(List<com.decobarri.decobarri.db_resources.Project> item, Context mContext, RecyclerView rec) {
         this.projectList = item;
         this.context = mContext;
         this.recyclerView = rec;
@@ -59,15 +60,15 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
             public void onClick(View v) {
                 //Afegir imatge i dos botons per enciar solicitud o cancelar.
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
-                Project p = projectList.get(itemPosition);
+                com.decobarri.decobarri.db_resources.Project p = projectList.get(itemPosition);
                 //crear popup con la info del proyecto
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.popup_project_info);
                 dialog.setTitle("Información del proyecto");
                 TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
                 ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
-                imagen.setImageBitmap(p.get_Imagen());
-                description.setText(p.get_description());
+                //imagen.setImageBitmap(p.get_Imagen());
+                description.setText(p.getDescription());
                 dialog.show();
                 /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
                 builder1.setMessage("Quieres enviar una solicitud para participar en el proyecto " + p.get_name() + "?");
@@ -105,15 +106,15 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         return projectList.size();
     }
 
-    public void setFilter(List<Project> filteredList) {
+    public void setFilter(List<com.decobarri.decobarri.db_resources.Project> filteredList) {
         this.projectList = filteredList;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(AllProjectsViewHolder viewHolder, int i) {
-        viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
-        viewHolder.nombre.setText(projectList.get(i).get_name());
-        viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).get_description()));
+        //viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
+        viewHolder.nombre.setText(projectList.get(i).getName());
+        viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
     }
 }

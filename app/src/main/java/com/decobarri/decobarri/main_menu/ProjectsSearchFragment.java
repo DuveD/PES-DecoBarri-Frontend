@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,11 +16,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.activity_resources.Projects.AllProjectsAdapter;
-import com.decobarri.decobarri.activity_resources.Projects.Project;
+//import com.decobarri.decobarri.activity_resources.Projects.Project;
+import com.decobarri.decobarri.db_resources.MaterialsInterface;
+import com.decobarri.decobarri.db_resources.Project;
+import com.decobarri.decobarri.db_resources.ProjectClient;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectsSearchFragment extends Fragment {
     List items = new ArrayList();
@@ -38,9 +50,10 @@ public class ProjectsSearchFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final RecyclerView rec = (RecyclerView) getView().findViewById(R.id.projectsearch_recycler);
+        rec = (RecyclerView) getView().findViewById(R.id.projectsearch_recycler);
 
-        items.add(new Project((BitmapFactory.decodeResource(getResources(),
+        fillList();
+        /*items.add(new Project((BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_vallespir)), "Decoracio carrer Vallespi",
                 "Aquest any tornarem a participar a" +
                         " les festes de sants."));
@@ -59,9 +72,44 @@ public class ProjectsSearchFragment extends Fragment {
         items.add(new Project(BitmapFactory.decodeResource(getResources(),
                 R.drawable.example_christmas_centre_cultural),
                 "Decoració temàtica de Nadal del centre cultural Les Corts.", "" +
-                " Ajuda a decorar el nostre centre i participa en els events que tenim preparats per aquest nadal."));
+                " Ajuda a decorar el nostre centre i participa en els events que tenim preparats per aquest nadal."));*/
+        setView();
+    }
+
+
+    private void fillList() {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit =builder
+                .client(httpClient.build())
+                .build();
+        ProjectClient client =  retrofit.create(ProjectClient.class);
+
+
+        Call<List<Project>> call = client.FindAllProjects();
+
+        // Execute the call asynchronously. Get a positive or negative callback.
+        call.enqueue(new Callback<List<Project>>() {
+            @Override
+            public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
+                // The network call was a success and we got a response
+                if (response.isSuccessful()) {
+                    items = response.body();
+                    setView();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Project>> call, Throwable t) {
+                //
+            }
+        });
+    }
+
+    private void setView() {
         lmanager = new LinearLayoutManager(getActivity());
-        ;
         rec.setLayoutManager(lmanager);
         adapter = new AllProjectsAdapter(items, getActivity(), rec);
         rec.setAdapter(adapter);
@@ -128,7 +176,7 @@ public class ProjectsSearchFragment extends Fragment {
     private List<Project> filter(List<Project>projects, String query) {
         query = query.toLowerCase();final List<Project> filteredModelList = new ArrayList<>();
         for (Project p : projects) {
-            final String text = p.get_name().toLowerCase();
+            final String text = p.getName().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(p);
             }
