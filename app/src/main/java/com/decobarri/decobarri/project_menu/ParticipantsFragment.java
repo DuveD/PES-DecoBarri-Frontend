@@ -112,7 +112,7 @@ public class ParticipantsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        project_id = this.getArguments().getString("project", "");
+        project_id = ((ProjectMenuActivity)this.getActivity()).projectId;
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))

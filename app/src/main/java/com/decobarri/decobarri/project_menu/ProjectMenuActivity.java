@@ -49,7 +49,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         startMainFragment();
         setUpBottomSheet();
 
-        projectId = "5a0f1cbbb42109137235a5e6";
+        Bundle arg = getIntent().getExtras();
+        projectId = arg.getString("project", "");
     }
 
     @Override

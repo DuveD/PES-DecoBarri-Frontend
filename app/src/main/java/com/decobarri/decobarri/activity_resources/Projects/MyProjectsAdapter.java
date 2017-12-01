@@ -58,6 +58,10 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                 Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
                 Bundle args = new Bundle();
                 args.putString("project", p.get_name());
+
+                //TODO: Delete this line once the projects are loaded
+                args.putString("project", "5a0f1cbbb42109137235a5e6");
+
                 projectMenu.putExtras(args);
                 //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto
                 context.startActivity(projectMenu);
