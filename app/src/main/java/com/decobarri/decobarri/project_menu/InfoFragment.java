@@ -9,27 +9,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.db_resources.Project;
-import com.decobarri.decobarri.db_resources.ProjectClient;
-import com.google.gson.GsonBuilder;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InfoFragment extends Fragment {
 
     private TextView projNameText;
-    private TextView descriptionText;
-    ProjectClient client;
-    Project project;
+    private TextView projDescriptionText;
+
+    private String projName;
+    private String projDescription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_info, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Project Info");
+
+        projName = this.getArguments().getString("projName");
+        projDescription = this.getArguments().getString("projDescription");
+
         return view;
     }
 
@@ -37,42 +33,9 @@ public class InfoFragment extends Fragment {
     public void onStart() {
         bottomSheetButtonCliked(true);
         projNameText = (TextView) getActivity().findViewById(R.id.textProjName);
-        descriptionText = (TextView) getActivity().findViewById(R.id.descriptionText);
-
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://project-pes.herokuapp.com")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
-        Retrofit retrofit = builder.build();
-        client = retrofit.create(ProjectClient.class);
-
-        loadProjectInfo();
+        projDescriptionText = (TextView) getActivity().findViewById(R.id.descriptionText);
 
         super.onStart();
-    }
-
-    private void loadProjectInfo() {
-
-        Call<Project> call = client.FindProjectById("5a13db310fa0a800147b7ff9");
-
-        call.enqueue(new Callback<Project>() {
-            @Override
-            public void onResponse(Call<Project> call, Response<Project> response) {
-                if (response.isSuccessful()) {
-                    project = response.body();
-                    System.out.println("Success!! : " + project);
-                    projNameText.setText(project.getName());
-                    descriptionText.setText(project.getDescription());
-                } else {
-                    System.out.println("Error: " + response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Project> call, Throwable t) {
-                System.out.println("Error call : " + call.request().toString());
-                System.out.println("Error throwable: " + t.getMessage());
-            }
-        });
     }
 
     @Override
