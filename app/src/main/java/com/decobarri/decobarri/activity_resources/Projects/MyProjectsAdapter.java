@@ -73,7 +73,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                         "Si",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Intent create = new Intent(this.context, CreateProject.class);
+                                Intent create = new Intent(this.context, CreateProjectActivity.class);
                                 startActivity(create);
                             }
                         });

@@ -47,7 +47,7 @@ public class MyProjectsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent create = new Intent(getActivity().getApplicationContext(), CreateProject.class);
+                Intent create = new Intent(getActivity().getApplicationContext(), CreateProjectActivity.class);
                 startActivity(create);
             }
         });

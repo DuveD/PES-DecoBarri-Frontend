@@ -16,7 +16,7 @@ import com.decobarri.decobarri.R;
  * Created by Marc G on 13/11/2017.
  */
 
-public class CreateProject extends AppCompatActivity {
+public class CreateProjectActivity extends AppCompatActivity {
 
     private EditText input_name, input_description, input_theme;
     private TextInputLayout inputLayoutName, inputLayoutDescription, inputLayoutTheme;

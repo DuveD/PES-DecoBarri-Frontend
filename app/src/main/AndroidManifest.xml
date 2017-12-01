@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".main_menu.CreateProject"/>
+        <activity android:name=".main_menu.CreateProjectActivity"/>
         <activity android:name=".main_menu.MainMenuActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".drawe_menu.AccountSettingsActivity"/>
