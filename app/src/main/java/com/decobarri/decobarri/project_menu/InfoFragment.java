@@ -1,7 +1,6 @@
 package com.decobarri.decobarri.project_menu;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InfoFragment extends Fragment {
 
-    TextView projName;
+    private TextView projNameText;
+    private TextView descriptionText;
+    ProjectClient client;
+    Project project;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,51 +36,43 @@ public class InfoFragment extends Fragment {
     @Override
     public void onStart() {
         bottomSheetButtonCliked(true);
-        projName = (TextView) getActivity().findViewById(R.id.textProjName);
-        myTask task = new myTask();
-        task.execute(4);
+        projNameText = (TextView) getActivity().findViewById(R.id.textProjName);
+        descriptionText = (TextView) getActivity().findViewById(R.id.descriptionText);
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://project-pes.herokuapp.com")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        Retrofit retrofit = builder.build();
+        client = retrofit.create(ProjectClient.class);
+
+        loadProjectInfo();
 
         super.onStart();
     }
 
-    private class myTask extends AsyncTask<Integer, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+    private void loadProjectInfo() {
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
+        Call<Project> call = client.FindProjectById("5a13db310fa0a800147b7ff9");
 
-        @Override
-        protected String doInBackground(Integer... integers) {
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("http://project-pes.herokuapp.com")
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
-            Retrofit retrofit =builder.build();
-            ProjectClient client = retrofit.create(ProjectClient.class);
-            Call<Project> call = client.FindProjectById("5a0f1e7a9837bb158a4f0a6b");
-            call.enqueue(new Callback<Project>() {
-                @Override
-                public void onResponse(Call<Project> call, Response<Project> response) {
-                    if (response.isSuccessful()) {
-                        System.out.println("Success : " + response.body());
-                    } else {
-                        System.out.println("Error: " + response.body());
-                    }
+        call.enqueue(new Callback<Project>() {
+            @Override
+            public void onResponse(Call<Project> call, Response<Project> response) {
+                if (response.isSuccessful()) {
+                    project = response.body();
+                    System.out.println("Success!! : " + project);
+                    projNameText.setText(project.getName());
+                    descriptionText.setText(project.getDescription());
+                } else {
+                    System.out.println("Error: " + response.body());
                 }
+            }
 
-                @Override
-                public void onFailure(Call<Project> call, Throwable t) {
-                    System.out.println("Error call: " + call.request().toString());
-                    System.out.println("Error throwable: " + t.getMessage());
-                }
-            });
-
-            return null;
-        }
+            @Override
+            public void onFailure(Call<Project> call, Throwable t) {
+                System.out.println("Error call : " + call.request().toString());
+                System.out.println("Error throwable: " + t.getMessage());
+            }
+        });
     }
 
     @Override

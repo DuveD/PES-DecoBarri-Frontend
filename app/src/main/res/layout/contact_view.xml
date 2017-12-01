@@ -17,27 +17,21 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.joooonho.SelectableRoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/menu_account_image_icon"
-            android:scaleType="centerCrop"
-
-            app:sriv_left_top_corner_radius="10dp"
-            app:sriv_right_top_corner_radius="10dp"
-            app:sriv_left_bottom_corner_radius="10dp"
-            app:sriv_right_bottom_corner_radius="10dp"
-
-            app:sriv_border_width="2dip"/>
+            android:scaleType="centerCrop"/>
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/item_text_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
+        android:layout_weight="1"
         android:layout_marginLeft="10dp">
 
         <TextView
@@ -52,6 +46,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/user_id"
             android:text="id"/>
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/friend_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ok_icon"
+        android:visibility="invisible"/>
 
 </LinearLayout>

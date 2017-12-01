@@ -87,7 +87,7 @@ public class ContactListActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     List<String> contactlist = userlogged.getContacts();
 
-                    if (contactlist != null) {
+                    if (!contactlist.isEmpty()) {
 
                         list.setVisibility(View.VISIBLE);
 

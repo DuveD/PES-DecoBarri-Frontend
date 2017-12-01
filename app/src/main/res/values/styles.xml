@@ -31,11 +31,13 @@
         <item name="android:fullDark">@android:color/transparent</item>
         <item name="android:topBright">@android:color/transparent</item>
         <item name="android:topDark">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="MyTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="colorAccent">#303F9F</item>
+        <item name="android:shape">ring</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:textColorPrimary">#303F9F</item>
         <item name="android:backgroundDimEnabled">false</item>
