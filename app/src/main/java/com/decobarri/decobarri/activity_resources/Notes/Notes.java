@@ -1,13 +1,9 @@
-package com.decobarri.decobarri.db_resources;
+package com.decobarri.decobarri.activity_resources.Notes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by arnauorriols on 7/11/17.
- */
-
-public class Nota {
+public class Notes {
 
     @SerializedName("_id")
     @Expose
@@ -33,7 +29,7 @@ public class Nota {
     @Expose
     private Boolean modifiable;
 
-    public Nota(String id, String title, String date, String description, String author, Boolean modifiable) {
+    public Notes(String id, String title, String date, String description, String author, Boolean modifiable) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -46,24 +42,12 @@ public class Nota {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getDescription() {
@@ -76,10 +60,6 @@ public class Nota {
 
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Boolean getModifiable() {

@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.activity_resources;
+package com.decobarri.decobarri.activity_resources.Materials;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;

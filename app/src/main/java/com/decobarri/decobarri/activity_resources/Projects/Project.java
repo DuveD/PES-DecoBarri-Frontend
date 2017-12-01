@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.activity_resources;
+package com.decobarri.decobarri.activity_resources.Projects;
 
 import android.graphics.Bitmap;
 

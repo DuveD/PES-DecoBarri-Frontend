@@ -1,7 +1,6 @@
 package com.decobarri.decobarri.project_menu;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Item;
-import com.decobarri.decobarri.activity_resources.ItemAdapter;
+import com.decobarri.decobarri.activity_resources.Items.ItemAdapter;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
-
-import java.util.ArrayList;
 
 public class ItemsFragment extends Fragment implements View.OnClickListener {
 

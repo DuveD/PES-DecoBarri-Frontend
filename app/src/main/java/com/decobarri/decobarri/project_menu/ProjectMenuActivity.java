@@ -1,7 +1,6 @@
 package com.decobarri.decobarri.project_menu;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +16,8 @@ import android.widget.LinearLayout;
 
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Item;
-import com.decobarri.decobarri.activity_resources.Material;
+import com.decobarri.decobarri.activity_resources.Items.Item;
+import com.decobarri.decobarri.activity_resources.Materials.Material;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +39,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
 
+    public String projectId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         initVars();
         startMainFragment();
         setUpBottomSheet();
+
+        projectId = "5a0f1cbbb42109137235a5e6";
     }
 
     @Override
@@ -121,11 +123,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Fragment f = new Fragment();
-        String project_id = getIntent().getExtras().getString("project", "");
-        Bundle args = new Bundle();
-        //TODO: Get project id from args
-        args.putString("project", "5a0f1cbbb42109137235a5e6");
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         activePlusFloatingButton(false);
         previousBottomSheetClickedItem = lastBottomSheetClickedItem;
@@ -133,9 +130,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         switch (lastBottomSheetClickedItem) {
             case R.id.bottom_sheet_info: default:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InfoFragment))
-                    f = new InfoFragment();
-                    f.setArguments(args);
-                    transaction.replace(R.id.fragment_view, f);
+                    transaction.replace(R.id.fragment_view, new InfoFragment());
                 break;
             case R.id.bottom_sheet_notes:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NotesFragment))
@@ -166,9 +161,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.bottom_sheet_group:
                 if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
-                    f = new ParticipantsFragment();
-                    f.setArguments(args);
-                    transaction.replace(R.id.fragment_view, f );
+                    transaction.replace(R.id.fragment_view, new ParticipantsFragment());
                 break;
         }
         bottomSheetButtonCliked();

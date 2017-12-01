@@ -39,10 +39,6 @@ public class Project {
     @Expose
     private List<String> tags = null;
 
-    @SerializedName("notes")
-    @Expose
-    private List<Nota> notes = null;
-
     @SerializedName("members")
     @Expose
     private List<String> members = null;
@@ -112,14 +108,6 @@ public class Project {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
-    }
-
-    public List<Nota> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<Nota> notes) {
-        this.notes = notes;
     }
 
     public List<String> getMembers() {

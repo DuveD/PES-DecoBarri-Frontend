@@ -32,4 +32,8 @@
     <string name="empty_item_text">Do you work on any item?</string>
     <string name="bottom_sheet_back_text">Back</string>
 
+    <!--Notes Fragment -->
+    <string name="swipe_dismiss_right">Swipe Dismiss Right</string>
+    <string name="swipe_dismiss_left">Swipe Dismiss Left</string>
+    <string name="card_view_dismiss_success">CardView Dismissed Successfully.</string>
 </resources>

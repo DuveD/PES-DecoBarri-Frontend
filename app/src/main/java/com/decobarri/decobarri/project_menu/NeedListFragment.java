@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.activity_resources.Materials.MaterialAdapter;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
 
 public class NeedListFragment extends Fragment implements View.OnClickListener {

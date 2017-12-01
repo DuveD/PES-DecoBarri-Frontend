@@ -1,10 +1,8 @@
 package com.decobarri.decobarri.main_menu;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,15 +24,11 @@ import android.widget.RelativeLayout;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
-import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.activity_resources.Material;
-import com.decobarri.decobarri.activity_resources.MaterialAdapter;
+import com.decobarri.decobarri.activity_resources.Materials.Material;
+import com.decobarri.decobarri.activity_resources.Materials.MaterialAdapter;
 import com.decobarri.decobarri.db_resources.MaterialsInterface;
-import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.OkHttpClient;

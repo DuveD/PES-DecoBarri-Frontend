@@ -1,57 +1,43 @@
-package com.decobarri.decobarri.activity_resources;
+package com.decobarri.decobarri.activity_resources.Projects;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.main_menu.MainMenuActivity;
-import com.decobarri.decobarri.main_menu.ProjectsSearchFragment;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Marc G on 24/10/2017.
+ * Created by Marc G on 07/11/2017.
  */
 
-public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.AllProjectsViewHolder> implements Filterable{
+public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.MyProjectsViewHolder> {
     private List<Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
 
-    public AllProjectsAdapter(List<Project> item, Context mContext, RecyclerView rec) {
+    public MyProjectsAdapter(List<Project> item, Context mContext, RecyclerView rec) {
         this.projectList = item;
         this.context = mContext;
         this.recyclerView = rec;
     }
 
-    @Override
-    public Filter getFilter() {
-        return null;
-    }
 
-
-    public static class AllProjectsViewHolder extends RecyclerView.ViewHolder {
+    public static class MyProjectsViewHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un projectList
         public ImageView imagen;
         public TextView nombre;
         public TextView descripcion;
 
-        public AllProjectsViewHolder(View v) {
+        public MyProjectsViewHolder(View v) {
             super(v);
             imagen = (ImageView) v.findViewById(R.id.imagen);
             nombre = (TextView) v.findViewById(R.id.nombreProyecto);
@@ -60,36 +46,31 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     }
 
     @Override
-    public AllProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_card, parent, false);
-        AllProjectsViewHolder project = new AllProjectsViewHolder(v);
+        MyProjectsViewHolder project = new MyProjectsViewHolder(v);
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Afegir imatge i dos botons per enciar solicitud o cancelar.
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Project p = projectList.get(itemPosition);
-                //crear popup con la info del proyecto
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.popup_project_info);
-                dialog.setTitle("Información del proyecto");
-                TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
-                ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
-                imagen.setImageBitmap(p.get_Imagen());
-                description.setText(p.get_description());
-                dialog.show();
+
+                Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
+                Bundle args = new Bundle();
+                args.putString("project", p.get_name());
+                projectMenu.putExtras(args);
+                //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto
+                context.startActivity(projectMenu);
                 /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                builder1.setMessage("Quieres enviar una solicitud para participar en el proyecto " + p.get_name() + "?");
+                builder1.setMessage("Abrir menu de gestión del proyecto " + p.get_name() + "?");
                 builder1.setCancelable(true);
 
                 builder1.setPositiveButton(
                         "Si",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                CharSequence text = "Solicitud enviada";
-                                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                                toast.show();
-                                dialog.cancel();
+                                Intent create = new Intent(this.context, CreateProject.class);
+                                startActivity(create);
                             }
                         });
 
@@ -114,13 +95,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         return projectList.size();
     }
 
-    public void setFilter(List<Project> filteredList) {
-        this.projectList = filteredList;
-        notifyDataSetChanged();
-    }
-
     @Override
-    public void onBindViewHolder(AllProjectsViewHolder viewHolder, int i) {
+    public void onBindViewHolder(MyProjectsViewHolder viewHolder, int i) {
         viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
         viewHolder.nombre.setText(projectList.get(i).get_name());
         viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).get_description()));

@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.activity_resources;
+package com.decobarri.decobarri.main_menu;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;

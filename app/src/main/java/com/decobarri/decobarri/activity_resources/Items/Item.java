@@ -1,6 +1,4 @@
-package com.decobarri.decobarri.activity_resources;
-
-import android.graphics.Bitmap;
+package com.decobarri.decobarri.activity_resources.Items;
 
 import java.util.ArrayList;
 

@@ -7,21 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Material;
 import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
-import com.decobarri.decobarri.db_resources.MaterialsInterface;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainMenuActivity extends BaseActivity {
 
