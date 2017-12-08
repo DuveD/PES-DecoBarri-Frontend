@@ -77,10 +77,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     private void loadProjectInfo() {
 
-<<<<<<< Updated upstream
         Bundle arg = getIntent().getExtras();
-        projectId = arg.getString("project", "");
-=======
+        projectId = arg.getString("id", "");
         Call<Project> call = client.FindProjectById(projectId);
 
         call.enqueue(new Callback<Project>() {
@@ -106,7 +104,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 System.out.println("Error throwable: " + t.getMessage());
             }
         });
->>>>>>> Stashed changes
     }
 
     @Override

@@ -22,10 +22,11 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_info, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Project Info");
-
-        projName = this.getArguments().getString("projName");
-        projDescription = this.getArguments().getString("projDescription");
-
+        //******************************************************************************************
+        //Null pointer exception
+        //projName = this.getArguments().getString("projName");
+        //projDescription = this.getArguments().getString("projDescription");
+        //******************************************************************************************
         return view;
     }
 

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.*;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
 import java.util.List;
@@ -20,12 +21,12 @@ import java.util.List;
  */
 
 public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.MyProjectsViewHolder> {
-    private List<Project> projectList;
+    private List<com.decobarri.decobarri.db_resources.Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
 
-    public MyProjectsAdapter(List<Project> item, Context mContext, RecyclerView rec) {
-        this.projectList = item;
+    public MyProjectsAdapter(List<com.decobarri.decobarri.db_resources.Project> projectsList, Context mContext, RecyclerView rec) {
+        this.projectList = projectsList;
         this.context = mContext;
         this.recyclerView = rec;
     }
@@ -53,41 +54,18 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
             @Override
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
-                Project p = projectList.get(itemPosition);
+                com.decobarri.decobarri.db_resources.Project p = projectList.get(itemPosition);
 
                 Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
-                Bundle args = new Bundle();
-                args.putString("project", p.get_name());
+                //Bundle args = new Bundle();
+                //args.putString("project", p.getName());
 
                 //TODO: Delete this line once the projects are loaded
-                args.putString("project", "5a0f1cbbb42109137235a5e6");
+                //args.putString("project", "5a0f1cbbb42109137235a5e6");
 
-                projectMenu.putExtras(args);
-                //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto
+                //projectMenu.putExtras(args);
+                projectMenu.putExtra("id",p.getId()); //Pasar el id del proyecto
                 context.startActivity(projectMenu);
-                /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                builder1.setMessage("Abrir menu de gestión del proyecto " + p.get_name() + "?");
-                builder1.setCancelable(true);
-
-                builder1.setPositiveButton(
-                        "Si",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent create = new Intent(this.context, CreateProjectActivity.class);
-                                startActivity(create);
-                            }
-                        });
-
-                builder1.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();*/
             }
 
         });
@@ -101,8 +79,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
 
     @Override
     public void onBindViewHolder(MyProjectsViewHolder viewHolder, int i) {
-        viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
-        viewHolder.nombre.setText(projectList.get(i).get_name());
-        viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).get_description()));
+        //viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
+        viewHolder.nombre.setText(projectList.get(i).getName());
+        viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
     }
 }

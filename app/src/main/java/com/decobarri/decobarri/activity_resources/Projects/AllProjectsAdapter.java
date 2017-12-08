@@ -103,7 +103,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
 
     @Override
     public int getItemCount() {
-        return projectList.size();
+        if (projectList != null) return projectList.size();
+        else return 0;
     }
 
     public void setFilter(List<com.decobarri.decobarri.db_resources.Project> filteredList) {
@@ -114,7 +115,9 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     @Override
     public void onBindViewHolder(AllProjectsViewHolder viewHolder, int i) {
         //viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
-        viewHolder.nombre.setText(projectList.get(i).getName());
-        viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
+        if (projectList.size() > 0) {
+            viewHolder.nombre.setText(projectList.get(i).getName());
+            viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
+        }
     }
 }
