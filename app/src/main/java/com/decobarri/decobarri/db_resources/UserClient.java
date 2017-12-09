@@ -1,5 +1,7 @@
 package com.decobarri.decobarri.db_resources;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,4 +38,7 @@ public interface UserClient {
 
     @PUT("/user/deleteProject/{username}")
     Call<String> DeleteProject(@Path("username") String username, @Body UserProject p);
+
+    @GET("/user/getContacts/{username}")
+    Call<List<User>> GetContacts(@Path("username") String username);
 }

@@ -23,8 +23,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.Const;
+import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Items.ItemAdapter;
+import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ItemsFragment extends Fragment implements View.OnClickListener {
 
@@ -33,6 +49,8 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private Menu menu;
+    private List<Item> itemList;
+    private String projectId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,10 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_items, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Items");
+
+        projectId = ((ProjectMenuActivity)this.getActivity()).projectId;
+        itemList = new ArrayList<>();
+        fillItemList();
         return view;
     }
 
@@ -66,9 +88,6 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(R.menu.reload_menu_gray, optionsMenu);
         menu = optionsMenu;
-
-        if (ProjectMenuActivity.getUpdatingItemList())
-            startUpdatingAnimation();
     }
 
     @Override
@@ -88,10 +107,7 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
 
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new ItemAdapter(
-                    ((ProjectMenuActivity) this.getActivity()).getItemList(),
-                    recyclerView,
-                    getActivity()){
+            adapter = new ItemAdapter(itemList,recyclerView, getActivity()){
 
                 @Override
                 public void customNotifyDataSetChanged(){
@@ -105,7 +121,7 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setVisibleList() {
-        if (((ProjectMenuActivity) this.getActivity()).itemsIsEmpty()) {
+        if (itemList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
@@ -144,17 +160,15 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
             protected void onPreExecute(){
                 System.out.println("Loading Items...");
                 startUpdatingAnimation();
-                ProjectMenuActivity.setUpdatingItemList(true);
             }
             @Override
             protected Void doInBackground(Void... voids) {
-                ((ProjectMenuActivity)getActivity()).fillItemList();
+                fillItemList();
                 return null;
             }
             @Override
             public void onPostExecute( Void nope ) {
                 setContentView();
-                ProjectMenuActivity.setUpdatingItemList(false);
                 stopUpdatingAnimation();
                 System.out.println("Done");
             }
@@ -164,6 +178,45 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getActivity(), EditItemActivity.class);
+        intent.putExtra(Const.PROJECT_ID, projectId);
         this.startActivity(intent);
+    }
+
+    public void fillItemList() {
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(this.getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        Retrofit retrofit = builder.build();
+        ProjectClient client = retrofit.create(ProjectClient.class);
+
+        Call<List<Item>> call = client.GetItems(projectId);
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.isSuccessful()) {
+                    itemList = response.body();
+
+                    Collections.sort(itemList, new Comparator<Item>() {
+                        @Override
+                        public int compare(Item itemA, Item itemB) {
+                            return itemA.getName().compareToIgnoreCase(itemB.getName());
+                        }
+                    });
+
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    System.out.println("Error code: " + response.code());
+                    System.out.println("Error msg: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                System.out.println("Error: " + t.getMessage());
+            }
+        });
+
     }
 }

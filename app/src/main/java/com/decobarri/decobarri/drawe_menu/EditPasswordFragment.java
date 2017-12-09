@@ -77,7 +77,7 @@ public class EditPasswordFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button5){ //cancel
-            mListener.ChangeFragment(3);
+            mListener.ChangeFragment(1);
         }
         else if (view.getId() == R.id.button4){ //save
             mListener.EditPassword(username, old_password.getText().toString(), new_password.getText().toString());

@@ -60,7 +60,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                 args.putString("project", p.get_name());
 
                 //TODO: Delete this line once the projects are loaded
-                args.putString("project", "5a0f1cbbb42109137235a5e6");
+                args.putString("project", "5a0f1ceab42109137235a5e9");
 
                 projectMenu.putExtras(args);
                 //projectMenu.putExtra("id",p.get_name()); //Pasar el id del proyecto

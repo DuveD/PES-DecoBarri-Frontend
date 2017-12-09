@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ContactsAdapter;
+import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.google.gson.GsonBuilder;
@@ -30,13 +35,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ContactListActivity extends AppCompatActivity {
 
+    List<User> userList;
     String username, password; //User logged
     User userlogged;
     RecyclerView list;
     UserClient client;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    private ContactsAdapter adapter;
     LinearLayout emptyText;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,29 @@ public class ContactListActivity extends AppCompatActivity {
 
     private void loadContacts() {
 
+        Call<List<User>> call = client.GetContacts(username);
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.isSuccessful()) {
+                    userList = response.body();
+                    list.setVisibility(View.VISIBLE);
+
+                    layoutManager = new LinearLayoutManager(ContactListActivity.this);
+                    list.setLayoutManager(layoutManager);
+
+                    adapter = new ContactsAdapter(userList, list, ContactListActivity.this, "contacts", null);
+                    list.setAdapter(adapter);
+                }
+                System.out.println("Code: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                System.out.println("Error: " + t.getMessage());
+            }
+        });
+/*
         userlogged = new User();
 
         Call<User> call = client.FindByID(username);
@@ -89,13 +119,37 @@ public class ContactListActivity extends AppCompatActivity {
 
                     if (!contactlist.isEmpty()) {
 
+                        userList = new ArrayList<>();
+
                         list.setVisibility(View.VISIBLE);
 
                         layoutManager = new LinearLayoutManager(ContactListActivity.this);
                         list.setLayoutManager(layoutManager);
 
-                        adapter = new ContactsAdapter(contactlist, list, ContactListActivity.this, "contacts", null);
+                        adapter = new ContactsAdapter(userList, list, ContactListActivity.this, "contacts", null);
                         list.setAdapter(adapter);
+
+
+                        for (String u:contactlist) {
+                            call = client.FindByID(u);
+                            call.enqueue(new Callback<User>() {
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    if (response.isSuccessful()) {
+                                        userList.add(response.body());
+                                        System.out.println("User: " + response.body().getName() + " id: " + response.body().getId());
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+
+                                }
+                            });
+                        }
+
+
                     }
                     else {
                         emptyText.setVisibility(View.VISIBLE);
@@ -109,7 +163,7 @@ public class ContactListActivity extends AppCompatActivity {
                 System.out.println("Error: " + t.getMessage());
             }
         });
-
+*/
 
     }
 
@@ -117,5 +171,42 @@ public class ContactListActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu optionsMenu) {
+        getMenuInflater().inflate(R.menu.menu_search, optionsMenu);
+
+        MenuItem myActionMenuItem = optionsMenu.findItem(R.id.options_search);
+        searchView = (SearchView) myActionMenuItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final List<User> filteredModelList = filter(userList, newText);
+                adapter.setFilter(filteredModelList);
+                return true;
+            }
+
+        });
+
+        return super.onCreateOptionsMenu(optionsMenu);
+    }
+
+    private List<User> filter(List<User>userList, String query) {
+        query = query.toLowerCase();final List<User> filteredModelList = new ArrayList<>();
+        for (User c : userList) {
+            final String text = c.getName().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(c);
+            }
+        }
+        return filteredModelList;
     }
 }

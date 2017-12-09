@@ -1,7 +1,11 @@
 package com.decobarri.decobarri.db_resources;
 
+import com.decobarri.decobarri.activity_resources.Items.Item;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.SSLContext;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -35,5 +39,12 @@ public interface ProjectClient {
     @PUT("/project/edit/{id}")
     Call<String> EditProject(@Path("id") String id, @Body Project project);
 
+    @GET("/project/getItems/{id}")
+    Call<List<Item>> GetItems(@Path("id") String id);
 
+    @GET("/project/getMembers/{id}")
+    Call<List<User>> GetMembers(@Path("id") String id);
+
+    @POST("/project/addItem/{id}")
+    Call<String> AddItem(@Path("id") String id, @Body Item item);
 }

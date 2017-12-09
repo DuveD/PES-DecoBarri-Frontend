@@ -33,8 +33,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private static Boolean updatingInventoryList;
     private List<Material> needList;
     private static Boolean updatingNeedList;
-    private List<Item> itemList;
-    private static Boolean updatingItemList;
 
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
@@ -86,11 +84,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         updatingInventoryList = false;
         needList = new ArrayList<>();
         updatingNeedList = false;
-        itemList = new ArrayList<>();
-        updatingItemList = false;
         fillInvetoryList();
         fillNeedList();
-        fillItemList();
 
         // Initialized by default
         previousBottomSheetClickedItem = R.id.bottom_sheet_info;
@@ -253,11 +248,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public List<Material> getNeedsList() { return needList; }
     public Boolean needListIsEmpty() { return needList.isEmpty(); }
 
-    public static Boolean getUpdatingItemList() { return updatingItemList; }
-    public static void setUpdatingItemList(Boolean updating) { updatingItemList = updating; }
-    public List<Item> getItemList() { return itemList; }
-    public Boolean itemsIsEmpty() { return itemList.isEmpty(); }
-
     public void fillInvetoryList() {
         /* examples */
         /* examples */
@@ -316,24 +306,5 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    public void fillItemList() {
-        /* examples */
-        /* examples */
-        /* examples */
-        itemList.clear();
-        itemList.add(new Item("1", "http://i.imgur.com/I86rTVl.jpg","Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
-        itemList.add(new Item("2", "http://i.imgur.com/I86rTVl.jpg","Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
-        itemList.add(new Item("3", "http://i.imgur.com/I86rTVl.jpg","Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(itemList, new Comparator<Item>() {
-            @Override
-            public int compare(Item itemA, Item itemB) {
-                return itemA.getName().compareToIgnoreCase(itemB.getName());
-            }
-        });
-    }
 }
 
