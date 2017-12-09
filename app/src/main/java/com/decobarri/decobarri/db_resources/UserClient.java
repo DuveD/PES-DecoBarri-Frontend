@@ -21,6 +21,11 @@ public interface UserClient {
     @POST("/user/add")
     Call<String> CreateAccount(@Body User user);
 
+//******************************************************************
+    @GET("user/showMyProjects/{username}")
+    Call<List<String>> GetProjects(@Path("username") String username);
+//******************************************************************
+
     @GET("/user/findByID/{username}")
     Call<User> FindByID(@Path("username") String username);
 

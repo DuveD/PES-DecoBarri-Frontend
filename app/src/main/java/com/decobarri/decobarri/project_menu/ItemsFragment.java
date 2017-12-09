@@ -190,7 +190,7 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
         Retrofit retrofit = builder.build();
         ProjectClient client = retrofit.create(ProjectClient.class);
 
-        Call<List<Item>> call = client.GetItems(projectId);
+            Call<List<Item>> call = client.GetItems(projectId);
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
