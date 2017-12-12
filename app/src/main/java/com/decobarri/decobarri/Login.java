@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -43,6 +44,7 @@ public class Login extends AppCompatActivity {
     ProgressDialog progressDialog;
     User u;
     Button login;
+    private static final String TAG = Login.class.getSimpleName();
 
     @Override
     protected void onStart() {
@@ -152,8 +154,12 @@ public class Login extends AppCompatActivity {
 
                         startActivity(i);
                     } else {
-                        System.out.println("Error: " + response.body());
-                        error.setText("Incorrect user or password");
+                        System.out.println("Error code: " + response.code());
+                        System.out.println("Error msg: " + response.message());
+                        if (response.code()==404 || response.code()==401) {
+                            error.setText("Incorrect user or password");
+                        }
+                        else error.setText("Internal server error");
                         error.setVisibility(View.VISIBLE);
                     }
                     progressDialog.dismiss();
