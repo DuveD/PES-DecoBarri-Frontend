@@ -38,23 +38,17 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.gson:gson:2.8.0'
     testCompile 'junit:junit:4.12'
-
     // Compatibility between fragments versions
     compile 'com.android.support:support-v13:+'
-
     // URL Calls
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-
     // Circle image views
     compile 'de.hdodenhof:circleimageview:2.1.0'
-
     // Rectangle rounded squares
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
-
     //Image picker
     compile 'com.github.jkwiecien:EasyImage:2.0.4'
-
     //Picasso image uses
     compile 'com.squareup.picasso:picasso:2.5.2'
 }

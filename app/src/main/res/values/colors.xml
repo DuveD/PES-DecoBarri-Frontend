@@ -20,4 +20,18 @@
     <color name="bottomSheet_selected_item_color_stroke">#303f9f</color>
     <!--Layouts-->
     <color name="urgent_color">#bb0000</color>
+
+    <!--Notes fragement -->
+    <color name="colorPrimary">#D32F2F</color>
+    <color name="colorPrimaryDark">#C62828</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="grey">#EEEEEE</color>
+        <!--FAB colors-->
+        <color name="FABwhite">#ffffff</color>
+        <color name="FABred">#ffb3ba</color>
+        <color name="FABorange">#ffdfba</color>
+        <color name="FAByellow">#ffffba</color>
+        <color name="FABgreen">#baffc9</color>
+        <color name="FABblue">#bae1ff</color>
+
 </resources>

@@ -122,12 +122,15 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
     public void startUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh_gray, null);
-            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
-            rotation.setRepeatCount(Animation.INFINITE);
-            iv.startAnimation(rotation);
-            menu.findItem(R.id.action_refresh).setActionView(iv);
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout) inflater.inflate(R.layout.ic_refresh_gray, null);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                menuItem.setActionView(iv);
+            }
         }
     }
 
@@ -135,7 +138,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
-            if (menuItem.getActionView() != null) {
+            if (menuItem != null && menuItem.getActionView() != null) {
                 // Remove the animation.
                 menuItem.getActionView().clearAnimation();
                 menuItem.setActionView(null);
@@ -171,7 +174,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         Intent intent = new Intent(getActivity(), EditMaterialActivity.class);
         intent.putExtra(Const.FROM, Const.INVENTORY_MATERIAL);
-        intent.putExtra(Const.FROM, Const.INVENTORY_MATERIAL);
+        intent.putExtra(Const.ID, "ITEM_ID");
         this.startActivity(intent);
     }
 }

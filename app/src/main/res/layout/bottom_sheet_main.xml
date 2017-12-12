@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@android:color/white"
-    android:padding="@dimen/bottom_sheet_padding">
+    android:padding="@dimen/bottom_sheet_padding"
+    android:elevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -247,7 +248,7 @@
                 android:layout_width="@dimen/icon_dimensions"
                 android:layout_height="@dimen/icon_dimensions"
                 android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/ic_chat_globe" />
+                app:srcCompat="@drawable/ic_chat" />
 
             <Space
                 android:layout_width="wrap_content"

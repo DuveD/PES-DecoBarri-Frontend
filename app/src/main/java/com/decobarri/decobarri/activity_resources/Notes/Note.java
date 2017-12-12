@@ -3,7 +3,7 @@ package com.decobarri.decobarri.activity_resources.Notes;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Notes {
+public class Note {
 
     @SerializedName("_id")
     @Expose
@@ -29,7 +29,7 @@ public class Notes {
     @Expose
     private Boolean modifiable;
 
-    public Notes(String id, String title, String date, String description, String author, Boolean modifiable) {
+    public Note(String id, String title, String date, String description, String author, Boolean modifiable) {
         this.id = id;
         this.title = title;
         this.date = date;

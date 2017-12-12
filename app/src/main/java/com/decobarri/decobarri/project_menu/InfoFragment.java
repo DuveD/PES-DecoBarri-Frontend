@@ -35,7 +35,6 @@ public class InfoFragment extends Fragment {
 
     @Override
     public void onStart() {
-        bottomSheetButtonCliked(true);
         projNameText = (TextView) getActivity().findViewById(R.id.textProjName);
         descriptionText = (TextView) getActivity().findViewById(R.id.descriptionText);
 
@@ -73,21 +72,5 @@ public class InfoFragment extends Fragment {
                 System.out.println("Error throwable: " + t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void onStop() {
-        bottomSheetButtonCliked(false);
-        super.onStop();
-    }
-
-    void bottomSheetButtonCliked(Boolean clicked){
-        if (clicked){
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setAlpha(0.4f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background_selected_color));
-        } else {
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setAlpha(1f);
-            ((LinearLayout) getActivity().findViewById(R.id.bottom_sheet_info)).setBackground(getResources().getDrawable(R.drawable.bottom_sheet_button_background));
-        }
     }
 }

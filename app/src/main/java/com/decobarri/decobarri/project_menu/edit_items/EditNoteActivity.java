@@ -1,39 +1,33 @@
 package com.decobarri.decobarri.project_menu.edit_items;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.util.List;
-
-import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class EditMaterialActivity extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity {
 
     private String title;
-    private String from;
     private Boolean edit;
     private int id;
 
-    private ImageView materialImageView;
     private TextView saveChanges;
+    private LinearLayout background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_material);
+        setContentView(R.layout.activity_edit_note);
         initVars();
         setUpNavBar();
         setUpButtons();
@@ -41,32 +35,24 @@ public class EditMaterialActivity extends AppCompatActivity {
 
     private void initVars() {
 
-        from = getIntent().getStringExtra(Const.FROM);
+        //title = "Item";
         edit = getIntent().getBooleanExtra(Const.EDIT, false);
 
         saveChanges = (TextView) findViewById(R.id.saveChanges);
-        materialImageView = (ImageView) findViewById(R.id.material_imageView);
-
-        EasyImage.configuration(this)
-                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
-                .setCopyPickedImagesToPublicGalleryAppFolder(false)
-                .setAllowMultiplePickInGallery(false);
+        background = (LinearLayout) findViewById(R.id.note_layout);
 
         setSource();
     }
 
     private void setSource() {
-        if (from.equals(Const.INVENTORY_MATERIAL)) title = "Inventory Material";
-        else if (from.equals(Const.NEED_LIST_MATERIAL)) title = "Need List Material";
-
         if (edit) {
             title = "Edit " + title;
-            saveChanges.setText("Save Changes");
+            saveChanges.setText("Save Note");
             id = getIntent().getIntExtra(Const.ID, -1);
             fillInfo();
         } else {
             title = "New " + title;
-            saveChanges.setText("Add Material");
+            saveChanges.setText("Add Note");
         }
     }
 
@@ -86,7 +72,7 @@ public class EditMaterialActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (changes()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditMaterialActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditNoteActivity.this);
             builder.setMessage("Changes not saved. Exit?")
                     .setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
@@ -116,54 +102,48 @@ public class EditMaterialActivity extends AppCompatActivity {
 
     private void setUpButtons() {
 
-        materialImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EasyImage.openChooserWithDocuments(EditMaterialActivity.this, "Choose Material Image", 0);
-            }
-        });
-
         findViewById(R.id.saveChanges).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+        findViewById(R.id.note_fab_white).setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
-                //Some error handling
-            }
-
-            @Override
-            public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
-                //Handle the images
-                onPhotosReturned(imagesFiles);
-            }
-
-            @Override
-            public void onCanceled(EasyImage.ImageSource source, int type) {
-                //Cancel handling, you might wanna remove taken photo if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA) {
-                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(EditMaterialActivity.this);
-                    if (photoFile != null) photoFile.delete();
-                }
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FABwhite));
             }
         });
-    }
-
-    private void onPhotosReturned(List<File> imagesFiles) {
-        if (imagesFiles.size() > 1) System.out.println("There're more than one image!");
-        Picasso.with(this)
-                .load(imagesFiles.get(0))
-                .resize(materialImageView.getWidth(), materialImageView.getHeight())
-                .centerCrop()
-                .into(materialImageView);
+        findViewById(R.id.note_fab_red).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FABred));
+            }
+        });
+        findViewById(R.id.note_fab_orange).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FABorange));
+            }
+        });
+        findViewById(R.id.note_fab_yellow).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FAByellow));
+            }
+        });
+        findViewById(R.id.note_fab_green).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FABgreen));
+            }
+        });
+        findViewById(R.id.note_fab_blue).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                background.setBackgroundColor(getResources().getColor(R.color.FABblue));
+            }
+        });
     }
 }

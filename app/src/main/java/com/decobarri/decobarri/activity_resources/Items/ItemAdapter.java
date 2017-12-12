@@ -133,7 +133,7 @@ public class ItemAdapter
     private void onLongClickEdit( int itemPosition ) {
         Log.i(TAG, "Edit Item");
         Intent intent = new Intent(context, EditItemActivity.class);
-        intent.putExtra(Const.EDIT_ITEM, true);
+        intent.putExtra(Const.EDIT, true);
         intent.putExtra(Const.ID, getItem( itemPosition ).getID());
         context.startActivity(intent);
 

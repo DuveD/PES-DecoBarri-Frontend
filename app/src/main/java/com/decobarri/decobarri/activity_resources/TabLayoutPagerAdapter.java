@@ -2,6 +2,7 @@ package com.decobarri.decobarri.activity_resources;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.decobarri.decobarri.main_menu.GlobalMaterialsFragment;

@@ -29,6 +29,8 @@ import com.decobarri.decobarri.activity_resources.Materials.MaterialAdapter;
 import com.decobarri.decobarri.db_resources.MaterialsInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -48,7 +50,7 @@ public class GlobalMaterialsFragment extends Fragment {
 
     private List<Material> globalMaterialList;
     private static Boolean updatingGlobalMaterialList;
-    private static final String TAG = "GlobalMaterialsFragment";
+    private static final String TAG = GlobalMaterialsFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,12 @@ public class GlobalMaterialsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(layout.fragment_global_materials, container, false);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        stopUpdatingAnimation();
+        super.onDestroyView();
     }
 
     @Override
@@ -85,7 +93,7 @@ public class GlobalMaterialsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.action_refresh:
+            case R.id.action_refresh:
                 fillContentList();
                 return true;
             default:
@@ -128,12 +136,15 @@ public class GlobalMaterialsFragment extends Fragment {
     public void startUpdatingAnimation() {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
-            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
-            rotation.setRepeatCount(Animation.INFINITE);
-            iv.startAnimation(rotation);
-            menu.findItem(R.id.action_refresh).setActionView(iv);
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout) inflater.inflate(R.layout.ic_refresh, null);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                menuItem.setActionView(iv);
+            }
         }
     }
 
@@ -141,7 +152,7 @@ public class GlobalMaterialsFragment extends Fragment {
         // Get our refresh item from the menu if it are initialized
         if (menu != null) {
             MenuItem menuItem = menu.findItem(R.id.action_refresh);
-            if (menuItem.getActionView() != null) {
+            if (menuItem != null && menuItem.getActionView() != null) {
                 // Remove the animation.
                 menuItem.getActionView().clearAnimation();
                 menuItem.setActionView(null);
@@ -174,7 +185,6 @@ public class GlobalMaterialsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Success : " + response.body());
                     globalMaterialList = response.body();
-                    /*
                     Collections.sort(globalMaterialList, new Comparator<Material>() {
                         @Override
                         public int compare(Material materialA, Material materialB) {
@@ -184,7 +194,6 @@ public class GlobalMaterialsFragment extends Fragment {
                             else return boolean_compare;
                         }
                     });
-                    */
                     setContentView();
                 }
                 else {

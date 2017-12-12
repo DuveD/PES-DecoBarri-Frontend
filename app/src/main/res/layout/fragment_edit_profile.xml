@@ -26,7 +26,7 @@
                     android:id="@+id/imageView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/menu_account_image_icon" />
+                    android:src="@drawable/ic_menu_account_image" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

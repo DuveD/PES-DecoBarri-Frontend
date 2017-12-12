@@ -124,44 +124,46 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        stopAnimations();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         activePlusFloatingButton(false);
         previousBottomSheetClickedItem = lastBottomSheetClickedItem;
         lastBottomSheetClickedItem = view.getId();
         switch (lastBottomSheetClickedItem) {
             case R.id.bottom_sheet_info: default:
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InfoFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_info)
                     transaction.replace(R.id.fragment_view, new InfoFragment());
                 break;
             case R.id.bottom_sheet_notes:
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NotesFragment))
+                activePlusFloatingButton(true);
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_notes)
                     transaction.replace(R.id.fragment_view, new NotesFragment());
                 break;
             case R.id.bottom_sheet_inventory:
                 activePlusFloatingButton(true);
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof InventoryFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_inventory)
                     transaction.replace(R.id.fragment_view, new InventoryFragment());
                 break;
             case R.id.bottom_sheet_need_list:
                 activePlusFloatingButton(true);
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof NeedListFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_need_list)
                     transaction.replace(R.id.fragment_view, new NeedListFragment());
                 break;
             case R.id.bottom_sheet_items:
                 activePlusFloatingButton(true);
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ItemsFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_items)
                     transaction.replace(R.id.fragment_view, new ItemsFragment());
                 break;
             case R.id.bottom_sheet_map:
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof MapFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_map)
                     transaction.replace(R.id.fragment_view, new MapFragment());
                 break;
             case R.id.bottom_sheet_xat:
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof XatFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_xat)
                     transaction.replace(R.id.fragment_view, new XatFragment());
                 break;
             case R.id.bottom_sheet_group:
-                if (!(getFragmentManager().findFragmentById(R.id.fragment_view) instanceof ParticipantsFragment))
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_group)
                     transaction.replace(R.id.fragment_view, new ParticipantsFragment());
                 break;
         }
@@ -169,6 +171,21 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         bottomDrawer.setState(BottomSheetBehavior.STATE_COLLAPSED);
         transaction.commit();
         resetViewPosition();
+    }
+    private void stopAnimations(){
+        switch (lastBottomSheetClickedItem){
+            case R.id.bottom_sheet_inventory:
+                ((InventoryFragment)getFragmentManager().findFragmentById(R.id.fragment_view)).stopUpdatingAnimation();
+                break;
+            case R.id.bottom_sheet_items:
+                ((ItemsFragment)getFragmentManager().findFragmentById(R.id.fragment_view)).stopUpdatingAnimation();
+                break;
+            case R.id.bottom_sheet_need_list:
+                ((NeedListFragment)getFragmentManager().findFragmentById(R.id.fragment_view)).stopUpdatingAnimation();
+                break;
+            default: break;
+
+        }
     }
 
     private void activePlusFloatingButton(boolean active) {

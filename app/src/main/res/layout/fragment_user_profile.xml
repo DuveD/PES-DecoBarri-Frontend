@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/menu_account_image_icon" />
+                android:src="@drawable/ic_menu_account_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"

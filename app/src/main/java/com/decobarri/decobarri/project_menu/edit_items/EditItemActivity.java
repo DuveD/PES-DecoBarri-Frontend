@@ -42,7 +42,7 @@ EditItemActivity extends AppCompatActivity {
     private void initVars() {
 
         title = "Item";
-        edit = getIntent().getBooleanExtra(Const.EDIT_ITEM, false);
+        edit = getIntent().getBooleanExtra(Const.EDIT, false);
 
         saveChanges = (TextView) findViewById(R.id.saveChanges);
         itemImageView = (ImageView) findViewById(R.id.item_imageView);

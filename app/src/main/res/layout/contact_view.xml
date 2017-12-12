@@ -21,7 +21,7 @@
             android:id="@+id/item_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/menu_account_image_icon"
+            android:src="@drawable/ic_menu_account_image"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
 
@@ -54,7 +54,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ok_icon"
+        app:srcCompat="@drawable/ic_ok"
         android:visibility="invisible"/>
 
 </LinearLayout>

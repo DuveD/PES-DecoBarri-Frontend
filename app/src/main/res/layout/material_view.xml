@@ -19,7 +19,7 @@
         android:id="@+id/global_material_imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/material_icon"
+        android:src="@drawable/ic_material"
         android:scaleType="centerCrop"
 
         app:civ_border_width="2dp"
@@ -90,7 +90,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:contentDescription="Global material warning"
-        android:src="@drawable/material_alert_icon"
+        android:src="@drawable/ic_material_alert"
         android:visibility="invisible" />
   </RelativeLayout>
 

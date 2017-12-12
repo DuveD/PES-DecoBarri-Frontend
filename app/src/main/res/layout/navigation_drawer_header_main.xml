@@ -18,7 +18,7 @@
             android:id="@+id/imageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:srcCompat="@drawable/menu_account_image_icon" />
+            app:srcCompat="@drawable/ic_menu_account_image" />
     </RelativeLayout>
 
     <TextView

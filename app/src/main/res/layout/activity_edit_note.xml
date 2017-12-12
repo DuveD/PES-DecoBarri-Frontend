@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:id="@+id/note_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/toolbar_button"
+                android:layout_width="@dimen/icon_dimensions"
+                android:layout_height="@dimen/icon_dimensions"
+                android:padding="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_close"
+                android:tint="@android:color/darker_gray"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:id="@+id/toolbar_title"
+                android:layout_width="fill_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp"
+                android:background="@android:color/transparent"
+                android:layout_weight="50" />
+
+            <ImageButton
+                android:id="@+id/save_button"
+                android:layout_width="@dimen/icon_dimensions"
+                android:layout_height="@dimen/icon_dimensions"
+                android:padding="8dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_save"
+                android:tint="@android:color/darker_gray"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|center"
+            android:layout_gravity="bottom|center"
+            android:layout_weight="5">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Type here..."
+                android:gravity="top"
+                android:padding="10dp"
+                android:id="@+id/EditText1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|center"
+            android:layout_gravity="bottom|center"
+            android:layout_weight="0"
+            android:padding="10dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_white"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FABwhite"
+                android:layout_margin="10dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_red"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FABred"
+                android:layout_margin="10dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_orange"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FABorange"
+                android:layout_margin="10dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_yellow"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FAByellow"
+                android:layout_margin="10dp"  />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_green"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FABgreen"
+                android:layout_margin="10dp"  />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/note_fab_blue"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/FABblue"
+                android:layout_margin="10dp"  />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

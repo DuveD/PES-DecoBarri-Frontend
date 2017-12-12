@@ -178,7 +178,7 @@ public class MaterialAdapter
         Log.i(TAG+" "+LIST, "Edit Material");
                 Intent intent = new Intent(context, EditMaterialActivity.class);
         intent.putExtra(Const.FROM, LIST);
-        intent.putExtra(Const.EDIT_MATERIAL, true);
+        intent.putExtra(Const.EDIT, true);
         intent.putExtra(Const.ID, getMaterial( itemPosition ).getID());
         context.startActivity(intent);
 

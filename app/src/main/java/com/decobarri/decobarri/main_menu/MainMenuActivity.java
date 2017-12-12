@@ -2,6 +2,7 @@ package com.decobarri.decobarri.main_menu;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -49,6 +50,7 @@ public class MainMenuActivity extends BaseActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 2) ((GlobalMaterialsFragment)getFragmentManager().findFragmentById(R.id.MainMenuViewPager)).stopUpdatingAnimation();
                 tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.tabLayout_unselected_item_color), PorterDuff.Mode.SRC_IN);
             }
 
