@@ -138,6 +138,7 @@ public class ParticipantsFragment extends Fragment {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()){
                     userList = response.body();
+                    System.out.println("Response: " + response.body());
                     layoutManager = new LinearLayoutManager(context);
                     member_list.setLayoutManager(layoutManager);
 
@@ -146,7 +147,10 @@ public class ParticipantsFragment extends Fragment {
                     adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id);
                     member_list.setAdapter(adapter);
                 }
-                else System.out.println("Error code: " + response.code());
+                else {
+                    System.out.println("Error code: " + response.code());
+                    System.out.println("Error msg: " + response.message());
+                }
             }
 
             @Override
