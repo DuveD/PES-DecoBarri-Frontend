@@ -41,7 +41,7 @@ public class MyProjectsFragment extends Fragment {
     private RecyclerView.LayoutManager lmanager;
     private RecyclerView rec;
     private String username;
-    private static final String TAG = "MyProjectsUsersFragment";
+    private static final String TAG = "MyProjectsFragment";
     private User user;
 
     @Override
@@ -102,7 +102,7 @@ public class MyProjectsFragment extends Fragment {
                     user = response.body();
                     Log.i(TAG, "getProjects: " + user.getProjects());
                     items = user.getProjects();
-                    Log.i(TAG, "Items SIze in call: " + items.size());
+                    Log.i(TAG, "Items Size in call: " + items.size());
                     getProjects(projectClient);
                     setView();
                 } else {
@@ -118,7 +118,7 @@ public class MyProjectsFragment extends Fragment {
     }
 
     private void getProjects(ProjectClient projectClient) {
-        Log.e(TAG, "Items SIze: " + items.size());
+        Log.e(TAG, "Items Size: " + items.size());
         for (int i = 0; i < items.size(); ++i) {
             Call<com.decobarri.decobarri.db_resources.Project> callProjects = projectClient.FindProjectById(items.get(i));
             callProjects.enqueue(new Callback<com.decobarri.decobarri.db_resources.Project>() {
