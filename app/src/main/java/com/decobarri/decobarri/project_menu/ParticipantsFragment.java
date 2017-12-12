@@ -1,7 +1,9 @@
 package com.decobarri.decobarri.project_menu;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,10 +24,12 @@ import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ContactsAdapter;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.drawe_menu.ContactListActivity;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,11 +42,14 @@ public class ParticipantsFragment extends Fragment {
 
     private String project_id;
     private ProjectClient client;
+    private UserClient userClient;
+    private Retrofit retrofit;
     private RecyclerView member_list;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private Context context;
     private Menu menu;
+    private List<User> userList;
 
     @Override
     public void onAttach(Context context) {
@@ -58,18 +65,15 @@ public class ParticipantsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
-        inflater.inflate(R.menu.reload_menu, optionsMenu);
+        inflater.inflate(R.menu.reload_menu_gray, optionsMenu);
         menu = optionsMenu;
-
-        if (ProjectMenuActivity.getUpdatingItemList())
-            startUpdatingAnimation();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                loadMembers();
+                refereshMembers();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -118,7 +122,7 @@ public class ParticipantsFragment extends Fragment {
                 .baseUrl(this.getResources().getString(R.string.db_URL))
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
 
-        Retrofit retrofit = builder.build();
+        retrofit = builder.build();
         client = retrofit.create(ProjectClient.class);
 
         loadMembers();
@@ -126,6 +130,31 @@ public class ParticipantsFragment extends Fragment {
     }
 
     private void loadMembers() {
+        //TODO: Test this:
+
+        Call<List<User>> call = client.GetMembers(project_id);
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.isSuccessful()){
+                    userList = response.body();
+                    layoutManager = new LinearLayoutManager(context);
+                    member_list.setLayoutManager(layoutManager);
+
+                    userClient = retrofit.create(UserClient.class);
+
+                    adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id);
+                    member_list.setAdapter(adapter);
+                }
+                else System.out.println("Error code: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                System.out.println("Error msg: " + t.getMessage());
+            }
+        });
+        /*
         Call<Project> call = client.FindProjectById(project_id);
         call.enqueue(new Callback<Project>() {
             @Override
@@ -135,8 +164,31 @@ public class ParticipantsFragment extends Fragment {
                     layoutManager = new LinearLayoutManager(context);
                     member_list.setLayoutManager(layoutManager);
 
-                    adapter = new ContactsAdapter(list, member_list, getActivity(), "members", project_id);
+                    userClient = retrofit.create(UserClient.class);
+
+                    userList = new ArrayList<>();
+                    adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id);
                     member_list.setAdapter(adapter);
+
+                    for (String u:list) {
+                        Call<User> userCall = userClient.FindByID(u);
+                        userCall.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                if (response.isSuccessful()) {
+                                    userList.add(response.body());
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+
+                            }
+                        });
+                    }
+
+
                 }
                 else {
                     System.out.println("Error: " + response.code());
@@ -150,5 +202,27 @@ public class ParticipantsFragment extends Fragment {
                 Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
             }
         });
+        */
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void refereshMembers(){
+        (new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected void onPreExecute(){
+                System.out.println("Loading Memebers...");
+                startUpdatingAnimation();
+            }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                loadMembers();
+                return null;
+            }
+            @Override
+            public void onPostExecute( Void nope ) {
+                stopUpdatingAnimation();
+                System.out.println("Done");
+            }
+        }).execute();
     }
 }

@@ -299,7 +299,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 ChangeFragment(3);
                 break;
             case "editPassword":
-                ChangeFragment(3);
+                ChangeFragment(1);
                 break;
             case "userProfile":
                 super.onBackPressed();

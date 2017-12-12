@@ -18,28 +18,40 @@ import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Materials.Material;
+import com.decobarri.decobarri.db_resources.Project;
+import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ProjectMenuActivity extends BaseActivity implements View.OnClickListener {
 
     private BottomSheetBehavior bottomDrawer;
     private LinearLayout bottomSheet;
 
+    ProjectClient client;
+    Project project;
+
     private List<Material> inventoryList;
     private static Boolean updatingInventoryList;
     private List<Material> needList;
     private static Boolean updatingNeedList;
-    private List<Item> itemList;
-    private static Boolean updatingItemList;
 
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
 
-    public String projectId;
+    Bundle args;
+
+    static public String projectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +60,48 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         initVars();
         startMainFragment();
         setUpBottomSheet();
+        args = new Bundle();
+
+        projectId = "5a13db310fa0a800147b7ff9";
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://project-pes.herokuapp.com")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        Retrofit retrofit = builder.build();
+        client = retrofit.create(ProjectClient.class);
+
+        loadProjectInfo();
+    }
+
+    private void loadProjectInfo() {
 
         Bundle arg = getIntent().getExtras();
-        projectId = arg.getString("project", "");
+        projectId = arg.getString("id", "");
+        Call<Project> call = client.FindProjectById(projectId);
+
+        call.enqueue(new Callback<Project>() {
+            @Override
+            public void onResponse(Call<Project> call, Response<Project> response) {
+                if (response.isSuccessful()) {
+                    project = response.body();
+                    System.out.println("Success!! : " + project);
+                    args.putString("projName", project.getName());
+                    args.putString("projDescription", project.getDescription());
+                    args.putString("projCity", project.getCity());
+                    args.putString("projAddress", project.getAddress());
+                    args.putString("projTheme", project.getTheme());
+                    args.putInt("projMembersCount", project.getMembers().size());
+                } else {
+                    System.out.println("Error: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Project> call, Throwable t) {
+                System.out.println("Error call : " + call.request().toString());
+                System.out.println("Error throwable: " + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -86,11 +137,8 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         updatingInventoryList = false;
         needList = new ArrayList<>();
         updatingNeedList = false;
-        itemList = new ArrayList<>();
-        updatingItemList = false;
         fillInvetoryList();
         fillNeedList();
-        fillItemList();
 
         // Initialized by default
         previousBottomSheetClickedItem = R.id.bottom_sheet_info;
@@ -131,8 +179,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         lastBottomSheetClickedItem = view.getId();
         switch (lastBottomSheetClickedItem) {
             case R.id.bottom_sheet_info: default:
-                if (previousBottomSheetClickedItem != R.id.bottom_sheet_info)
-                    transaction.replace(R.id.fragment_view, new InfoFragment());
+                if (previousBottomSheetClickedItem != R.id.bottom_sheet_info) {
+                    InfoFragment f = new InfoFragment();
+                    f.setArguments(args);
+                    transaction.replace(R.id.fragment_view, f);
+                }
                 break;
             case R.id.bottom_sheet_notes:
                 activePlusFloatingButton(true);
@@ -270,11 +321,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     public List<Material> getNeedsList() { return needList; }
     public Boolean needListIsEmpty() { return needList.isEmpty(); }
 
-    public static Boolean getUpdatingItemList() { return updatingItemList; }
-    public static void setUpdatingItemList(Boolean updating) { updatingItemList = updating; }
-    public List<Item> getItemList() { return itemList; }
-    public Boolean itemsIsEmpty() { return itemList.isEmpty(); }
-
     public void fillInvetoryList() {
         /* examples */
         /* examples */
@@ -333,24 +379,5 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    public void fillItemList() {
-        /* examples */
-        /* examples */
-        /* examples */
-        itemList.clear();
-        itemList.add(new Item("1", "http://i.imgur.com/I86rTVl.jpg","Banco","Bancos hechos de palets","Null",new ArrayList<String>()));
-        itemList.add(new Item("2", "http://i.imgur.com/I86rTVl.jpg","Cortina","Cortinas hechas con bolsas de basura","Null", new ArrayList<String>()));
-        itemList.add(new Item("3", "http://i.imgur.com/I86rTVl.jpg","Flor","Flores hechas con botellas recicladas","Null",new ArrayList<String>()));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(itemList, new Comparator<Item>() {
-            @Override
-            public int compare(Item itemA, Item itemB) {
-                return itemA.getName().compareToIgnoreCase(itemB.getName());
-            }
-        });
-    }
 }
 

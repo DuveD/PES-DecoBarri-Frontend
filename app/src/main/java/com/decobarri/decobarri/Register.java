@@ -43,7 +43,7 @@ public class Register extends AppCompatActivity {
         final String user = username.getText().toString();
         final String pass = password.getText().toString();
         String n = name.getText().toString();
-        String e = email.getText().toString();
+        final String e = email.getText().toString();
         if (user.isEmpty() || pass.isEmpty()) {
             error.setText("Un dels camps és incorrecte.");
             error.setVisibility(View.VISIBLE);
@@ -76,6 +76,8 @@ public class Register extends AppCompatActivity {
                         startActivity(i);
                     }
                     else {
+                        if (response.code()!=409)
+                            error.setText("Server error");
                         error.setVisibility(View.VISIBLE);
                     }
                 }

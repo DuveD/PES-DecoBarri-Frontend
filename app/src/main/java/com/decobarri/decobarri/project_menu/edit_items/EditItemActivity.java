@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
+import com.decobarri.decobarri.activity_resources.Items.Item;
+import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -19,6 +23,11 @@ import java.util.List;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class
 EditItemActivity extends AppCompatActivity {
@@ -29,6 +38,8 @@ EditItemActivity extends AppCompatActivity {
 
     private ImageView itemImageView;
     private TextView saveChanges;
+    private EditText nameEditText;
+    private EditText descEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +57,9 @@ EditItemActivity extends AppCompatActivity {
 
         saveChanges = (TextView) findViewById(R.id.saveChanges);
         itemImageView = (ImageView) findViewById(R.id.item_imageView);
+
+        nameEditText = (EditText) findViewById(R.id.input_name);
+        descEditText = (EditText) findViewById(R.id.input_description);
 
         EasyImage.configuration(this)
                 .setCopyTakenPhotosToPublicGalleryAppFolder(false)
@@ -123,7 +137,36 @@ EditItemActivity extends AppCompatActivity {
         findViewById(R.id.saveChanges).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+
+                String name = nameEditText.getText().toString();
+                String description = descEditText.getText().toString();
+                String projectId = getIntent().getStringExtra(Const.PROJECT_ID);
+                Item item = new Item();
+                item.setName(name);
+                item.setDescription(description);
+
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl(getResources().getString(R.string.db_URL))
+                        .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+                Retrofit retrofit = builder.build();
+                ProjectClient client = retrofit.create(ProjectClient.class);
+
+                Call<String> call = client.AddItem(projectId, item);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()){
+                            onBackPressed();
+                        }
+                        System.out.println("Error code:" + response.code());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
     }

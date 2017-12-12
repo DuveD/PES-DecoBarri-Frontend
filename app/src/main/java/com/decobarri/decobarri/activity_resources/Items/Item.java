@@ -20,6 +20,26 @@ public class Item {
         this.materials = materials;
     }
 
+    public Item (){
+
+    }
+
+    public void setId (String id) {
+        this.id = id;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public void setImage (String image) {
+        this.image = image;
+    }
+
+    public void setDescription (String description) {
+        this.description = description;
+    }
+
     public String getID() { return id; }
 
     public String getImage() {

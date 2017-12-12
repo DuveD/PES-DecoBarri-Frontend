@@ -157,13 +157,11 @@ public class Login extends AppCompatActivity {
                         error.setVisibility(View.VISIBLE);
                     }
                     progressDialog.dismiss();
-                    findViewById(R.id.screen).setBackground(Drawable.createFromPath("@color/transparent"));
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     progressDialog.dismiss();
-                    findViewById(R.id.screen).setBackground(Drawable.createFromPath("@color/transparent"));
                     error.setText("Error");
                     error.setVisibility(View.VISIBLE);
                     System.out.println("Error call : " + call.request().toString());

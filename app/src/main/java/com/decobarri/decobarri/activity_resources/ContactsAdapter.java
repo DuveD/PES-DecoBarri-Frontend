@@ -44,7 +44,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>
         implements View.OnClickListener, View.OnLongClickListener {
 
-    private List<String> contactList; //Contact/Member ids
+    private List<User> contactList; //Contact/Member ids
     private RecyclerView recyclerView;
     Context context;
     String LIST;
@@ -52,7 +52,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     Retrofit retrofit;
     String projectId; //Null if Contact list
 
-    public ContactsAdapter(List<String> contactList, RecyclerView recyclerView, Context context, String l, String project) {
+    public ContactsAdapter(List<User> contactList, RecyclerView recyclerView, Context context, String l, String project) {
         this.contactList = contactList;
         this.recyclerView = recyclerView;
         this.context = context;
@@ -81,11 +81,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         return contactList.remove(contact);
     }
 
-    public String deleteContact (int index) {
+    public User deleteContact (int index) {
         return contactList.remove(index);
     }
 
-    public String getContact (int index) {
+    public User getContact (int index) {
         return contactList.get(index);
     }
 
@@ -105,49 +105,35 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
                 .build();
         final UserClient client = retrofit.create(UserClient.class);
-        Call<User> call = client.FindByID(contactList.get(position));
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    holder.id.setText(contactList.get(position));
-                    holder.name.setText(response.body().getName());
-                    holder.item_container.setVisibility(View.VISIBLE);
+        Call<User> call;
+        holder.id.setText(contactList.get(position).getId());
+        System.out.println("Id: " + contactList.get(position).getId());
+        holder.name.setText(contactList.get(position).getName());
+        holder.item_container.setVisibility(View.VISIBLE);
 
-                    if (Objects.equals(LIST, "members")){
-                        if (!Objects.equals(username, contactList.get(position))) {
+        if (Objects.equals(LIST, "members")){
+            if (!Objects.equals(username, contactList.get(position))) {
 
-                            call = client.FindByID(username);
-                            call.enqueue(new Callback<User>() {
+                call = client.FindByID(username);
+                call.enqueue(new Callback<User>() {
 
-                                @Override
-                                public void onResponse(Call<User> call, Response<User> response) {
-                                    if (response.isSuccessful()) {
-                                        if (response.body().getContacts().contains(contactList.get(position))) {
-                                            holder.friend.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<User> call, Throwable t) {
-                                    System.out.println("Error: " + t.getMessage());
-                                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().getContacts().contains(contactList.get(position).getId())) {
+                                holder.friend.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
-                }
-                System.out.println("Success: " + response.body());
-                System.out.println("Code: " + response.code());
-            }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                System.out.println("Error: " + t.getMessage());
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        System.out.println("Error: " + t.getMessage());
+                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        });
+        }
     }
 
     @Override
@@ -224,7 +210,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         System.out.println("Project id: " + projectId);
         System.out.println("User id: " + getContact(itemPosition));
         UserProject p = new UserProject(projectId);
-        Call<String> call = client.DeleteProject(getContact(itemPosition), p);
+        Call<String> call = client.DeleteProject(getContact(itemPosition).getId(), p);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -249,7 +235,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         UserClient client = retrofit.create(UserClient.class);
 
         User newContact = new User();
-        newContact.setId(getContact(itemPosition));
+        newContact.setId(getContact(itemPosition).getId());
         Call<String> call = client.AddContact(username, newContact);
         call.enqueue(new Callback<String>() {
             @Override
@@ -300,7 +286,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     private void removeContact(final int itemPosition) {
         UserClient client = retrofit.create(UserClient.class);
         User newContact = new User();
-        newContact.setId(getContact(itemPosition));
+        newContact.setId(getContact(itemPosition).getId());
         Call<String> call = client.DeleteContact(username, newContact);
         call.enqueue(new Callback<String>() {
             @Override
@@ -318,5 +304,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void setFilter(List<User> filteredList) {
+        this.contactList = filteredList;
+        notifyDataSetChanged();
     }
 }
