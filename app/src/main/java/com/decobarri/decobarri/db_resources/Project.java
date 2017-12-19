@@ -52,7 +52,7 @@ public class Project {
     private List<String> members = null;
 
     public Project(){}
-
+//añadir username
     public Project(String id, String name, String theme, String description, String city, String address) {
         this.id = id;
         this.name = name;
