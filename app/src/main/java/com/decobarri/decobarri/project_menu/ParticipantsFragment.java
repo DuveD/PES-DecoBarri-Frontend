@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ContactsAdapter;
+import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.db_resources.User;
@@ -30,6 +32,8 @@ import com.decobarri.decobarri.drawe_menu.ContactListActivity;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +54,7 @@ public class ParticipantsFragment extends Fragment {
     private Context context;
     private Menu menu;
     private List<User> userList;
+    private static final String TAG = ParticipantsFragment.class.getSimpleName();
 
     @Override
     public void onAttach(Context context) {
@@ -73,7 +78,8 @@ public class ParticipantsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refereshMembers();
+                startUpdatingAnimation();
+                loadMembers();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -83,12 +89,15 @@ public class ParticipantsFragment extends Fragment {
     public void startUpdatingAnimation() {
         // Get our refresh item from the menu if it is initialized
         if (menu != null) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            RelativeLayout iv = (RelativeLayout)inflater.inflate(R.layout.ic_refresh, null);
-            Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
-            rotation.setRepeatCount(Animation.INFINITE);
-            iv.startAnimation(rotation);
-            menu.findItem(R.id.action_refresh).setActionView(iv);
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout) inflater.inflate(R.layout.ic_refresh_gray, null);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                menuItem.setActionView(iv);
+            }
         }
     }
 
@@ -116,7 +125,7 @@ public class ParticipantsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        project_id = ((ProjectMenuActivity)this.getActivity()).projectId;
+        project_id = ProjectMenuActivity.projectId;
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
@@ -138,6 +147,14 @@ public class ParticipantsFragment extends Fragment {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()){
                     userList = response.body();
+
+                    Collections.sort(userList, new Comparator<User>() {
+                        @Override
+                        public int compare(User itemA, User itemB) {
+                            return itemA.getName().compareToIgnoreCase(itemB.getName());
+                        }
+                    });
+
                     System.out.println("Response: " + response.body());
                     layoutManager = new LinearLayoutManager(context);
                     member_list.setLayoutManager(layoutManager);
@@ -151,11 +168,13 @@ public class ParticipantsFragment extends Fragment {
                     System.out.println("Error code: " + response.code());
                     System.out.println("Error msg: " + response.message());
                 }
+                stopUpdatingAnimation();
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 System.out.println("Error msg: " + t.getMessage());
+                stopUpdatingAnimation();
             }
         });
         /*
@@ -209,24 +228,4 @@ public class ParticipantsFragment extends Fragment {
         */
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void refereshMembers(){
-        (new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected void onPreExecute(){
-                System.out.println("Loading Memebers...");
-                startUpdatingAnimation();
-            }
-            @Override
-            protected Void doInBackground(Void... voids) {
-                loadMembers();
-                return null;
-            }
-            @Override
-            public void onPostExecute( Void nope ) {
-                stopUpdatingAnimation();
-                System.out.println("Done");
-            }
-        }).execute();
-    }
 }

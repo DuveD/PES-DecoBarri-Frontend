@@ -1,19 +1,42 @@
 package com.decobarri.decobarri.drawe_menu;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.User;
+import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
+import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.util.List;
+
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -21,6 +44,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     EditText name, email;
     TextView id, error;
     Button save, cancel, edit_pass;
+    ImageView profileImage, cameraImage;
+    String imgDecodableString;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +66,18 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         save = (Button) view.findViewById(R.id.button_save);
         cancel = (Button) view.findViewById(R.id.button_cancel);
         edit_pass = (Button) view.findViewById(R.id.button_pass);
+        profileImage = (ImageView) view.findViewById(R.id.imageView3);
+        cameraImage = (ImageView) view.findViewById(R.id.imageView4);
         save.setOnClickListener(this);
         cancel.setOnClickListener(this);
         edit_pass.setOnClickListener(this);
+        profileImage.setOnClickListener(this);
+        cameraImage.setOnClickListener(this);
 
-
+        EasyImage.configuration(getContext())
+                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
+                .setCopyPickedImagesToPublicGalleryAppFolder(false)
+                .setAllowMultiplePickInGallery(false);
 
         Bundle args = this.getArguments();
         if(!args.getBoolean("success", true)){
@@ -98,6 +131,65 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         else if (view.getId() == R.id.button_pass){
             listener.ChangeFragment(4);
         }
+        else if (view.getId() == R.id.imageView3 || view.getId() == R.id.imageView4){
+            EasyImage.openChooserWithGallery(EditProfileFragment.this, "Choose Material Image", 0);
+        }
     }
 
+    @Override
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new DefaultCallback() {
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+                //Some error handling
+            }
+
+            @Override
+            public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
+                //Handle the images
+                onPhotosReturned(imagesFiles);
+
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl(getActivity().getResources().getString(R.string.db_URL))
+                        .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+                Retrofit retrofit = builder.build();
+                UserClient client = retrofit.create(UserClient.class);
+                Call<String> call = client.Image(imagesFiles.get(0));
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()){
+                            System.out.println("Response: " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCanceled(EasyImage.ImageSource source, int type) {
+                //Cancel handling, you might wanna remove taken photo if it was canceled
+                if (source == EasyImage.ImageSource.CAMERA) {
+                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getContext());
+                    if (photoFile != null) photoFile.delete();
+                }
+            }
+        });
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void onPhotosReturned(List<File> imagesFiles) {
+        if (imagesFiles.size() > 1) System.out.println("There're more than one image!");
+        Picasso.with(getContext())
+                .load(imagesFiles.get(0))
+                .resize(profileImage.getWidth(), profileImage.getHeight())
+                .centerCrop()
+                .into(profileImage);
+    }
 }

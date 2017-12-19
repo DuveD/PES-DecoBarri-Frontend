@@ -1,5 +1,8 @@
 package com.decobarri.decobarri.db_resources;
 
+import android.graphics.Bitmap;
+
+import java.io.File;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,4 +49,7 @@ public interface UserClient {
 
     @GET("/user/getContacts/{username}")
     Call<List<User>> GetContacts(@Path("username") String username);
+
+    @POST("/jeje")
+    Call<String> Image(@Body File image);
 }
