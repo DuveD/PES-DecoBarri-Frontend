@@ -51,5 +51,5 @@ public interface UserClient {
     Call<List<User>> GetContacts(@Path("username") String username);
 
     @POST("/jeje")
-    Call<String> Image(@Body File image);
+    Call<String> Image(@Body Image image);
 }

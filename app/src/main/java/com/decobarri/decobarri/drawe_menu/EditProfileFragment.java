@@ -3,11 +3,14 @@ package com.decobarri.decobarri.drawe_menu;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +22,17 @@ import android.widget.Toast;
 import android.widget.ImageView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.Image;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.List;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -150,23 +157,36 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 //Handle the images
                 onPhotosReturned(imagesFiles);
 
+                profileImage.buildDrawingCache();
+                Bitmap bm = profileImage.getDrawingCache();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+
+                String encodedImage = Base64.encodeToString(b , Base64.DEFAULT);
+                System.out.println("Image: " + encodedImage.length());
+                Image image = new Image();
+                image.setImage(encodedImage);
+
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl(getActivity().getResources().getString(R.string.db_URL))
                         .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
                 Retrofit retrofit = builder.build();
                 UserClient client = retrofit.create(UserClient.class);
-                Call<String> call = client.Image(imagesFiles.get(0));
+                Call<String> call = client.Image(image);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()){
                             System.out.println("Response: " + response.body());
                         }
+                        System.out.println("Response: " + response.code());
+                        System.out.println("Response: " + response.message());
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        System.out.println("Response: " + t.getMessage());
                     }
                 });
 
@@ -181,6 +201,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 }
             }
         });
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
