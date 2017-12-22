@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.main_menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Project;
@@ -39,6 +42,7 @@ public class CreateProjectActivity extends AppCompatActivity {
     private TextInputLayout inputLayoutName, inputLayoutDescription, inputLayoutTheme;
     private Button button_create;
     private ImageView projectImage;
+    private String username;
 
 
     @Override
@@ -54,8 +58,21 @@ public class CreateProjectActivity extends AppCompatActivity {
         input_theme = (EditText) findViewById(R.id.input_theme);
         button_create = (Button) findViewById(R.id.create_button);
 
-        projectImage = (ImageView) findViewById(R.id.imageProject);
+        SharedPreferences pref = this.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        username = pref.getString("username", "");
 
+        projectImage = (ImageView) findViewById(R.id.imageProject);
+        projectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EasyImage.openChooserWithDocuments(CreateProjectActivity.this, "Choose Item Image", 0);
+            }
+        });
+
+        EasyImage.configuration(this)
+                .setCopyTakenPhotosToPublicGalleryAppFolder(false)
+                .setCopyPickedImagesToPublicGalleryAppFolder(false)
+                .setAllowMultiplePickInGallery(false);
 
         input_name.addTextChangedListener(new MyTextWatcher(input_name));
         input_description.addTextChangedListener(new MyTextWatcher(input_description));
@@ -78,6 +95,10 @@ public class CreateProjectActivity extends AppCompatActivity {
     }
 
     private void creaProjecte(Project projectCreated) {
+        //**********************************************************************
+
+        //Descomentar para crear proyecto en servidor
+
         /*OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.db_URL))
