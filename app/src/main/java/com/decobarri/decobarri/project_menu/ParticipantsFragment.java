@@ -139,8 +139,6 @@ public class ParticipantsFragment extends Fragment {
     }
 
     private void loadMembers() {
-        //TODO: Test this:
-
         Call<List<User>> call = client.GetMembers(project_id);
         call.enqueue(new Callback<List<User>>() {
             @Override
