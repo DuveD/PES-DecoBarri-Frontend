@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity"
-    android:orientation="vertical"
-    android:background="@android:color/black">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/note_layout"
@@ -30,12 +29,13 @@
                 android:layout_weight="1"/>
 
             <EditText
-                android:id="@+id/toolbar_title"
+                android:id="@+id/note_title"
                 android:layout_width="fill_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:gravity="center"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
+                android:hint="Title"
                 android:background="@android:color/transparent"
                 android:layout_weight="50" />
 
@@ -45,7 +45,7 @@
                 android:layout_height="@dimen/icon_dimensions"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
-                android:src="@android:drawable/ic_menu_save"
+                android:src="@drawable/ic_save"
                 android:tint="@android:color/darker_gray"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_weight="1"/>
@@ -58,23 +58,29 @@
             android:layout_gravity="bottom|center"
             android:layout_weight="5">
             <EditText
+                android:id="@+id/note_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Type here..."
                 android:gravity="top"
                 android:padding="10dp"
-                android:id="@+id/EditText1"
                 app:layout_constraintTop_toTopOf="parent"
+                android:background="@android:color/transparent"
                 android:textSize="15sp"/>
         </LinearLayout>
 
+
+
         <LinearLayout
+            android:id="@+id/buttons_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom|center"
             android:layout_gravity="bottom|center"
             android:layout_weight="0"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@android:color/white"
+            android:elevation="20dp">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/note_fab_white"

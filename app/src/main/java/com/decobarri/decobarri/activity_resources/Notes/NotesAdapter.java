@@ -1,8 +1,8 @@
 package com.decobarri.decobarri.activity_resources.Notes;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,19 +10,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
-import com.decobarri.decobarri.project_menu.edit_items.EditNoteActivity;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 
 import java.util.List;
 
 public class NotesAdapter
         extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder>
         implements View.OnLongClickListener {
-
 
     private List<Note> noteList;
     private RecyclerView recyclerView;
@@ -40,6 +39,7 @@ public class NotesAdapter
         TextView title;
         TextView description;
         TextView date;
+        LinearLayout background;
 
         NotesViewHolder(View view) {
             super(view);
@@ -47,10 +47,9 @@ public class NotesAdapter
             title = (TextView) view.findViewById(R.id.note_title);
             description = (TextView) view.findViewById(R.id.note_description);
             date = (TextView) view.findViewById(R.id.note_description);
+            background = (LinearLayout) view.findViewById(R.id.note_layout);
         }
     }
-
-
 
     public Note deleteNote(int index) {
         return noteList.remove(index);
@@ -79,6 +78,8 @@ public class NotesAdapter
 
         /* SET NOTE DATE */
         viewHolder.date.setText(noteList.get(position).getDate());
+
+        viewHolder.background.setBackgroundColor(noteList.get(position).getColor());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class NotesAdapter
     public boolean onLongClick(View view) {
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
-        final CharSequence[] items = {"Edit", "Delete"};
+        CharSequence[] items = {"Edit", "Delete"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         //builder.setTitle("Select an action");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -111,18 +112,19 @@ public class NotesAdapter
     }
 
     private void onLongClickEdit( int itemPosition ) {
-        Log.i(TAG, "Edit Item");
-        Intent intent = new Intent(context, EditNoteActivity.class);
-        intent.putExtra(Const.EDIT, true);
-        intent.putExtra(Const.ID, getNote( itemPosition ).getId());
-        context.startActivity(intent);
-
+        Log.i(TAG, "Edit Note");
+        ProjectMenuActivity activity = (ProjectMenuActivity)context;
+        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+        transaction.add(R.id.DrawerLayout, EditNoteFragment.newInstance(getNote(itemPosition)));
+        transaction.addToBackStack(null);
+        transaction.commit();
         customNotifyDataSetChanged();
     }
 
     private void onLongClickDelete( int itemPosition ) {
-        Log.i(TAG, "Delete Material");
+        Log.i(TAG, "Delete Note");
         deleteNote(itemPosition);
+        // TODO: DELETE MATERIAL CALL
         customNotifyDataSetChanged();
     }
 

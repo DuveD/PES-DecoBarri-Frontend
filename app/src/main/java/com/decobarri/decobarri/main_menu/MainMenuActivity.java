@@ -10,6 +10,10 @@ import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.TabLayoutPagerAdapter;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainMenuActivity extends BaseActivity {
 
     private ViewPager viewPager;

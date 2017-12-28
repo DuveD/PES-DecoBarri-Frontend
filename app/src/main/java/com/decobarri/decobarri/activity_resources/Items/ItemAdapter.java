@@ -1,8 +1,8 @@
 package com.decobarri.decobarri.activity_resources.Items;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -132,10 +132,11 @@ public class ItemAdapter
 
     private void onLongClickEdit( int itemPosition ) {
         Log.i(TAG, "Edit Item");
-        Intent intent = new Intent(context, EditItemActivity.class);
-        intent.putExtra(Const.EDIT, true);
-        intent.putExtra(Const.ID, getItem( itemPosition ).getID());
-        context.startActivity(intent);
+        ProjectMenuActivity activity = (ProjectMenuActivity)context;
+        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+        transaction.add(R.id.DrawerLayout, EditItemFragment.newInstance(getItem(itemPosition)));
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         customNotifyDataSetChanged();
     }

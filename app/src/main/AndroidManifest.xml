@@ -26,10 +26,9 @@
         <activity android:name=".drawe_menu.AccountSettingsActivity"/>
         <activity android:name=".drawe_menu.ChatActivity" />
         <activity android:name=".drawe_menu.ContactListActivity" />
-        <activity android:name=".project_menu.ProjectMenuActivity" />
-        <activity android:name=".project_menu.edit_items.EditItemActivity" />
+        <activity android:name=".project_menu.ProjectMenuActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".project_menu.edit_items.EditMaterialActivity" />
-        <activity android:name=".project_menu.edit_items.EditNoteActivity" />
     </application>
 
 </manifest>

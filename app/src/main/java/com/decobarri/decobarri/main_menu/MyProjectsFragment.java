@@ -43,6 +43,19 @@ public class MyProjectsFragment extends Fragment {
     private String username;
     private static final String TAG = "MyProjectsFragment";
     private User user;
+    private Retrofit retrofit;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        initVars();
+    }
+
+    private void initVars() {
+        items = new ArrayList<>();
+        retrofit = ((MainMenuActivity)this.getActivity()).retrofit;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -70,13 +83,6 @@ public class MyProjectsFragment extends Fragment {
     }
 
     private void fillList() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder
-                .client(httpClient.build())
-                .build();
         UserClient userClient = retrofit.create(UserClient.class);
         ProjectClient projectClient = retrofit.create(ProjectClient.class);
         getUser(userClient, username, projectClient);
@@ -118,7 +124,6 @@ public class MyProjectsFragment extends Fragment {
     }
 
     private void getProjects(ProjectClient projectClient) {
-        Log.e(TAG, "Items Size: " + items.size());
         for (int i = 0; i < items.size(); ++i) {
             Call<com.decobarri.decobarri.db_resources.Project> callProjects = projectClient.FindProjectById(items.get(i));
             callProjects.enqueue(new Callback<com.decobarri.decobarri.db_resources.Project>() {

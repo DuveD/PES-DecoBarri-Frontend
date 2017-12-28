@@ -1,8 +1,8 @@
 package com.decobarri.decobarri.project_menu;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,26 +22,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Notes.Note;
 import com.decobarri.decobarri.activity_resources.Notes.NotesAdapter;
 import com.decobarri.decobarri.db_resources.NotesInterface;
-import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
-import com.decobarri.decobarri.project_menu.edit_items.EditNoteActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NotesFragment extends Fragment implements View.OnClickListener {
+public class NotesFragment extends Fragment {
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -49,29 +44,39 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
     private LinearLayout emptyView;
     private Menu menu;
 
-    private String project_id;
-
     private List<Note> notesList;
     private static Boolean updatingNotes;
+    private String projectID;
+
     private static final String TAG = NotesFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().findViewById(R.id.fabPlus).setOnClickListener(this);
         initVars();
     }
 
     private void initVars() {
         notesList = new ArrayList<>();
-        project_id = ((ProjectMenuActivity)this.getActivity()).projectId;
+        projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_notes, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Notes");
+        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
+
+        getActivity().findViewById(R.id.fabPlus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.add(R.id.DrawerLayout, EditNoteFragment.newInstance());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 
@@ -163,29 +168,13 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), EditNoteActivity.class);
-        intent.putExtra(Const.ID, "ITEM_ID");
-        this.startActivity(intent);
-    }
-
     // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
     public void fillContentList() {
         updatingNotes = true;
         startUpdatingAnimation();
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit =builder
-                .client(httpClient.build())
-                .build();
-        NotesInterface client =  retrofit.create(NotesInterface.class);
-
-
-        Call<List<Note>> call = client.contentList(project_id);
+        NotesInterface client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(NotesInterface.class);
+        Call<List<Note>> call = client.getNotes(projectID);
 
         // Execute the call asynchronously. Get a positive or negative callback.
         call.enqueue(new Callback<List<Note>>() {

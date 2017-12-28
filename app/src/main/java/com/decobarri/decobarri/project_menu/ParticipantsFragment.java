@@ -18,18 +18,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.ContactsAdapter;
-import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
-import com.decobarri.decobarri.drawe_menu.ContactListActivity;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +46,8 @@ public class ParticipantsFragment extends Fragment {
     private Context context;
     private Menu menu;
     private List<User> userList;
+
+    private static final String TAG = ParticipantsFragment.class.getSimpleName();
 
     @Override
     public void onAttach(Context context) {
@@ -108,6 +106,7 @@ public class ParticipantsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_participants, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Participants");
+        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
         member_list = (RecyclerView) view.findViewById(R.id.lista_participantes);
         return view;
     }
@@ -116,7 +115,7 @@ public class ParticipantsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        project_id = ((ProjectMenuActivity)this.getActivity()).projectId;
+        project_id = ((ProjectMenuActivity)this.getActivity()).projectID;
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))

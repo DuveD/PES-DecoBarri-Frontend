@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.decobarri.decobarri.project_menu.edit_items.EditItemActivity"
     android:orientation="vertical"
     android:background="@android:color/black">
 
@@ -29,7 +28,7 @@
                 android:background="?android:attr/selectableItemBackground"/>
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:gravity="center"
@@ -47,49 +46,54 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:layout_weight="2">
+            android:padding="5dp">
 
             <RelativeLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:layout_weight="0"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_weight="0">
+
                 <ImageView
+
+                    android:id="@+id/background_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:padding="10dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_camera"
-                    android:tint="@android:color/darker_gray"
+                    android:background="@drawable/dotted_frame"
+                    android:padding="10dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/dotted_frame"/>
+                    android:src="@drawable/ic_camera"
+                    android:tint="@android:color/darker_gray" />
+
                 <com.joooonho.SelectableRoundedImageView
                     android:id="@+id/item_imageView"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:background="@drawable/dotted_frame"
-
-                    app:sriv_left_top_corner_radius="10dp"
-                    app:sriv_right_top_corner_radius="10dp"
-                    app:sriv_left_bottom_corner_radius="10dp"
-                    app:sriv_right_bottom_corner_radius="10dp"
-
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"/>
+
+                    android:background="@drawable/dotted_frame"
+                    android:scaleType="centerCrop"
+                    app:sriv_left_bottom_corner_radius="10dp"
+                    app:sriv_left_top_corner_radius="10dp"
+
+                    app:sriv_right_bottom_corner_radius="10dp"
+                    app:sriv_right_top_corner_radius="10dp" />
             </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
-                    android:id="@+id/input_name"
+                    android:id="@+id/item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/edit_text_size"
-                    android:hint="Name" />
+                    android:hint="Name"
+                    android:textSize="@dimen/edit_text_size" />
             </android.support.design.widget.TextInputLayout>
 
             <Space
@@ -100,13 +104,14 @@
                 android:id="@+id/input_layout_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
-                    android:id="@+id/input_description"
+                    android:id="@+id/item_description"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:textSize="@dimen/edit_text_size"
                     android:gravity="start"
-                    android:hint="Little description of the item..." />
+                    android:hint="Little description of the item..."
+                    android:textSize="@dimen/edit_text_size" />
             </android.support.design.widget.TextInputLayout>
 
             <Space
@@ -114,18 +119,19 @@
                 android:layout_height="@dimen/padding_text_empty_list_icons" />
 
             <android.support.v7.widget.SearchView
+                android:visibility="gone"
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="4dp"
                 android:textSize="@dimen/edit_text_size"
                 app:iconifiedByDefault="false"
-                android:elevation="4dp"
-                app:queryHint="Search materials"/>
+                app:queryHint="Search materials" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/saveChanges"
+            android:id="@+id/save_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"

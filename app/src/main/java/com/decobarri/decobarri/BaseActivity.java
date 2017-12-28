@@ -21,15 +21,31 @@ import com.decobarri.decobarri.drawe_menu.ContactListActivity;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     public ActionBarDrawerToggle toggle;
+    public Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        configureCall();
         super.onCreate(savedInstanceState);
+    }
+
+    private void configureCall(){
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create());
+        retrofit = builder
+                .client(httpClient.build())
+                .build();
     }
 
     @Override

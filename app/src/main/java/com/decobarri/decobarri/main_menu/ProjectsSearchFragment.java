@@ -38,56 +38,31 @@ public class ProjectsSearchFragment extends Fragment {
     private RecyclerView rec;
     private AllProjectsAdapter adapter;
     private RecyclerView.LayoutManager lmanager;
-
     private SearchView searchView;
+    private Retrofit retrofit;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        initVars();
+    }
+
+    private void initVars() {
+        items = new ArrayList<>();
+        retrofit = ((MainMenuActivity)this.getActivity()).retrofit;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         rec = (RecyclerView) getView().findViewById(R.id.projectsearch_recycler);
-
         fillList();
-        /*items.add(new Project((BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_vallespir)), "Decoracio carrer Vallespi",
-                "Aquest any tornarem a participar a" +
-                        " les festes de sants."));
-        items.add(new Project((BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_christmas_school)),
-                "Projecte de decoració de Nadal de l'escola Les Corts", "Decoració " +
-                "ambientada en temàtica de nadal per als nens fins a 3r de primaria."));
-        items.add(new Project(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_festes_esplugues),
-                "Festes d' Esplugues", "Col·labora a fer millor les festes" +
-                " del nostre barri i participa en la organització de les seves activitats."));
-        items.add(new Project(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_street_gracia),
-                "Decoració del carrer Rossend Arús", "Decorarem el nostre carrer" +
-                " amb l'objectiu de tornar a quedar com el millor carrer de les festes de gràcia, tal com vam aconseguir l'any passat."));
-        items.add(new Project(BitmapFactory.decodeResource(getResources(),
-                R.drawable.example_christmas_centre_cultural),
-                "Decoració temàtica de Nadal del centre cultural Les Corts.", "" +
-                " Ajuda a decorar el nostre centre i participa en els events que tenim preparats per aquest nadal."));*/
         setView();
     }
 
 
     private void fillList() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit =builder
-                .client(httpClient.build())
-                .build();
         ProjectClient client =  retrofit.create(ProjectClient.class);
-
-
         Call<List<Project>> call = client.FindAllProjects();
 
         // Execute the call asynchronously. Get a positive or negative callback.

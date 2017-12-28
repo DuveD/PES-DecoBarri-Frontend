@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.db_resources.*;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 
@@ -57,7 +58,7 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                 com.decobarri.decobarri.db_resources.Project p = projectList.get(itemPosition);
 
                 Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
-                projectMenu.putExtra("id",p.getId()); //Pasar el id del proyecto
+                projectMenu.putExtra(Const.ID,p.getId()); //Pasar el id del proyecto
                 context.startActivity(projectMenu);
             }
 

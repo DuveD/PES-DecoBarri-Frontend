@@ -29,13 +29,18 @@ public class Note {
     @Expose
     private Boolean modifiable;
 
-    public Note(String id, String title, String date, String description, String author, Boolean modifiable) {
+    @SerializedName("color")
+    @Expose
+    private int color;
+
+    public Note(String id, String title, String date, String description, String author, Boolean modifiable, int color) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.description = description;
         this.author = author;
         this.modifiable = modifiable;
+        this.color = color;
     }
 
     public String getId() {
@@ -54,10 +59,6 @@ public class Note {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -66,7 +67,7 @@ public class Note {
         return modifiable;
     }
 
-    public void setModifiable(Boolean modifiable) {
-        this.modifiable = modifiable;
+    public int getColor() {
+        return color;
     }
 }

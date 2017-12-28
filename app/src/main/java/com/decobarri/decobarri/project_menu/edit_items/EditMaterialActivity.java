@@ -74,7 +74,7 @@ public class EditMaterialActivity extends AppCompatActivity {
     }
 
     private void setUpNavBar(){
-        ((TextView) findViewById(R.id.toolbar_title)).setText(title);
+        ((TextView) findViewById(R.id.note_title)).setText(title);
         ((ImageButton) findViewById(R.id.toolbar_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

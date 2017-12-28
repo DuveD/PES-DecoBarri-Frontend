@@ -2,6 +2,7 @@ package com.decobarri.decobarri.project_menu;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -27,8 +28,7 @@ import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Items.ItemAdapter;
 import com.decobarri.decobarri.db_resources.ProjectClient;
-import com.decobarri.decobarri.db_resources.UserClient;
-import com.decobarri.decobarri.project_menu.edit_items.EditItemActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ItemsFragment extends Fragment implements View.OnClickListener {
+public class ItemsFragment extends Fragment {
 
     private Adapter adapter;
     private LayoutManager layoutManager;
@@ -52,10 +52,21 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     private List<Item> itemList;
     private String projectId;
 
+    private static final String TAG = ItemsFragment.class.getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getActivity().findViewById(R.id.fabPlus).setOnClickListener(this);
+        getActivity().findViewById(R.id.fabPlus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.add(R.id.DrawerLayout, EditItemFragment.newInstance());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        projectId = ((ProjectMenuActivity)this.getActivity()).projectID;
         super.onCreate(savedInstanceState);
     }
 
@@ -63,8 +74,8 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_items, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Items");
+        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
 
-        projectId = ((ProjectMenuActivity)this.getActivity()).projectId;
         itemList = new ArrayList<>();
         fillItemList();
         return view;
@@ -176,13 +187,6 @@ public class ItemsFragment extends Fragment implements View.OnClickListener {
                 System.out.println("Done");
             }
         }).execute();
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), EditItemActivity.class);
-        intent.putExtra(Const.PROJECT_ID, projectId);
-        this.startActivity(intent);
     }
 
     public void fillItemList() {

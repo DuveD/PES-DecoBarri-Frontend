@@ -51,6 +51,7 @@ public class GlobalMaterialsFragment extends Fragment {
     private List<Material> globalMaterialList;
     private static Boolean updatingGlobalMaterialList;
     private static final String TAG = GlobalMaterialsFragment.class.getSimpleName();
+    private Retrofit retrofit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class GlobalMaterialsFragment extends Fragment {
 
     private void initVars() {
         globalMaterialList = new ArrayList<>();
+        retrofit = ((MainMenuActivity)this.getActivity()).retrofit;
     }
 
     @Override
@@ -165,16 +167,7 @@ public class GlobalMaterialsFragment extends Fragment {
         updatingGlobalMaterialList = true;
         startUpdatingAnimation();
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit =builder
-                .client(httpClient.build())
-                .build();
-        MaterialsInterface client =  retrofit.create(MaterialsInterface.class);
-
-
+        MaterialsInterface client = retrofit.create(MaterialsInterface.class);
         Call<List<Material>> call = client.contentList();
 
         // Execute the call asynchronously. Get a positive or negative callback.
@@ -182,7 +175,9 @@ public class GlobalMaterialsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
                 // The network call was a success and we got a response
+                Log.i(TAG, "Call successful: " + call.request());
                 if (response.isSuccessful()) {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
                     Log.i(TAG, "Success : " + response.body());
                     globalMaterialList = response.body();
                     Collections.sort(globalMaterialList, new Comparator<Material>() {
@@ -197,7 +192,7 @@ public class GlobalMaterialsFragment extends Fragment {
                     setContentView();
                 }
                 else {
-                    Log.e(TAG, "Response failed: " + response.body());
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
                 }
                 updatingGlobalMaterialList = false;
                 stopUpdatingAnimation();

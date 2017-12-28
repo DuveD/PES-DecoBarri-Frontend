@@ -34,18 +34,27 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private Menu menu;
+    private String projectID;
+
+    private static final String TAG = InventoryFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         getActivity().findViewById(R.id.fabPlus).setOnClickListener(this);
         super.onCreate(savedInstanceState);
+        initVars();
+    }
+
+    private void initVars() {
+        projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_inventory, container, false);
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Inventory");
+        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
         return view;
     }
 
