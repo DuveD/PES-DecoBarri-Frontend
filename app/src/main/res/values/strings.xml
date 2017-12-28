@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">DecoBarri</string>
-
+    <string name="google_maps_key">AIzaSyBBzt7B43zPO0FcTXsLfx-7meI6nxhh1tE	</string>
     <!--Navigation drawer-->
     <string name="navigation_drawer_open_description">Open navigation drawer</string>
     <string name="navigation_drawer_close_description">Close navigation drawer</string>
@@ -37,8 +37,9 @@
     <string name="swipe_dismiss_left">Swipe Dismiss Left</string>
     <string name="card_view_dismiss_success">CardView Dismissed Successfully.</string>
     <string name="empty_notes_text">Tell something to the group!</string>
-        <!--  Action Mode Menu Items -->
-        <string name="delete">Delete</string>
-        <string name="copy">Copy</string>
-        <string name="forward">Forward</string>
+    <!--  Action Mode Menu Items -->
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+    <string name="forward">Forward</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

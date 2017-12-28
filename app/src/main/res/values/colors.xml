@@ -34,4 +34,7 @@
         <color name="FABgreen">#baffc9</color>
         <color name="FABblue">#bae1ff</color>
 
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+
 </resources>

@@ -52,6 +52,8 @@ public class ItemsFragment extends Fragment {
     private List<Item> itemList;
     private String projectId;
 
+    private Retrofit retrofit;
+
     private static final String TAG = ItemsFragment.class.getSimpleName();
 
     @Override
@@ -66,8 +68,13 @@ public class ItemsFragment extends Fragment {
                 transaction.commit();
             }
         });
-        projectId = ((ProjectMenuActivity)this.getActivity()).projectID;
+        initVars();
         super.onCreate(savedInstanceState);
+    }
+
+    private void initVars() {
+        projectId = ((ProjectMenuActivity)this.getActivity()).projectID;
+        retrofit = ((ProjectMenuActivity)this.getActivity()).retrofit;
     }
 
     @Override
