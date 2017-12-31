@@ -1,15 +1,21 @@
 package com.decobarri.decobarri.drawe_menu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
@@ -32,9 +39,17 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import retrofit2.Call;
@@ -44,6 +59,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -99,6 +115,33 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             Toast.makeText(getContext(), "Not logged", Toast.LENGTH_LONG);
         }
 
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(getActivity().getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        Retrofit retrofit = builder.build();
+        UserClient client = retrofit.create(UserClient.class);
+        Call<ResponseBody> call = client.downloadImage();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println("Response code: " + response.code());
+                System.out.println("Response message: " + response.message());
+                System.out.println("Response body: " + response.body());
+
+                if (response.isSuccessful()){
+                    Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                    profileImage.setImageBitmap(bm);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Error message: " + t.getMessage());
+                System.out.println("Error : " + t.toString());
+            }
+        });
+
+
         return view;
     }
 
@@ -146,27 +189,71 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void onActivityResult(final int requestCode, int resultCode, Intent data) {
 
-        EasyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new DefaultCallback() {
-            @Override
-            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
-                //Some error handling
+        if(resultCode == Activity.RESULT_OK) {
+
+            Uri uri = data.getData();
+
+            String filePath;
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            if (cursor == null) {
+                filePath = uri.getPath();
+            } else {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                filePath = cursor.getString(idx);
             }
+            File file = new File(filePath);
+            //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
 
-            @Override
-            public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
-                //Handle the images
-                onPhotosReturned(imagesFiles);
+            Image image = new Image();
+            image.setImage(file);
 
-                profileImage.buildDrawingCache();
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl(getActivity().getResources().getString(R.string.db_URL))
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+            Retrofit retrofit = builder.build();
+            UserClient client = retrofit.create(UserClient.class);
+            Call<String> call = client.Image(body);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    System.out.println("Response code: " + response.code());
+                    System.out.println("Response message: " + response.message());
+                    System.out.println("Response body: " + response.body());
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    System.out.println("Error message: " + t.getMessage());
+                    System.out.println("Error : " + t.toString());
+                }
+            });
+
+
+            EasyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new DefaultCallback() {
+                @Override
+                public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+                    //Some error handling
+                }
+
+                @Override
+                public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
+                    //Handle the images
+                    onPhotosReturned(imagesFiles);
+
+                /*profileImage.buildDrawingCache();
                 Bitmap bm = profileImage.getDrawingCache();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                 byte[] b = baos.toByteArray();
-
-                String encodedImage = Base64.encodeToString(b , Base64.DEFAULT);
-                System.out.println("Image: " + encodedImage.length());
-                Image image = new Image();
-                image.setImage(encodedImage);
 
                 Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl(getActivity().getResources().getString(R.string.db_URL))
@@ -188,19 +275,20 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                     public void onFailure(Call<String> call, Throwable t) {
                         System.out.println("Response: " + t.getMessage());
                     }
-                });
+                });*/
 
-            }
-
-            @Override
-            public void onCanceled(EasyImage.ImageSource source, int type) {
-                //Cancel handling, you might wanna remove taken photo if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA) {
-                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getContext());
-                    if (photoFile != null) photoFile.delete();
                 }
-            }
-        });
+
+                @Override
+                public void onCanceled(EasyImage.ImageSource source, int type) {
+                    //Cancel handling, you might wanna remove taken photo if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA) {
+                        File photoFile = EasyImage.lastlyTakenButCanceledPhoto(getContext());
+                        if (photoFile != null) photoFile.delete();
+                    }
+                }
+            });
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }

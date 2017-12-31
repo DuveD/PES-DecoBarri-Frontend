@@ -16,25 +16,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.ItemClient;
+import com.decobarri.decobarri.db_resources.Project;
+import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.project_menu.ItemsFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ItemAdapter
         extends Adapter<ItemAdapter.ItemViewHolder>
         implements OnClickListener, View.OnLongClickListener {
 
+    private String projectId;
     private List<Item> itemList;
     private RecyclerView recyclerView;
     Context context;
     private static final String TAG = "ItemAdapter";
 
-    public ItemAdapter(List<Item> itemList, RecyclerView recyclerView, Context context) {
+    public ItemAdapter(List<Item> itemList, RecyclerView recyclerView, Context context, String project) {
         this.itemList = itemList;
         this.recyclerView = recyclerView;
         this.context = context;
+        this.projectId = project;
     }
 
     // View lookup cache
@@ -143,6 +156,35 @@ public class ItemAdapter
 
     private void onLongClickDelete( int itemPosition ) {
         Log.i(TAG, "Delete Material");
+
+        Item item= new Item();
+        item.setId(getItem(itemPosition).getID());
+
+
+        System.out.println("Project id: " + projectId);
+        System.out.println("Item id: " + item.getID());
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(context.getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        Retrofit retrofit = builder.build();
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<String> call = client.DeleteItem(projectId, item);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println("Response code: " + response.code());
+                System.out.println("Response message: " + response.message());
+                if (response.isSuccessful()){
+                    System.out.println("Response: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("Error: " + t.toString());
+            }
+        });
         deleteItem(itemPosition);
         customNotifyDataSetChanged();
     }

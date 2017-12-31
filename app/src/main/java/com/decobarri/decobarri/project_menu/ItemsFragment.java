@@ -125,7 +125,7 @@ public class ItemsFragment extends Fragment {
 
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            adapter = new ItemAdapter(itemList,recyclerView, getActivity()){
+            adapter = new ItemAdapter(itemList,recyclerView, getActivity(), projectId){
 
                 @Override
                 public void customNotifyDataSetChanged(){
@@ -204,11 +204,12 @@ public class ItemsFragment extends Fragment {
         Retrofit retrofit = builder.build();
         ProjectClient client = retrofit.create(ProjectClient.class);
 
-            Call<List<Item>> call = client.GetItems(projectId);
+        Call<List<Item>> call = client.GetItems(projectId);
         call.enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccessful()) {
+
                     itemList = response.body();
 
                     Collections.sort(itemList, new Comparator<Item>() {
@@ -219,6 +220,7 @@ public class ItemsFragment extends Fragment {
                     });
 
                     adapter.notifyDataSetChanged();
+                    setContentView();
                 }
                 else {
                     System.out.println("Error code: " + response.code());
@@ -233,4 +235,5 @@ public class ItemsFragment extends Fragment {
         });
 
     }
+
 }

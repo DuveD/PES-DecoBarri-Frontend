@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -47,4 +48,12 @@ public interface ProjectClient {
 
     @POST("/project/addItem/{id}")
     Call<String> AddItem(@Path("id") String id, @Body Item item);
+
+    @PUT("project/editItem/{id}")
+    Call<String> EditItem(@Path("id") String _id, @Body Item item);
+
+    //@DELETE("/project/deleteItem/{id}")
+    //@HTTP(method = "DELETE", path = "/project/deleteItem/{id}", hasBody = true)
+    @PUT("/project/deleteItem/{id}")
+    Call<String> DeleteItem(@Path("id") String _id, @Body Item item);
 }

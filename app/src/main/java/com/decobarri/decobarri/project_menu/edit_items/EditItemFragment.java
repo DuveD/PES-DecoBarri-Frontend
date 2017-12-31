@@ -9,6 +9,7 @@ import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -20,11 +21,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Materials.Material;
+import com.decobarri.decobarri.db_resources.ItemClient;
 import com.decobarri.decobarri.db_resources.MaterialsInterface;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.project_menu.ItemsFragment;
@@ -36,6 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -55,6 +59,7 @@ public class EditItemFragment extends Fragment {
     private EditText descriptionEditText;
     private SearchView materialsSearchView;
     private TextView saveTextView;
+    private String projectId;
 
     private String name;
     private String description;
@@ -65,7 +70,7 @@ public class EditItemFragment extends Fragment {
 
     public static EditItemFragment newInstance(Item item) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("item", (Serializable) item);
+        bundle.putParcelable("item", item);
 
         EditItemFragment fragment = new EditItemFragment();
         fragment.setArguments(bundle);
@@ -86,7 +91,13 @@ public class EditItemFragment extends Fragment {
 
     private void initVars() {
         readBundle(getArguments());
-        retrofit = ((ProjectMenuActivity)this.getActivity()).retrofit;
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(getActivity().getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
+        retrofit = builder.build();
+
+        //retrofit = ((ProjectMenuActivity)this.getActivity()).retrofit;
         EasyImage.configuration(getActivity())
                 .setCopyTakenPhotosToPublicGalleryAppFolder(false)
                 .setCopyPickedImagesToPublicGalleryAppFolder(false)
@@ -95,7 +106,8 @@ public class EditItemFragment extends Fragment {
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
-            item = (Item) bundle.getSerializable("item");
+            item = bundle.getParcelable("item");
+            Log.e(TAG, "Item ready");
             if (item == null) Log.e(TAG, "Bundle read error, Item is null!");
         } else {
             item = null;
@@ -113,6 +125,12 @@ public class EditItemFragment extends Fragment {
         descriptionEditText = (EditText) view.findViewById(R.id.item_description);
         materialsSearchView = (SearchView) view.findViewById(R.id.searchView);
         saveTextView = (TextView) view.findViewById(R.id.save_button);
+        projectId = ((ProjectMenuActivity)this.getActivity()).projectID;
+
+        if (item!=null){
+            nameEditText.setText(item.getName());
+            descriptionEditText.setText(item.getDescription());
+        }
 
         setUpNavBar();
         setUpButtons();
@@ -142,42 +160,65 @@ public class EditItemFragment extends Fragment {
         saveTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveItem();
+
+                if(nameEditText.getText().toString().equals("") && descriptionEditText.getText().toString().equals("")){
+                    Toast.makeText(getActivity(), "El ítem debe tener nombre y descripción.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Item newItem = new Item();
+                    newItem.setName(nameEditText.getText().toString());
+                    newItem.setDescription(descriptionEditText.getText().toString());
+                    if (item != null) {
+                        newItem.setId(item.getID());
+                        saveItem(newItem);
+                    }
+                    else createItem(newItem);
+                }
             }
         });
     }
 
-    private void saveItem() {
+    private void saveItem(Item newItem) {
 
-        MaterialsInterface client = retrofit.create(MaterialsInterface.class);
-        Call<List<Material>> call = client.contentList();
-
-        // Execute the call asynchronously. Get a positive or negative callback.
-        call.enqueue(new Callback<List<Material>>() {
+        System.out.println("ID: " + item.getID());
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<String> call = client.EditItem(projectId, newItem);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
-                // The network call was a success and we got a response
-                Log.i(TAG, "Call successful: " + call.request());
-                if (response.isSuccessful()) {
-                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
-                    Log.i(TAG, "Success : " + response.body());
-
-                    // if item is saved correctly
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println("Response code: " + response.code());
+                System.out.println("Response message: " + response.message());
+                if (response.isSuccessful()){
+                    System.out.println("Response: " + response.body());
                     ((ProjectMenuActivity)getActivity()).superOnBackPressed();
-                }
-                else {
-                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Material>> call, Throwable t) {
-                // the network call was a failure
-                Log.e(TAG, "Call failed: " + call.request());
-                Log.e(TAG, "Error: " + t.getMessage());
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("Error: " + t.toString());
+            }
+        });
+    }
 
-                if (!isOnline())  Log.e(TAG, "No internet connection.");
-                else Log.w(TAG, "Please check your internet connection and try again.");
+    private void createItem(Item newItem) {
+
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<String> call = client.AddItem(projectId, newItem);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println("Response code: " + response.code());
+                System.out.println("Response message: " + response.message());
+                if (response.isSuccessful()){
+                    System.out.println("Response: " + response.body());
+                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println("Error: " + t.toString());
             }
         });
     }
