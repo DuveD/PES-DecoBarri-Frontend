@@ -68,7 +68,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     TextView id, error;
     Button save, cancel, edit_pass;
     ImageView profileImage, cameraImage;
-    String imgDecodableString;
+    String imgDecodableString, filePath;
 
 
     @Override
@@ -120,7 +120,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
         Retrofit retrofit = builder.build();
         UserClient client = retrofit.create(UserClient.class);
-        Call<ResponseBody> call = client.downloadImage();
+        Call<ResponseBody> call = client.downloadImage(id.getText().toString());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -170,7 +170,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
             User u = new User(id.getText().toString(), in_name, in_email);
 
-            listener.EditUser(u);
+            listener.EditUser(u, filePath);
 
 
             error.setVisibility(View.VISIBLE);
@@ -193,7 +193,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
             Uri uri = data.getData();
 
-            String filePath;
             Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
             if (cursor == null) {
                 filePath = uri.getPath();
@@ -202,42 +201,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
                 filePath = cursor.getString(idx);
             }
-            File file = new File(filePath);
-            //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-
-            Image image = new Image();
-            image.setImage(file);
-
-            RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            MultipartBody.Part body =
-                    MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl(getActivity().getResources().getString(R.string.db_URL))
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
-            Retrofit retrofit = builder.build();
-            UserClient client = retrofit.create(UserClient.class);
-            Call<String> call = client.Image(body);
-            call.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    System.out.println("Response code: " + response.code());
-                    System.out.println("Response message: " + response.message());
-                    System.out.println("Response body: " + response.body());
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    System.out.println("Error message: " + t.getMessage());
-                    System.out.println("Error : " + t.toString());
-                }
-            });
-
-
             EasyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new DefaultCallback() {
                 @Override
                 public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
@@ -248,35 +211,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
                     //Handle the images
                     onPhotosReturned(imagesFiles);
-
-                /*profileImage.buildDrawingCache();
-                Bitmap bm = profileImage.getDrawingCache();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                byte[] b = baos.toByteArray();
-
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl(getActivity().getResources().getString(R.string.db_URL))
-                        .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
-                Retrofit retrofit = builder.build();
-                UserClient client = retrofit.create(UserClient.class);
-                Call<String> call = client.Image(image);
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.isSuccessful()){
-                            System.out.println("Response: " + response.body());
-                        }
-                        System.out.println("Response: " + response.code());
-                        System.out.println("Response: " + response.message());
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        System.out.println("Response: " + t.getMessage());
-                    }
-                });*/
-
                 }
 
                 @Override

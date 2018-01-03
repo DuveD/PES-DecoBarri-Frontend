@@ -38,8 +38,10 @@ public interface UserClient {
     @GET("/user/findByID/{username}")
     Call<User> FindByID(@Path("username") String username);
 
+    @Multipart
     @PUT("/user/edit/{username}")
-    Call<String> EditUser(@Path("username") String username, @Body User user);
+    Call<String> EditUser(@Path("username") String username, @Part MultipartBody.Part image,
+                          @Part("name") RequestBody name, @Part("email") RequestBody email);
 
     @PUT("/user/editPassword/{username}")
     Call<String> EditPassword(@Path("username") String username, @Body Password password);
@@ -57,9 +59,9 @@ public interface UserClient {
     Call<List<User>> GetContacts(@Path("username") String username);
 
     @Multipart
-    @POST("/user/uploadImage")
-    Call<String> Image(@Part MultipartBody.Part image);
+    @POST("/user/uploadImage/{username}")
+    Call<String> Image(@Path("username") String username, @Part MultipartBody.Part image);
 
-    @GET("/user/getImage")
-    Call<ResponseBody> downloadImage();
+    @GET("/user/getImage/{username}")
+    Call<ResponseBody> downloadImage(@Path("username") String username);
 }

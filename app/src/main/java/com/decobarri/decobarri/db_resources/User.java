@@ -30,6 +30,9 @@ public class User {
     @SerializedName("contacts")
     @Expose
     private List<String> contacts = null;
+    @SerializedName("image")
+    @Expose
+    private String image = null;
 
     public User() {
 
@@ -100,5 +103,13 @@ public class User {
 
     public void setContacts(List<String> projects) {
         this.contacts = contacts;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
