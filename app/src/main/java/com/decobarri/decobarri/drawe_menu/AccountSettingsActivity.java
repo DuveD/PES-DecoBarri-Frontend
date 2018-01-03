@@ -2,8 +2,10 @@ package com.decobarri.decobarri.drawe_menu;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,8 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Image;
 import com.decobarri.decobarri.db_resources.Password;
@@ -33,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AccountSettingsActivity extends AppCompatActivity implements ProfileFragmentInteraction{
+public class AccountSettingsActivity extends AppCompatActivity implements ProfileFragmentInteraction {
 
     User user; //user logged
     String username, password;
@@ -82,28 +88,30 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-                name = user.getName();
-                email = user.getEmail();
-                System.out.println("Success: " + name + ", " + email);
+                if(response.isSuccessful()) {
+                    user = response.body();
+                    name = user.getName();
+                    email = user.getEmail();
+                    System.out.println("Success: " + name + ", " + email);
 
-                Bundle args = new Bundle();
-                args.putString("id", username);
-                args.putString("password", password);
-                args.putString("name", name);
-                args.putString("email", email);
-                args.putBoolean("success", success);
+                    Bundle args = new Bundle();
+                    args.putString("id", username);
+                    args.putString("password", password);
+                    args.putString("name", name);
+                    args.putString("email", email);
+                    args.putBoolean("success", success);
 
-                currentFragment = "userProfile";
+                    currentFragment = "userProfile";
 
-                f = new UserProfileFragment();
-                f.setArguments(args);
+                    f = new UserProfileFragment();
+                    f.setArguments(args);
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction =
-                        fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.Framelayout, f);
-                fragmentTransaction.commit();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction =
+                            fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.Framelayout, f);
+                    fragmentTransaction.commit();
+                }
             }
 
             @Override
@@ -218,16 +226,26 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             UserClient client = retrofit.create(UserClient.class);
 
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), new_user.getName());
-            RequestBody mail = RequestBody.create(MediaType.parse("text/plain"), new_user.getEmail());
+            final RequestBody mail = RequestBody.create(MediaType.parse("text/plain"), new_user.getEmail());
 
             Call<String> call = client.EditUser(username, body, name, mail);
 
+            final MultipartBody.Part finalBody = body;
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     System.out.println("Edit user: " + response.code());
                     System.out.println("Edit user: " + response.message());
                     if(response.isSuccessful()) {
+
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.NavigationView);
+                        if (navigationView!=null) {
+                            View header = navigationView.getHeaderView(0);
+                            ((ImageView) header.findViewById(R.id.imageView)).setImageURI(Uri.fromFile(new File(new_image)));
+                            ((ImageView) header.findViewById(R.id.imageView)).setImageURI(Uri.fromFile(new File(new_image)));
+                            ((TextView) header.findViewById(R.id.email_drawer)).setText((CharSequence) mail);
+                        }
+
                         success = true;
                         System.out.println("Edit user: " + response.errorBody());
                         progressDialog.dismiss();

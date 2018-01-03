@@ -14,22 +14,30 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
-        <ImageView
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/imageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:srcCompat="@drawable/ic_menu_account_image" />
+            app:srcCompat="@drawable/ic_menu_account_image"
+            app:sriv_left_top_corner_radius="35dp"
+            app:sriv_right_top_corner_radius="35dp"
+            app:sriv_left_bottom_corner_radius="35dp"
+            app:sriv_right_bottom_corner_radius="35dp"
+
+            app:sriv_border_width="2dip"
+            app:sriv_border_color="@color/primaryColor" />
     </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:id="@+id/username_drawer"
         android:text="Usrer example"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/email_drawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user.example@android.com" />

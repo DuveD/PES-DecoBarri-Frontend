@@ -22,6 +22,9 @@ import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,14 +86,16 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bm, "profile_image" + id.getText().toString(), null);
-                Uri uri = Uri.parse(path);
-                Picasso.with(getContext())
-                        .load(uri)
-                        .resize(profile_image.getWidth(), profile_image.getHeight())
-                        .centerCrop()
-                        .into(profile_image);
+                if (response.isSuccessful()) {
+                    Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                    profile_image.setImageBitmap(
+                            Bitmap.createScaledBitmap(bm, profile_image.getWidth(), profile_image.getHeight(), false));
+                    /*Picasso.with(getContext())
+                            .load()
+                            .resize(profile_image.getWidth(), profile_image.getHeight())
+                            .centerCrop()
+                            .into(profile_image);*/
+                }
             }
 
             @Override

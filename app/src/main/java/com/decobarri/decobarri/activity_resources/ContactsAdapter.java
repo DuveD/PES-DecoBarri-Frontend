@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +69,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, id;
-        ImageView friend;
+        ImageView friend, profileImage;
         LinearLayout item_container;
 
         public ContactsViewHolder (View view) {
@@ -74,6 +78,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             name = (TextView) view.findViewById(R.id.contact_name);
             id = (TextView) view.findViewById(R.id.user_id);
             friend = (ImageView) view.findViewById(R.id.friend_image);
+            profileImage = (ImageView) view.findViewById(R.id.item_imageView);
         }
     }
 
@@ -130,6 +135,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onFailure(Call<User> call, Throwable t) {
                         System.out.println("Error: " + t.getMessage());
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Call<ResponseBody> image_call = client.downloadImage(username);
+                image_call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                            holder.profileImage.setImageBitmap(
+                                    Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
                     }
                 });
             }
