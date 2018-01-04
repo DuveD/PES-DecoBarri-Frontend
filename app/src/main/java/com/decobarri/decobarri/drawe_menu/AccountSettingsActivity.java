@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.drawe_menu;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -19,14 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.BaseActivity;
+import com.decobarri.decobarri.Login;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Image;
 import com.decobarri.decobarri.db_resources.Password;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -167,7 +172,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
     }
 
     public boolean EditUser(User u, String imagePath) {
-        success=false;
+        success=true;
         String new_name = u.getName();
         String new_email = u.getEmail();
 
@@ -237,15 +242,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     System.out.println("Edit user: " + response.code());
                     System.out.println("Edit user: " + response.message());
                     if(response.isSuccessful()) {
-
-                        NavigationView navigationView = (NavigationView) findViewById(R.id.NavigationView);
-                        if (navigationView!=null) {
-                            View header = navigationView.getHeaderView(0);
-                            ((ImageView) header.findViewById(R.id.imageView)).setImageURI(Uri.fromFile(new File(new_image)));
-                            ((ImageView) header.findViewById(R.id.imageView)).setImageURI(Uri.fromFile(new File(new_image)));
-                            ((TextView) header.findViewById(R.id.email_drawer)).setText((CharSequence) mail);
-                        }
-
                         success = true;
                         System.out.println("Edit user: " + response.errorBody());
                         progressDialog.dismiss();
@@ -253,6 +249,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     }
                     else {
                         success = false;
+                        FragmentManager fm = getSupportFragmentManager();
+                        EditProfileFragment fragment = (EditProfileFragment) fm.findFragmentById(R.id.EditProfileFragment);
+                        fragment.error();
                     }
                 }
 
@@ -265,6 +264,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             });
             return null;
         }
+    }
+
+    public boolean getSuccess (){
+        return success;
     }
 
     public boolean EditPassword(String username, String old_pass, String new_pass) {
@@ -320,6 +323,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     }
                     else {
                         success = false;
+                        FragmentManager fm = getSupportFragmentManager();
+                        EditPasswordFragment fragment = (EditPasswordFragment) fm.findFragmentById(R.id.EditPasswordFragment);
+                        fragment.error();
                     }
                 }
 
@@ -341,10 +347,14 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 ChangeFragment(1);
                 break;
             case "userProfile":
-                super.onBackPressed();
+                Intent i = new Intent(AccountSettingsActivity.this, MainMenuActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(i);
                 break;
             default:
                 break;
         }
     }
+
 }

@@ -82,7 +82,10 @@ public class EditPasswordFragment extends Fragment implements View.OnClickListen
         else if (view.getId() == R.id.button4){ //save
             mListener.EditPassword(username, old_password.getText().toString(), new_password.getText().toString());
 
-            error.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void error(){
+        error.setVisibility(View.VISIBLE);
     }
 }

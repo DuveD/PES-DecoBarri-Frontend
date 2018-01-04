@@ -55,13 +55,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     String username;
     Retrofit retrofit;
     String projectId; //Null if Contact list
+    String admin;
 
-    public ContactsAdapter(List<User> contactList, RecyclerView recyclerView, Context context, String l, String project) {
+    public ContactsAdapter(List<User> contactList, RecyclerView recyclerView, Context context, String l, String project, String admin) {
         this.contactList = contactList;
         this.recyclerView = recyclerView;
         this.context = context;
         this.LIST = l;
         this.projectId = project;
+        this.admin = admin;
         SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
     }
@@ -168,7 +170,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         System.out.println("OnClick members");
         if ( LIST.equals("members") ) {
-            //TODO: The delete member option has to do an admin check
 
             final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
@@ -185,7 +186,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onResponse(Call<User> call, Response<User> response) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Select an action");
-                        if (response.body().getContacts().contains(getContact(itemPosition))) {
+                        if (response.body().getContacts().contains(getContact(itemPosition)) && Objects.equals(username, admin)) {
                             final CharSequence[] items = {"Remove from project"};
                             builder.setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
@@ -197,7 +198,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                                     }
                                 }
                             });
-                        } else {
+                        } else if (Objects.equals(username, admin)){
                             final CharSequence[] items = {"Add to contacts", "Remove from project"};
                             builder.setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
@@ -208,6 +209,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                                             break;
                                         case 1:
                                             removeMember(itemPosition);
+                                            break;
+                                    }
+                                }
+                            });
+                        } else {
+                            final CharSequence[] items = {"Add to contacts"};
+                            builder.setItems(items, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    switch (i) {
+                                        case 0:
+                                            addContact(itemPosition);
                                             break;
                                     }
                                 }

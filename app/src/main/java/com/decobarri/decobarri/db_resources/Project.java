@@ -39,6 +39,10 @@ public class Project {
     @Expose
     private String lng;
 
+    @SerializedName("admin")
+    @Expose
+    private String admin;
+
     @SerializedName("address")
     @Expose
     private String address;
@@ -140,5 +144,13 @@ public class Project {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 }

@@ -41,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ParticipantsFragment extends Fragment {
 
-    private String project_id;
+    private String project_id, projectAdmin;
     private ProjectClient client;
     private UserClient userClient;
     private Retrofit retrofit;
@@ -125,6 +125,7 @@ public class ParticipantsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         project_id = ((ProjectMenuActivity)this.getActivity()).projectID;
+        projectAdmin = ((ProjectMenuActivity)this.getActivity()).projectAdmin;
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
@@ -158,7 +159,8 @@ public class ParticipantsFragment extends Fragment {
 
                     userClient = retrofit.create(UserClient.class);
 
-                    adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id);
+
+                    adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id, projectAdmin);
                     member_list.setAdapter(adapter);
                 }
                 else {

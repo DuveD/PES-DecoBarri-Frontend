@@ -10,4 +10,5 @@ public interface ProfileFragmentInteraction {
     void ChangeFragment (Integer mode);//mode: 1(edit) 2(save) 3(cancel) 4(editpassword)
     boolean EditUser(User u, String filePath);
     boolean EditPassword(String username, String old_password, String new_password);
+    boolean getSuccess();
 }

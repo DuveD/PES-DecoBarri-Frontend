@@ -174,7 +174,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             listener.EditUser(u, filePath);
 
 
-            error.setVisibility(View.VISIBLE);
         }
         else if (view.getId() == R.id.button_cancel){
             listener.ChangeFragment(3);
@@ -235,5 +234,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 .resize(profileImage.getWidth(), profileImage.getHeight())
                 .centerCrop()
                 .into(profileImage);
+    }
+
+    public void error(){
+        error.setVisibility(View.VISIBLE);
     }
 }
