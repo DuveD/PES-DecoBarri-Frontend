@@ -4,93 +4,153 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="40dp"
     android:layout_width="match_parent">
-
-    <TextView
-        android:id="@+id/text_view_id"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textSize="20dp"
-        android:text="Introduce la información para crear un nuevo proyecto" />
-
-
-    <ImageView
-        android:id="@+id/imageProject"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:padding="10dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_camera"
-        android:tint="@android:color/darker_gray"
-        android:scaleType="centerCrop"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/text_view_id"
-        android:background="@drawable/dotted_frame"/>
-        <com.joooonho.SelectableRoundedImageView
-        android:id="@+id/imageSelect"
-        android:layout_below="@+id/text_view_id"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/dotted_frame"
-
-        app:sriv_left_top_corner_radius="10dp"
-        app:sriv_right_top_corner_radius="10dp"
-        app:sriv_left_bottom_corner_radius="10dp"
-        app:sriv_right_bottom_corner_radius="10dp"
-
-        android:layout_gravity="center"
-        android:scaleType="centerCrop"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_name"
-        android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/imageProject"
-        android:layout_height="wrap_content"
-        android:elevation="4dp">
-
-        <EditText
-            android:id="@+id/input_project_name"
-            android:layout_width="match_parent"
+    <ScrollView android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_view_id"
             android:layout_height="wrap_content"
-            android:hint="Project name" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_width="wrap_content"
+            android:textSize="20dp"
+            android:text="Introduce la información para crear un nuevo proyecto" />
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_description"
-        android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/input_layout_name"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/input_description"
+        <ImageView
+            android:id="@+id/imageProject"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_camera"
+            android:tint="@android:color/darker_gray"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/text_view_id"
+            android:background="@drawable/dotted_frame"/>
+            <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/imageSelect"
+            android:layout_below="@+id/text_view_id"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/dotted_frame"
+
+            app:sriv_left_top_corner_radius="10dp"
+            app:sriv_right_top_corner_radius="10dp"
+            app:sriv_left_bottom_corner_radius="10dp"
+            app:sriv_right_bottom_corner_radius="10dp"
+
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/imageProject"
             android:layout_height="wrap_content"
-            android:hint="Description"/>
-    </android.support.design.widget.TextInputLayout>
+            android:elevation="4dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_theme"
-        android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/input_layout_description"
-        android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/input_theme"
+                android:id="@+id/input_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Theme" />
-    </android.support.design.widget.TextInputLayout>
-
-    <Button android:id="@+id/create_button"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/input_layout_theme"
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:text="Create">
-    </Button>
+                android:hint="Project name" />
+        </android.support.design.widget.TextInputLayout>
 
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_description"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/input_layout_name"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/input_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_theme"
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/input_layout_description"
+            android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/input_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Theme" />
+        </android.support.design.widget.TextInputLayout>
+
+         <LinearLayout
+             android:id="@+id/mapa"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_below="@+id/input_layout_theme"
+             android:orientation="vertical">
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal">
+
+                 <com.decobarri.decobarri.DelayAutoCompleteTextView
+                     android:id="@+id/geo_autocomplete"
+                     android:layout_width="match_parent"
+                     android:layout_height="fill_parent"
+                     android:imeOptions="flagNoExtractUi|actionSearch"
+                     android:inputType="textCapSentences"
+                     android:textColor="@color/black"
+                     android:background="@color/white"
+                     android:hint="Adress"
+                     android:layout_gravity="center_vertical"
+                     android:layout_marginEnd="35dp"
+                     android:layout_marginRight="35dp"
+                     android:layout_marginTop="4dp"
+                     android:layout_marginBottom="4dp"
+                     android:padding="10dp"
+                     android:dropDownWidth="fill_parent"
+                     android:layout_weight="1"
+                     />
+
+                 <ImageButton
+                     android:id="@+id/SearchLocationButton"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@android:drawable/ic_menu_search" />
+
+             </LinearLayout>
+
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="300dp"
+                 android:layout_weight="1">
+
+                 <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+                     android:id="@+id/map"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     map:mapType="normal"
+                     map:uiCompass="true"
+                     map:uiRotateGestures="true" />
+
+             </RelativeLayout>
+
+         </LinearLayout>
+
+        <Button android:id="@+id/create_button"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/mapa"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:text="Create">
+        </Button>
+     </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
