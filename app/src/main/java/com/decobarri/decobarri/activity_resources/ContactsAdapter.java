@@ -146,7 +146,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()){
                             Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                            holder.profileImage.setImageBitmap(
+                            if(bm!=null)holder.profileImage.setImageBitmap(
                                     Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
                         }
                     }

@@ -88,7 +88,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                    profile_image.setImageBitmap(
+                    if(bm!=null)profile_image.setImageBitmap(
                             Bitmap.createScaledBitmap(bm, profile_image.getWidth(), profile_image.getHeight(), false));
                     /*Picasso.with(getContext())
                             .load()

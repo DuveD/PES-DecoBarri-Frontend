@@ -21,6 +21,41 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/list"
+        android:visibility="gone">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="512dp"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/emptyText"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="centerInside"
+            android:tint="@android:color/darker_gray"
+            app:srcCompat="@drawable/ic_group" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_text_empty_list_icons"
+            android:text="@string/empty_request_list_text"
+            android:textSize="20sp" />
+    </LinearLayout>
+
 
 
 </android.support.design.widget.CoordinatorLayout>

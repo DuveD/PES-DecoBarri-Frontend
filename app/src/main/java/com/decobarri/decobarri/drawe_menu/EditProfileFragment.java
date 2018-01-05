@@ -130,7 +130,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
                 if (response.isSuccessful()){
                     Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                    profileImage.setImageBitmap(
+                    if(bm!=null)profileImage.setImageBitmap(
                             Bitmap.createScaledBitmap(bm, profileImage.getWidth(), profileImage.getHeight(), false));
                 }
             }

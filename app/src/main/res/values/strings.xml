@@ -6,6 +6,7 @@
     <string name="navigation_drawer_close_description">Close navigation drawer</string>
     <string name="title_activity_account_settings">Account settings activity</string>
     <string name="empty_contact_list_text">Join a project to get some contacts!</string>
+    <string name="empty_request_list_text">You have no requests</string>
 
     <!--Main Menu-->
     <!--Global Materials-->

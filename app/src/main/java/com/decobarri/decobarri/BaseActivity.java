@@ -146,20 +146,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 System.out.println("Drawer load: " + response.code());
                 System.out.println("Drawer load: " + response.message());
+                System.out.println("Drawer load: " + response.body());
                 if(response.isSuccessful()) {
                     Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                    profileImage.setImageBitmap(
+                    System.out.println("Drawer load: " + bm);
+                    if (bm!=null)profileImage.setImageBitmap(
                             Bitmap.createScaledBitmap(bm, profileImage.getWidth(), profileImage.getHeight(), false));
-                    /*ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                    String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bm, "Title", null);
-                    Picasso.with(getApplicationContext())
-                            .load(Uri.parse(path))
-                            .resize(profileImage.getWidth(), profileImage.getHeight())
-                            .centerCrop()
-                            .into(profileImage);
-                    File file = new File(path);
-                    file.delete();*/
+                    else profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_account_image));
                 }
             }
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.net.ssl.SSLContext;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -52,8 +53,9 @@ public interface ProjectClient {
     @PUT("project/editItem/{id}")
     Call<String> EditItem(@Path("id") String _id, @Body Item item);
 
-    //@DELETE("/project/deleteItem/{id}")
-    //@HTTP(method = "DELETE", path = "/project/deleteItem/{id}", hasBody = true)
     @PUT("/project/deleteItem/{id}")
     Call<String> DeleteItem(@Path("id") String _id, @Body Item item);
+
+    @GET("/project/getImage/{id}")
+    Call<ResponseBody> getImage(@Path("id") String _id);
 }
