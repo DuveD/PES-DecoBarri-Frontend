@@ -16,7 +16,10 @@ import android.widget.TextView;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.db_resources.Request;
 import com.decobarri.decobarri.db_resources.User;
+import com.decobarri.decobarri.db_resources.UserClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
@@ -39,16 +42,25 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     private RecyclerView recyclerView;
     Context context;
     String username;
+    ProjectClient client;
+    Retrofit retrofit;
 
     public RequestAdapter (List<Request> requestList, RecyclerView recyclerView, Context context) {
         this.requestList = requestList;
         this.recyclerView = recyclerView;
         this.context = context;
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(context.getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .build();
+        client = retrofit.create(ProjectClient.class);
+
         SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
     }
 
-    public static class RequestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class RequestViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, project_name;
         ImageView profileImage;
@@ -63,13 +75,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             profileImage = (ImageView) view.findViewById(R.id.request_imageView);
             accept = (Button) view.findViewById(R.id.accept);
             cancel = (Button) view.findViewById(R.id.cancel);
-            accept.setOnClickListener(this);
-            cancel.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
     }
 
@@ -89,13 +94,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     }
 
     @Override
-    public void onBindViewHolder(final RequestViewHolder holder, int position) {
+    public void onBindViewHolder(final RequestViewHolder holder, final int position) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(context.getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                .build();
-        ProjectClient client = retrofit.create(ProjectClient.class);
+
         Call<ResponseBody> call = client.getImage(getRequest(position).getUsername());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -113,6 +114,57 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
         holder.name.setText(getRequest(position).getUsername());
         holder.project_name.setText("quiere unirse a " + getRequest(position).getProject());
+
+        holder.accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final User user = new User();
+                user.setId(getRequest(position).getUsername());
+                Project p = new Project();
+                p.setId(getRequest(position).getProject());
+                UserClient userClient = retrofit.create(UserClient.class);
+                Call<String> call = userClient.addProject(username, p);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()){
+                            cancelRequest(user, getRequest(position).getProject(), position);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+        holder.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = new User();
+                user.setId(getRequest(position).getUsername());
+                cancelRequest(user, getRequest(position).getProject(), position);
+            }
+        });
+    }
+
+    private void cancelRequest (User user, String project, final int position) {
+        Call<String> call = client.deleteRequest(project, user);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()){
+                    deleteRequest(position);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

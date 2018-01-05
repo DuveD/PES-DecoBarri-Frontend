@@ -1,4 +1,4 @@
-package com.decobarri.decobarri.activity_resources;
+package com.decobarri.decobarri.db_resources;
 
 /**
  * Created by Asus on 05/01/2018.
@@ -9,7 +9,7 @@ public class Request {
     private String username;
     private String project;
 
-    Request (String username, String project) {
+    public Request (String username, String project) {
         this.username = username;
         this.project = project;
     }

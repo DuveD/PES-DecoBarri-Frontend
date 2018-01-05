@@ -135,7 +135,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        System.out.println("Error: " + t.getMessage());
+                        System.out.println("Error: " + t);
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });

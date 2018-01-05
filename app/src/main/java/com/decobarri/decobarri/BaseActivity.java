@@ -169,8 +169,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                usernameTV.setText(username);
-                emailTV.setText(response.body().getEmail());
+                if(response.isSuccessful()&&response.body().getEmail()!=null) {
+                    usernameTV.setText(username);
+                    emailTV.setText(response.body().getEmail());
+                }
             }
 
             @Override

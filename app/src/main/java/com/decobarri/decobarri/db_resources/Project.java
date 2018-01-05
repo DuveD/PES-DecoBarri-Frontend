@@ -55,6 +55,10 @@ public class Project {
     @Expose
     private List<String> members = null;
 
+    @SerializedName("requests")
+    @Expose
+    private List<String> requests = null;
+
     public Project(){}
 //añadir username
     public Project(String id, String name, String theme, String description, String city, String address) {
@@ -152,5 +156,13 @@ public class Project {
 
     public void setAdmin(String admin) {
         this.admin = admin;
+    }
+
+    public List<String> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<String> requests) {
+        this.requests = requests;
     }
 }

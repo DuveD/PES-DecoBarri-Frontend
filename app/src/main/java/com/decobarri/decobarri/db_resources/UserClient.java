@@ -64,4 +64,7 @@ public interface UserClient {
 
     @GET("/user/getImage/{username}")
     Call<ResponseBody> downloadImage(@Path("username") String username);
+
+    @PUT("/user/addProject/{username}")
+    Call<String> addProject(@Path("username") String username, @Body Project project);
 }

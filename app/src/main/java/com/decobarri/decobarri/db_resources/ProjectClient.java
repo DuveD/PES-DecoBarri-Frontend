@@ -2,17 +2,14 @@ package com.decobarri.decobarri.db_resources;
 
 import com.decobarri.decobarri.activity_resources.Items.Item;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.SSLContext;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -58,4 +55,13 @@ public interface ProjectClient {
 
     @GET("/project/getImage/{id}")
     Call<ResponseBody> getImage(@Path("id") String _id);
+
+    @POST("/project/addRequest/{id}")
+    Call<String> addRequest(@Path("id") String _id, @Body User user);
+
+    @POST("/project/deleteRequest/{id}")
+    Call<String> deleteRequest(@Path("id") String _id, @Body User user);
+
+    @GET("/project/getRequests/{id}")
+    Call<Map<String,List<String>>> getRequests(@Path("id") String _id);
 }
