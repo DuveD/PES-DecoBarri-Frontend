@@ -39,7 +39,7 @@ public class Project {
     @Expose
     private String lng;
 
-    @SerializedName("admin")
+    @SerializedName("username")
     @Expose
     private String admin;
 
@@ -57,13 +57,16 @@ public class Project {
 
     public Project(){}
 //añadir username
-    public Project(String id, String name, String theme, String description, String city, String address) {
+    public Project(String id, String name, String theme, String description, String city, String address, String admin, String lat, String lng) {
         this.id = id;
         this.name = name;
         this.theme = theme;
         this.description = description;
         this.city = city;
         this.address = address;
+        this.lat = lat;
+        this.lng = lng;
+        this.admin = admin;
     }
 
     public String getId() {
