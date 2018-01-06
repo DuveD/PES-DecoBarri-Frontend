@@ -118,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
 
-        if(PackageManager.PERMISSION_GRANTED==getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)) initMap();
+        initMap();
 
 
         //Search addresses
@@ -206,7 +206,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 call.enqueue(new Callback<Project>() {
                     @Override
                     public void onResponse(Call<Project> call, Response<Project> response) {
-                        LatLng coord = new LatLng(Integer.parseInt(response.body().getLat()), Integer.parseInt(response.body().getLng()));
+                        LatLng coord = new LatLng(Double.parseDouble(response.body().getLat()), Double.parseDouble(response.body().getLng()));
                         googleMap.addMarker(new MarkerOptions().position(coord));
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(coord).zoom(12).build();

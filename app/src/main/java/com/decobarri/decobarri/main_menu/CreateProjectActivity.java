@@ -1,11 +1,15 @@
 package com.decobarri.decobarri.main_menu;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncStats;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -28,6 +32,8 @@ import com.decobarri.decobarri.activity_resources.GeoAutocompleteAdapter;
 import com.decobarri.decobarri.activity_resources.GeoSearchResult;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -37,6 +43,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -78,6 +85,8 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
     private Integer THRESHOLD = 2;
     private DelayAutoCompleteTextView geo_autocomplete;
 
+    private FusedLocationProviderClient mFusedLocationClient;
+
 
 
     @Override
@@ -93,6 +102,8 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
         input_description = (EditText) findViewById(R.id.input_description);
         input_theme = (EditText) findViewById(R.id.input_theme);
         button_create = (Button) findViewById(R.id.create_button);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         SharedPreferences pref = this.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
@@ -140,8 +151,11 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 //***********************************************
                 //Falta añadir imagen, username y ubicacion (la variable username ya esta inicializada)
                 //***********************************************
+                LatLng latLng = myMarker.getPosition();
+                Double lat = latLng.latitude;
+                Double lng = latLng.longitude;
                 Project projectCreated = new Project("", input_name.getText().toString(), input_theme.getText().toString(),
-                        input_description.getText().toString(), "Barcelona", "FIB", username, "44", "44");
+                        input_description.getText().toString(), "Barcelona", "FIB", username, lat.toString(), lng.toString());
                 creaProjecte(projectCreated);
                 //Intent i = new Intent(CreateProjectActivity.this, MainMenuActivity.class);
                 //System.out.println("Creado en bd");
@@ -366,26 +380,17 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
 
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl(getResources().getString(R.string.db_URL))
-                        .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
-                Retrofit retrofit = builder.build();
-                ProjectClient client = retrofit.create(ProjectClient.class);
-
-                Call<Project> call = client.FindProjectById(projectId);
-                call.enqueue(new Callback<Project>() {
+                mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
-                    public void onResponse(Call<Project> call, Response<Project> response) {
-                        LatLng coord = new LatLng(Integer.parseInt(response.body().getLat()), Integer.parseInt(response.body().getLng()));
-                        googleMap.addMarker(new MarkerOptions().position(coord));
+                    public void onSuccess(Location location) {
+                        LatLng coord = new LatLng(location.getLatitude(), location.getLongitude());
+                        if (firstMarker) {
+                            myMarker = googleMap.addMarker(new MarkerOptions().position(coord));
+                            firstMarker = false;
+                        }
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(coord).zoom(12).build();
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                    }
-
-                    @Override
-                    public void onFailure(Call<Project> call, Throwable t) {
-
                     }
                 });
             }
