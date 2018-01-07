@@ -41,6 +41,9 @@ public interface ProjectClient {
     @GET("/project/getItems/{id}")
     Call<List<Item>> GetItems(@Path("id") String id);
 
+    @POST("/project/addMember/{id}")
+    Call<String> AddMember(@Path("id") String id, @Body User user);
+
     @GET("/project/getMembers/{id}")
     Call<List<User>> GetMembers(@Path("id") String id);
 
@@ -63,5 +66,5 @@ public interface ProjectClient {
     Call<String> deleteRequest(@Path("id") String _id, @Body User user);
 
     @GET("/project/getRequests/{id}")
-    Call<Map<String,List<String>>> getRequests(@Path("id") String _id);
+    Call<List<Project>> getRequests(@Path("id") String _id);
 }

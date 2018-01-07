@@ -7,10 +7,12 @@ package com.decobarri.decobarri.db_resources;
 public class Request {
 
     private String username;
+    private String name;
     private String project;
 
-    public Request (String username, String project) {
+    public Request (String username, String name, String project) {
         this.username = username;
+        this.name = name;
         this.project = project;
     }
 
@@ -28,5 +30,13 @@ public class Request {
 
     public void setProject(String project) {
         this.project = project;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

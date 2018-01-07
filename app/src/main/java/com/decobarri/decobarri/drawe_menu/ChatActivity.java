@@ -11,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.Request;
 import com.decobarri.decobarri.activity_resources.RequestAdapter;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,20 +74,18 @@ public class ChatActivity extends AppCompatActivity {
 
     private void loadRequests() {
         //TODO: Test this
-        Call<Map<String,List<String>>> call = client.getRequests(username);
-        call.enqueue(new Callback<Map<String,List<String>>>() {
+        Call<List<Project>> call = client.getRequests(username);
+        call.enqueue(new Callback<List<Project>>() {
             @Override
-            public void onResponse(Call<Map<String,List<String>>> call, Response<Map<String,List<String>>> response) {
-                System.out.println("Request : " + response.body());
+            public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
+
                 if (response.isSuccessful() && !response.body().isEmpty()) {
-                    /*for (ProjectRequests p : response.body()) {
-                        for ( String r : p.getUsers()) {
-                            requestList.add(new Request(p.getId(), r));
-                        }
-                    }*/
-                    for (Map.Entry<String, List<String>> e : response.body().entrySet()){
-                        for ( String s : e.getValue()) {
-                            requestList.add(new Request(e.getKey(), s));
+                    System.out.println("Response: " + response.code());
+                    System.out.println("Response: " + response.message());
+                    requestList = new ArrayList<Request>();
+                    for (Project p : response.body()) {
+                        for ( String r : p.getRequests()) {
+                            if (r!="") requestList.add(new Request(r, p.getName(), p.getId()));
                         }
                     }
                     list.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Map<String,List<String>>> call, Throwable t) {
+            public void onFailure(Call<List<Project>> call, Throwable t) {
                 System.out.println("Request : " + t);
             }
         });

@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.db_resources;
 
 import android.graphics.Bitmap;
+import android.support.v7.widget.RecyclerView;
 
 import java.io.File;
 import java.util.List;
@@ -66,5 +67,5 @@ public interface UserClient {
     Call<ResponseBody> downloadImage(@Path("username") String username);
 
     @PUT("/user/addProject/{username}")
-    Call<String> addProject(@Path("username") String username, @Body Project project);
+    Call<String> addProject(@Path("username") String username, @Body UserProject project_id);
 }

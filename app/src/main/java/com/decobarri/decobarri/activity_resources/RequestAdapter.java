@@ -19,11 +19,14 @@ import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.db_resources.Request;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.db_resources.UserProject;
 import com.google.android.gms.common.SignInButton;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,22 +91,23 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @Override
     public RequestAdapter.RequestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_item, parent, false);
         RequestViewHolder vh = new RequestViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final RequestViewHolder holder, final int position) {
-
+    public void onBindViewHolder(final RequestAdapter.RequestViewHolder holder, final int position) {
 
         Call<ResponseBody> call = client.getImage(getRequest(position).getUsername());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                if(bm!=null) holder.profileImage.setImageBitmap(
-                        Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
+                if (response.isSuccessful()) {
+                    Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                    if (bm != null) holder.profileImage.setImageBitmap(
+                            Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
+                }
             }
 
             @Override
@@ -113,22 +117,26 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         });
 
         holder.name.setText(getRequest(position).getUsername());
-        holder.project_name.setText("quiere unirse a " + getRequest(position).getProject());
+        holder.project_name.setText("quiere unirse a " + getRequest(position).getName());
 
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final User user = new User();
                 user.setId(getRequest(position).getUsername());
-                Project p = new Project();
-                p.setId(getRequest(position).getProject());
+                String project = getRequest(position).getProject();
                 UserClient userClient = retrofit.create(UserClient.class);
-                Call<String> call = userClient.addProject(username, p);
+                UserProject project_id = new UserProject(project);
+                Call<String> call = userClient.addProject(getRequest(position).getUsername(), project_id);
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        System.out.println("Response: " + response.code());
+                        System.out.println("Response: " + response.message());
                         if (response.isSuccessful()){
-                            cancelRequest(user, getRequest(position).getProject(), position);
+                            deleteRequest(position);
+                            notifyDataSetChanged();
+                            //cancelRequest(user, getRequest(position).getProject(), position);
                         }
                     }
 
@@ -157,6 +165,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
                     deleteRequest(position);
+                    notifyDataSetChanged();
                 }
             }
 
