@@ -2,10 +2,12 @@ package com.decobarri.decobarri.activity_resources.Projects;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -16,6 +18,15 @@ import com.decobarri.decobarri.db_resources.*;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Marc G on 24/10/2017.
  */
@@ -24,6 +35,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     private List<com.decobarri.decobarri.db_resources.Project> projectList;
     private Context context;
     private RecyclerView recyclerView;
+    private String idSolicitud;
+    private String username;
 
     public AllProjectsAdapter(List<com.decobarri.decobarri.db_resources.Project> item, Context mContext, RecyclerView rec) {
         this.projectList = item;
@@ -55,6 +68,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     public AllProjectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.project_card, parent, false);
         AllProjectsViewHolder project = new AllProjectsViewHolder(v);
+        SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        username = pref.getString("username", "");
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -67,34 +82,17 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                 dialog.setTitle("Información del proyecto");
                 TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
                 ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
+                Button buttonSolicitar = (Button) dialog.findViewById((R.id.button_solicitar));
                 //imagen.setImageBitmap(p.get_Imagen());
                 description.setText(p.getDescription());
+                idSolicitud = p.getId();
                 dialog.show();
-                /*AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                builder1.setMessage("Quieres enviar una solicitud para participar en el proyecto " + p.get_name() + "?");
-                builder1.setCancelable(true);
-
-                builder1.setPositiveButton(
-                        "Si",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                CharSequence text = "Solicitud enviada";
-                                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                                toast.show();
-                                dialog.cancel();
-                            }
-                        });
-
-                builder1.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();*/
+                buttonSolicitar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        requestCall();
+                    }
+                });
             }
 
         });
@@ -105,6 +103,38 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     public int getItemCount() {
         if (projectList != null) return projectList.size();
         else return 0;
+    }
+
+    private void requestCall(){
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(context.getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit =builder
+                .client(httpClient.build())
+                .build();
+        ProjectClient client =  retrofit.create(ProjectClient.class);
+        //*********************************************************************************
+        //Descomentar para añadir llamada addRequest
+        /*Call<String> call = client.addRequest(idSolicitud, username);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                // The network call was a success and we got a response
+                if (response.isSuccessful()) {
+                    //
+                    System.out.println("Success : " + response.body());
+                }
+                else {
+                    System.out.println("Error code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                //
+                System.out.println("Call failed: " + call.request());
+            }
+        });*/
     }
 
     public void setFilter(List<com.decobarri.decobarri.db_resources.Project> filteredList) {
