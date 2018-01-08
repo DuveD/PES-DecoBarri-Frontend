@@ -91,6 +91,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                     @Override
                     public void onClick(View v) {
                         requestCall();
+                        dialog.cancel();
                     }
                 });
             }
@@ -116,7 +117,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         ProjectClient client =  retrofit.create(ProjectClient.class);
         //*********************************************************************************
         //Descomentar para añadir llamada addRequest
-        /*Call<String> call = client.addRequest(idSolicitud, username);
+        User user = new User(username,"");
+        Call<String> call = client.addRequest(idSolicitud, user);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -134,7 +136,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                 //
                 System.out.println("Call failed: " + call.request());
             }
-        });*/
+        });
     }
 
     public void setFilter(List<com.decobarri.decobarri.db_resources.Project> filteredList) {
