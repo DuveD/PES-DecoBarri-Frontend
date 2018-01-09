@@ -86,15 +86,18 @@ public class ContactListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.isSuccessful()) {
+                System.out.println("contacts: " + response.body());
+                if(response.isSuccessful() && !response.body().isEmpty()) {
                     userList = response.body();
                     list.setVisibility(View.VISIBLE);
 
                     layoutManager = new LinearLayoutManager(ContactListActivity.this);
                     list.setLayoutManager(layoutManager);
 
-                    adapter = new ContactsAdapter(userList, list, ContactListActivity.this, "contacts", null);
+                    adapter = new ContactsAdapter(userList, list, ContactListActivity.this, "contacts", null, null);
                     list.setAdapter(adapter);
+                }else {
+                    emptyText.setVisibility(View.VISIBLE);
                 }
                 System.out.println("Code: " + response.code());
             }
@@ -102,68 +105,10 @@ public class ContactListActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 System.out.println("Error: " + t.getMessage());
+                Toast.makeText(getApplicationContext(), "Internal error", Toast.LENGTH_SHORT);
+                emptyText.setVisibility(View.VISIBLE);
             }
         });
-/*
-        userlogged = new User();
-
-        Call<User> call = client.FindByID(username);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                userlogged = response.body();
-                System.out.println("Success: " + response.body().toString());
-
-                if (response.isSuccessful()) {
-                    List<String> contactlist = userlogged.getContacts();
-
-                    if (!contactlist.isEmpty()) {
-
-                        userList = new ArrayList<>();
-
-                        list.setVisibility(View.VISIBLE);
-
-                        layoutManager = new LinearLayoutManager(ContactListActivity.this);
-                        list.setLayoutManager(layoutManager);
-
-                        adapter = new ContactsAdapter(userList, list, ContactListActivity.this, "contacts", null);
-                        list.setAdapter(adapter);
-
-
-                        for (String u:contactlist) {
-                            call = client.FindByID(u);
-                            call.enqueue(new Callback<User>() {
-                                @Override
-                                public void onResponse(Call<User> call, Response<User> response) {
-                                    if (response.isSuccessful()) {
-                                        userList.add(response.body());
-                                        System.out.println("User: " + response.body().getName() + " id: " + response.body().getId());
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<User> call, Throwable t) {
-
-                                }
-                            });
-                        }
-
-
-                    }
-                    else {
-                        emptyText.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(ContactListActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                System.out.println("Error: " + t.getMessage());
-            }
-        });
-*/
 
     }
 

@@ -39,6 +39,10 @@ public class Project {
     @Expose
     private String lng;
 
+    @SerializedName("username")
+    @Expose
+    private String admin;
+
     @SerializedName("address")
     @Expose
     private String address;
@@ -51,15 +55,22 @@ public class Project {
     @Expose
     private List<String> members = null;
 
+    @SerializedName("requests")
+    @Expose
+    private List<String> requests = null;
+
     public Project(){}
 //añadir username
-    public Project(String id, String name, String theme, String description, String city, String address) {
+    public Project(String id, String name, String theme, String description, String city, String address, String admin, String lat, String lng) {
         this.id = id;
         this.name = name;
         this.theme = theme;
         this.description = description;
         this.city = city;
         this.address = address;
+        this.lat = lat;
+        this.lng = lng;
+        this.admin = admin;
     }
 
     public String getId() {
@@ -140,5 +151,21 @@ public class Project {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
+
+    public List<String> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<String> requests) {
+        this.requests = requests;
     }
 }

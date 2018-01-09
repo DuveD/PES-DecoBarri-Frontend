@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,13 +55,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     String username;
     Retrofit retrofit;
     String projectId; //Null if Contact list
+    String admin;
 
-    public ContactsAdapter(List<User> contactList, RecyclerView recyclerView, Context context, String l, String project) {
+    public ContactsAdapter(List<User> contactList, RecyclerView recyclerView, Context context, String l, String project, String admin) {
         this.contactList = contactList;
         this.recyclerView = recyclerView;
         this.context = context;
         this.LIST = l;
         this.projectId = project;
+        this.admin = admin;
         SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
     }
@@ -65,7 +71,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public static class ContactsViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, id;
-        ImageView friend;
+        ImageView friend, profileImage;
         LinearLayout item_container;
 
         public ContactsViewHolder (View view) {
@@ -74,6 +80,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             name = (TextView) view.findViewById(R.id.contact_name);
             id = (TextView) view.findViewById(R.id.user_id);
             friend = (ImageView) view.findViewById(R.id.friend_image);
+            profileImage = (ImageView) view.findViewById(R.id.item_imageView);
         }
     }
 
@@ -128,8 +135,25 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        System.out.println("Error: " + t.getMessage());
+                        System.out.println("Error: " + t);
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Call<ResponseBody> image_call = client.downloadImage(username);
+                image_call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if(response.isSuccessful()){
+                            Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                            if(bm!=null)holder.profileImage.setImageBitmap(
+                                    Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
                     }
                 });
             }
@@ -146,7 +170,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         System.out.println("OnClick members");
         if ( LIST.equals("members") ) {
-            //TODO: The delete member option has to do an admin check
 
             final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
@@ -163,7 +186,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onResponse(Call<User> call, Response<User> response) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Select an action");
-                        if (response.body().getContacts().contains(getContact(itemPosition))) {
+                        if (response.body().getContacts().contains(getContact(itemPosition)) && Objects.equals(username, admin)) {
                             final CharSequence[] items = {"Remove from project"};
                             builder.setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
@@ -175,7 +198,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                                     }
                                 }
                             });
-                        } else {
+                        } else if (Objects.equals(username, admin)){
                             final CharSequence[] items = {"Add to contacts", "Remove from project"};
                             builder.setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
@@ -186,6 +209,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                                             break;
                                         case 1:
                                             removeMember(itemPosition);
+                                            break;
+                                    }
+                                }
+                            });
+                        } else {
+                            final CharSequence[] items = {"Add to contacts"};
+                            builder.setItems(items, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    switch (i) {
+                                        case 0:
+                                            addContact(itemPosition);
                                             break;
                                     }
                                 }

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,17 +15,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.decobarri.decobarri.db_resources.User;
+import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
 import com.decobarri.decobarri.drawe_menu.ChatActivity;
 import com.decobarri.decobarri.drawe_menu.ContactListActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,7 +43,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     public ActionBarDrawerToggle toggle;
+    public ImageView profileImage;
+    public TextView usernameTV, emailTV;
+    public String username;
     public Retrofit retrofit;
+    public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +88,17 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void setUpNav() {
         drawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.NavigationView);
+        navigationView = (NavigationView) findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(this);
+
+        SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        username = pref.getString("username", "");
+        View header = navigationView.getHeaderView(0);
+        profileImage = (ImageView) header.findViewById(R.id.imageView);
+        usernameTV = (TextView) header.findViewById(R.id.username_drawer);
+        emailTV = (TextView) header.findViewById(R.id.email_drawer);
+        setUpUser();
+        setUpImage();
 
         //create default navigation drawer toggle
         toggle = new ActionBarDrawerToggle(
@@ -119,6 +143,50 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
+    private void setUpImage() {
+        UserClient client = retrofit.create(UserClient.class);
+        Call<ResponseBody> call = client.downloadImage(username);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println("Drawer load: " + response.code());
+                System.out.println("Drawer load: " + response.message());
+                System.out.println("Drawer load: " + response.body());
+                if(response.isSuccessful()) {
+                    Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                    System.out.println("Drawer load: " + bm);
+                    if (bm!=null)profileImage.setImageBitmap(
+                            Bitmap.createScaledBitmap(bm, profileImage.getWidth(), profileImage.getHeight(), false));
+                    else profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_account_image));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setUpUser() {
+        UserClient client = retrofit.create(UserClient.class);
+        Call<User> call = client.FindByID(username);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()&&response.body().getEmail()!=null) {
+                    usernameTV.setText(username);
+                    emailTV.setText(response.body().getEmail());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -148,4 +216,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,37 +11,29 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/project_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@color/navigationDrawer_unselected_item_color"
+            app:srcCompat="@drawable/ic_info" />
+
+        <TextView
+            android:id="@+id/textProjName"
+            style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/title"
-            android:paddingBottom="@dimen/activity_vertical_margin">
+            android:layout_height="match_parent"
+            android:textAlignment="center"/>
 
-            <TextView
-                android:id="@+id/textProjName"
-                style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAlignment="center"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/descriptionText"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin">
+            android:layout_height="match_parent"
+            android:hint="Description goes here"
+            android:gravity="left" />
 
-            <TextView
-                android:id="@+id/descriptionText"
-                style="@style/Base.TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

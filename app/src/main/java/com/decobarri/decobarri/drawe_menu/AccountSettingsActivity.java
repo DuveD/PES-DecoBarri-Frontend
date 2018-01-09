@@ -1,34 +1,50 @@
 package com.decobarri.decobarri.drawe_menu;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.decobarri.decobarri.BaseActivity;
+import com.decobarri.decobarri.Login;
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.Image;
 import com.decobarri.decobarri.db_resources.Password;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
+import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AccountSettingsActivity extends AppCompatActivity implements ProfileFragmentInteraction{
+public class AccountSettingsActivity extends AppCompatActivity implements ProfileFragmentInteraction {
 
     User user; //user logged
     String username, password;
@@ -39,7 +55,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
     User new_user;
     String old_password, new_password;
     Fragment f;
-    String currentFragment;
+    String currentFragment, new_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,28 +93,30 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-                name = user.getName();
-                email = user.getEmail();
-                System.out.println("Success: " + name + ", " + email);
+                if(response.isSuccessful()) {
+                    user = response.body();
+                    name = user.getName();
+                    email = user.getEmail();
+                    System.out.println("Success: " + name + ", " + email);
 
-                Bundle args = new Bundle();
-                args.putString("id", username);
-                args.putString("password", password);
-                args.putString("name", name);
-                args.putString("email", email);
-                args.putBoolean("success", success);
+                    Bundle args = new Bundle();
+                    args.putString("id", username);
+                    args.putString("password", password);
+                    args.putString("name", name);
+                    args.putString("email", email);
+                    args.putBoolean("success", success);
 
-                currentFragment = "userProfile";
+                    currentFragment = "userProfile";
 
-                f = new UserProfileFragment();
-                f.setArguments(args);
+                    f = new UserProfileFragment();
+                    f.setArguments(args);
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction =
-                        fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.Framelayout, f);
-                fragmentTransaction.commit();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction =
+                            fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.Framelayout, f);
+                    fragmentTransaction.commit();
+                }
             }
 
             @Override
@@ -153,8 +171,8 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         fragmentTransaction.commit();
     }
 
-    public boolean EditUser(User u) {
-        success=false;
+    public boolean EditUser(User u, String imagePath) {
+        success=true;
         String new_name = u.getName();
         String new_email = u.getEmail();
 
@@ -164,6 +182,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         new_user = new User();
         new_user.setName(new_name);
         new_user.setEmail(new_email);
+        new_image = imagePath;
 
 
         EditUserTask et = new EditUserTask();
@@ -185,7 +204,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             progressDialog.getWindow().setGravity(Gravity.CENTER);
             progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            //progressDialog.show();
             super.onPreExecute();
         }
 
@@ -196,16 +215,32 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
 
         @Override
         protected String doInBackground(Integer... integers) {
+
+            MultipartBody.Part body = null;
+            if (new_image!=null) {
+                File file = new File(new_image);
+                RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+            }
+
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl(getApplicationContext().getResources().getString(R.string.db_URL))
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
             Retrofit retrofit = builder.build();
             UserClient client = retrofit.create(UserClient.class);
-            Call<String> call = client.EditUser(username, new_user);
 
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), new_user.getName());
+            final RequestBody mail = RequestBody.create(MediaType.parse("text/plain"), new_user.getEmail());
+
+            Call<String> call = client.EditUser(username, body, name, mail);
+
+            final MultipartBody.Part finalBody = body;
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
+                    System.out.println("Edit user: " + response.code());
+                    System.out.println("Edit user: " + response.message());
                     if(response.isSuccessful()) {
                         success = true;
                         System.out.println("Edit user: " + response.errorBody());
@@ -214,6 +249,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     }
                     else {
                         success = false;
+                        FragmentManager fm = getSupportFragmentManager();
+                        EditProfileFragment fragment = (EditProfileFragment) fm.findFragmentById(R.id.EditProfileFragment);
+                        fragment.error();
                     }
                 }
 
@@ -226,6 +264,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             });
             return null;
         }
+    }
+
+    public boolean getSuccess (){
+        return success;
     }
 
     public boolean EditPassword(String username, String old_pass, String new_pass) {
@@ -281,6 +323,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     }
                     else {
                         success = false;
+                        FragmentManager fm = getSupportFragmentManager();
+                        EditPasswordFragment fragment = (EditPasswordFragment) fm.findFragmentById(R.id.EditPasswordFragment);
+                        fragment.error();
                     }
                 }
 
@@ -302,10 +347,14 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 ChangeFragment(1);
                 break;
             case "userProfile":
-                super.onBackPressed();
+                Intent i = new Intent(AccountSettingsActivity.this, MainMenuActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(i);
                 break;
             default:
                 break;
         }
     }
+
 }

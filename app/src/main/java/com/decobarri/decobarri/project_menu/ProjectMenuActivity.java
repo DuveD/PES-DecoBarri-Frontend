@@ -22,6 +22,16 @@ import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
 import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectMenuActivity extends BaseActivity implements View.OnClickListener {
 
@@ -34,6 +44,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
     static public String projectID;
+    static public String projectAdmin;
 
     String currentFragment;
 
@@ -99,6 +110,24 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
         // Getting project ID
         projectID = getIntent().getStringExtra(Const.ID);
+
+        //Getting project Admin
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(this.getResources().getString(R.string.db_URL))
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<Project> call = client.FindProjectById(projectID);
+        call.enqueue(new Callback<Project>() {
+            @Override
+            public void onResponse(Call<Project> call, Response<Project> response) {
+                if(response.isSuccessful()) projectAdmin=response.body().getAdmin();
+            }
+            @Override
+            public void onFailure(Call<Project> call, Throwable t) {
+            }
+        });
+
 
         infoFragment = new InfoFragment();
         inventoryFragment = new InventoryFragment();
@@ -286,12 +315,14 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 Log.i(TAG, "Back from EditMaterialFragment (InventoriFragment)");
                 super.onBackPressed();
                 InventoryFragment fragment = (InventoryFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
-                fragment.getInventory();
+                // TODO: Uncomment this
+                //fragment.getInventory();
             } else if (parentFragment.parentFragment.equals(NeedListFragment.class.getSimpleName())) {
                 Log.i(TAG, "Back from EditMaterialFragment (NeedListFragment)");
                 super.onBackPressed();
                 NeedListFragment fragment = (NeedListFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
-                fragment.getNeedList();
+                // TODO: Uncomment this
+                //fragment.getNeedList();
             }
         }
         else if (currentFragment.equals(EditNoteFragment.class.getSimpleName())) {

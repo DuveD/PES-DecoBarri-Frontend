@@ -1,5 +1,6 @@
 package com.decobarri.decobarri.project_menu;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
@@ -7,9 +8,12 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -85,6 +89,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_map, container, false);
@@ -112,6 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
+
         initMap();
 
 
@@ -200,7 +206,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 call.enqueue(new Callback<Project>() {
                     @Override
                     public void onResponse(Call<Project> call, Response<Project> response) {
-                        LatLng coord = new LatLng(Integer.parseInt(response.body().getLat()), Integer.parseInt(response.body().getLng()));
+                        LatLng coord = new LatLng(Double.parseDouble(response.body().getLat()), Double.parseDouble(response.body().getLng()));
                         googleMap.addMarker(new MarkerOptions().position(coord));
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(coord).zoom(12).build();

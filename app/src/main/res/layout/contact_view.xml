@@ -9,7 +9,7 @@
     android:focusable="true"
     android:background="?android:attr/selectableItemBackground"
     android:id="@+id/item_container"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <RelativeLayout
         android:layout_width="60dp"

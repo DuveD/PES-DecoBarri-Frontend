@@ -3,16 +3,14 @@ package com.decobarri.decobarri.db_resources;
 import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Materials.Material;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import javax.net.ssl.SSLContext;
-
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -40,6 +38,9 @@ public interface ProjectClient {
     @GET("/project/getItems/{id}")
     Call<List<Item>> GetItems(@Path("id") String id);
 
+    @POST("/project/addMember/{id}")
+    Call<String> AddMember(@Path("id") String id, @Body User user);
+
     @GET("/project/getMembers/{id}")
     Call<List<User>> GetMembers(@Path("id") String id);
 
@@ -49,8 +50,6 @@ public interface ProjectClient {
     @PUT("project/editItem/{id}")
     Call<String> EditItem(@Path("id") String _id, @Body Item item);
 
-    //@DELETE("/project/deleteItem/{id}")
-    //@HTTP(method = "DELETE", path = "/project/deleteItem/{id}", hasBody = true)
     @PUT("/project/deleteItem/{id}")
     Call<String> DeleteItem(@Path("id") String _id, @Body Item item);
 
@@ -81,4 +80,16 @@ public interface ProjectClient {
 
     @PUT("")
     Call<String> deleteNeedListMaterial();
+
+    @GET("/project/getImage/{id}")
+    Call<ResponseBody> getImage(@Path("id") String _id);
+
+    @POST("/project/addRequest/{id}")
+    Call<String> addRequest(@Path("id") String _id, @Body User user);
+
+    @POST("/project/deleteRequest/{id}")
+    Call<String> deleteRequest(@Path("id") String _id, @Body User user);
+
+    @GET("/project/getRequests/{id}")
+    Call<List<Project>> getRequests(@Path("id") String _id);
 }
