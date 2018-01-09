@@ -1,58 +1,82 @@
 package com.decobarri.decobarri.activity_resources.Notes;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Note {
+public class Note implements Parcelable{
 
-    @SerializedName("_id")
-    @Expose
-    private String id;
-
-    @SerializedName("title")
-    @Expose
+    private String _id;
     private String title;
-
-    @SerializedName("date")
-    @Expose
-    private String date;
-
-    @SerializedName("description")
-    @Expose
     private String description;
-
-    @SerializedName("author")
-    @Expose
     private String author;
-
-    @SerializedName("modifiable")
-    @Expose
     private Boolean modifiable;
+    private String date;
+    private String color;
 
-    @SerializedName("color")
-    @Expose
-    private int color;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeString(author);
+        parcel.writeString((modifiable ? "true" : "false"));
+        parcel.writeString(date);
+        parcel.writeString(color);
+    }
 
-    public Note(String id, String title, String date, String description, String author, Boolean modifiable, int color) {
-        this.id = id;
+    public Note (){
+        this._id = "";
+        this.title = "";
+        this.description = "";
+        this.author = "";
+        this.modifiable = true;
+        this.date = "";
+        this.color = "";
+    }
+
+    public Note (String _id, String title, String date, String description, String author, Boolean modifiable, String color) {
+        this._id = _id;
         this.title = title;
-        this.date = date;
         this.description = description;
         this.author = author;
         this.modifiable = modifiable;
+        this.date = date;
         this.color = color;
     }
 
+    protected Note (Parcel in) {
+        _id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        author = in.readString();
+        modifiable = in.readString().equals("true");
+        date = in.readString();
+        color = in.readString();
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getTitle() {
         return title;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public String getDescription() {
@@ -67,7 +91,11 @@ public class Note {
         return modifiable;
     }
 
-    public int getColor() {
+    public String getDate() {
+        return date;
+    }
+
+    public String getColor() {
         return color;
     }
 }

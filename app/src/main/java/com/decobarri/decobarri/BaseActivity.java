@@ -17,6 +17,8 @@ import android.view.View;
 import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
 import com.decobarri.decobarri.drawe_menu.ChatActivity;
 import com.decobarri.decobarri.drawe_menu.ContactListActivity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,9 +42,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     private void configureCall(){
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(gson));
         retrofit = builder
                 .client(httpClient.build())
                 .build();

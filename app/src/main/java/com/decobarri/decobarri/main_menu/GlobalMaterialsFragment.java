@@ -22,23 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.R.id;
 import com.decobarri.decobarri.R.layout;
 import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.activity_resources.Materials.MaterialAdapter;
-import com.decobarri.decobarri.db_resources.MaterialsInterface;
+import com.decobarri.decobarri.db_resources.MaterialsClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GlobalMaterialsFragment extends Fragment {
 
@@ -112,7 +109,7 @@ public class GlobalMaterialsFragment extends Fragment {
                 globalMaterialList,
                 recyclerView,
                 getActivity(),
-                null){
+                GlobalMaterialsFragment.class.getSimpleName()){
 
             @Override
             public void customNotifyDataSetChanged(){
@@ -167,7 +164,7 @@ public class GlobalMaterialsFragment extends Fragment {
         updatingGlobalMaterialList = true;
         startUpdatingAnimation();
 
-        MaterialsInterface client = retrofit.create(MaterialsInterface.class);
+        MaterialsClient client = retrofit.create(MaterialsClient.class);
         Call<List<Material>> call = client.contentList();
 
         // Execute the call asynchronously. Get a positive or negative callback.

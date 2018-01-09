@@ -34,7 +34,7 @@
         <activity android:name=".drawe_menu.ContactListActivity" />
         <activity android:name=".project_menu.ProjectMenuActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".project_menu.edit_items.EditMaterialActivity" />
+        <activity android:name=".project_menu.edit_items.EditMaterialFragment" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

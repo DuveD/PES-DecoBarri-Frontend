@@ -13,7 +13,11 @@
     app:contentPaddingTop="10dp"
     app:contentPaddingLeft="10dp"
     app:contentPaddingRight="10dp"
-    app:contentPaddingBottom="5dp">
+    app:contentPaddingBottom="5dp"
+
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"

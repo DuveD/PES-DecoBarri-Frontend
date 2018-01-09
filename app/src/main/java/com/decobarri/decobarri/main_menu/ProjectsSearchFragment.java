@@ -1,12 +1,10 @@
 package com.decobarri.decobarri.main_menu;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,22 +14,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.activity_resources.Projects.AllProjectsAdapter;
 //import com.decobarri.decobarri.activity_resources.Projects.Project;
-import com.decobarri.decobarri.db_resources.MaterialsInterface;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectsSearchFragment extends Fragment {
     List items = new ArrayList();

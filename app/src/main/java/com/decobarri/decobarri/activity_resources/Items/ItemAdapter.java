@@ -35,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ItemAdapter
         extends Adapter<ItemAdapter.ItemViewHolder>
-        implements OnClickListener, View.OnLongClickListener {
+        implements OnClickListener {
 
     private String projectId;
     private List<Item> itemList;
@@ -81,7 +81,6 @@ public class ItemAdapter
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, parent, false);
         view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
         ItemViewHolder item = new ItemViewHolder(view);
         return item;
     }
@@ -108,19 +107,8 @@ public class ItemAdapter
         viewHolder.description.setText(itemList.get(position).getDescription());
     }
 
-
     @Override
     public void onClick(View view) {
-        int itemPosition = recyclerView.getChildLayoutPosition(view);
-        Item item = itemList.get(itemPosition);
-
-        CharSequence text = "Item description: " + item.getDescription();
-        Toast toast = Toast.makeText(view.getContext(), text, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
         final CharSequence[] items = {"Edit", "Delete"};
@@ -131,19 +119,18 @@ public class ItemAdapter
             public void onClick(DialogInterface dialog, int item) {
                 switch (item){
                     case 0:
-                        onLongClickEdit(itemPosition);
+                        onClickEdit(itemPosition);
                         break;
                     case 1:
-                        onLongClickDelete(itemPosition);
+                        onClickDelete(itemPosition);
                         break;
                 }
             }
         });
         builder.show();
-        return true;
     }
 
-    private void onLongClickEdit( int itemPosition ) {
+    private void onClickEdit( int itemPosition ) {
         Log.i(TAG, "Edit Item");
         ProjectMenuActivity activity = (ProjectMenuActivity)context;
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
@@ -154,7 +141,7 @@ public class ItemAdapter
         customNotifyDataSetChanged();
     }
 
-    private void onLongClickDelete( int itemPosition ) {
+    private void onClickDelete( int itemPosition ) {
         Log.i(TAG, "Delete Material");
 
         Item item= new Item();
