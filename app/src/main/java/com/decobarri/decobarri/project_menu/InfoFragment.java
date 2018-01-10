@@ -60,7 +60,6 @@ public class InfoFragment extends Fragment {
         projImage = (ImageView) view.findViewById(R.id.project_image);
 
         ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
-        // TODO: Llamada a servidor para pedir la info del proyecto
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
                 .addConverterFactory(GsonConverterFactory.create());
@@ -76,8 +75,8 @@ public class InfoFragment extends Fragment {
                     projDescriptionText.setText(response.body().getDescription());
                 }
                 else {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("Code: " + response.message());
+                    System.out.println("Project info load code: " + response.code());
+                    System.out.println("Project info load: " + response.message());
                 }
             }
 
@@ -97,8 +96,8 @@ public class InfoFragment extends Fragment {
                             Bitmap.createScaledBitmap(bm, projImage.getWidth(), projImage.getHeight(), false));
                 }
                 else {
-                    System.out.println("Code: " + response.code());
-                    System.out.println("Code: " + response.message());
+                    System.out.println("Project info image load code: " + response.code());
+                    System.out.println("Project info image load: " + response.message());
                 }
             }
 

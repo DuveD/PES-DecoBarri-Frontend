@@ -31,7 +31,7 @@
             android:name=".main_menu.MainMenuActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".drawe_menu.AccountSettingsActivity" />
-        <activity android:name=".drawe_menu.ChatActivity" />
+        <activity android:name=".drawe_menu.RequestsActivity" />
         <activity android:name=".drawe_menu.ContactListActivity" />
         <activity android:name=".project_menu.ProjectMenuActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>

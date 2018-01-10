@@ -19,7 +19,6 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -28,7 +27,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ChatActivity extends AppCompatActivity {
+public class RequestsActivity extends AppCompatActivity {
 
     List<Request> requestList;
     String username, password;
@@ -89,9 +88,9 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                     list.setVisibility(View.VISIBLE);
-                    layoutManager = new LinearLayoutManager(ChatActivity.this);
+                    layoutManager = new LinearLayoutManager(RequestsActivity.this);
                     list.setLayoutManager(layoutManager);
-                    adapter = new RequestAdapter(requestList, list, ChatActivity.this);
+                    adapter = new RequestAdapter(requestList, list, RequestsActivity.this);
                     list.setAdapter(adapter);
                 }
                 else {

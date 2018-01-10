@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,12 +19,8 @@ import android.widget.TextView;
 import com.decobarri.decobarri.db_resources.User;
 import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.drawe_menu.AccountSettingsActivity;
-import com.decobarri.decobarri.drawe_menu.ChatActivity;
+import com.decobarri.decobarri.drawe_menu.RequestsActivity;
 import com.decobarri.decobarri.drawe_menu.ContactListActivity;
-import com.squareup.picasso.Picasso;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -112,7 +106,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                             startActivity(new Intent(getApplicationContext(), AccountSettingsActivity.class));
                             break;
                         case R.id.chat:
-                            startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                            startActivity(new Intent(getApplicationContext(), RequestsActivity.class));
                             break;
                         case R.id.contact_list:
                             startActivity(new Intent(getApplicationContext(), ContactListActivity.class));
@@ -144,9 +138,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println("Drawer load: " + response.code());
-                System.out.println("Drawer load: " + response.message());
-                System.out.println("Drawer load: " + response.body());
+                System.out.println("Drawer image load: " + response.code());
+                System.out.println("Drawer image load: " + response.message());
+                System.out.println("Drawer image load: " + response.body());
                 if(response.isSuccessful()) {
                     Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
                     System.out.println("Drawer load: " + bm);
