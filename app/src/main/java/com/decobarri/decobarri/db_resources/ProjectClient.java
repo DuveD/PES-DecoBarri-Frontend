@@ -20,6 +20,9 @@ public interface ProjectClient {
     @GET("/project/findByID/{id}")
     Call<Project> FindProjectById(@Path("id") String id);
 
+    @POST("/project/findProjectsByLocation ")
+    Call<List<ProjectLocation>> FindProjectsByLocation (@Body Project findProjectsByLocation);
+
     @GET("/project/findAll")
     Call<List<Project>> FindAllProjects();
 
