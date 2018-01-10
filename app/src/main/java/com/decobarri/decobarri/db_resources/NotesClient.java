@@ -13,16 +13,16 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface NotesInterface {
-
+public interface NotesClient {
     @GET("/project/getNotes/{id}")
     Call<List<Note>> getNotes(@Path("id") String id);
 
     @POST("/project/addNote/{id}")
-    Call<Integer> addNote(@Path("id") String id,
-                       @Body Note note);
+    Call<String> addNote(@Path("id") String id, @Body Note note);
 
-    @PUT("/project/addNote/{id}")
-    Call<Integer> deleteNote(@Path("id") String id,
-                          @Body int noteId);
+    @PUT("/project/deleteNote/{id}")
+    Call<String> deleteNote(@Path("id") String _id, @Body Note note);
+
+    @POST("/project/editNote/{id}")
+    Call<String> editNote(@Path("id") String _id, @Body Note note);
 }

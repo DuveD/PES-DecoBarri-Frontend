@@ -168,9 +168,6 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
 
     private void creaProjecte(Project projectCreated) {
         //**********************************************************************
-
-        //Descomentar para crear proyecto en servidor
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(getResources().getString(R.string.db_URL))

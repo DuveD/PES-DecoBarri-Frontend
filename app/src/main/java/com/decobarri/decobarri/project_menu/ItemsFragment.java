@@ -112,7 +112,7 @@ public class ItemsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                getItems();
+                fillItemList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -174,30 +174,8 @@ public class ItemsFragment extends Fragment {
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public void getItems(){
-        (new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected void onPreExecute(){
-                System.out.println("Loading Items...");
-                startUpdatingAnimation();
-            }
-            @Override
-            protected Void doInBackground(Void... voids) {
-                fillItemList();
-                return null;
-            }
-            @Override
-            public void onPostExecute( Void nope ) {
-                setContentView();
-                stopUpdatingAnimation();
-                System.out.println("Done");
-            }
-        }).execute();
-    }
-
     public void fillItemList() {
-
+        startUpdatingAnimation();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(this.getResources().getString(R.string.db_URL))
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()));
@@ -226,11 +204,14 @@ public class ItemsFragment extends Fragment {
                     System.out.println("Error code: " + response.code());
                     System.out.println("Error msg: " + response.message());
                 }
+
+                stopUpdatingAnimation();
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
                 System.out.println("Error: " + t.getMessage());
+                stopUpdatingAnimation();
             }
         });
 

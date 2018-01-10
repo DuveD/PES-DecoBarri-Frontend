@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.activity_resources.Materials;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,12 +20,17 @@ import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity;
+import com.decobarri.decobarri.project_menu.InventoryFragment;
+import com.decobarri.decobarri.project_menu.NeedListFragment;
+import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
+import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
+import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Retrofit;
 
 public class MaterialAdapter
         extends Adapter<MaterialAdapter.MaterialViewHolder>
@@ -33,14 +39,23 @@ public class MaterialAdapter
     private List<Material> materialList;
     private RecyclerView recyclerView;
     private Context context;
-    private String LIST;
+    private String parentFragment;
     private static final String TAG = "MaterialAdapter";
 
-    public MaterialAdapter(List<Material> materialList, RecyclerView recyclerView, Context context, String LIST) {
+    private Retrofit retrofit;
+    private String projectID;
+
+    public MaterialAdapter(List<Material> materialList, RecyclerView recyclerView, Context context, String parentFragment) {
         this.materialList = materialList;
         this.recyclerView = recyclerView;
         this.context = context;
-        this.LIST = LIST;
+        this.parentFragment = parentFragment;
+        if ( parentFragment.equals(InventoryFragment.class.getSimpleName()) ||
+             parentFragment.equals(NeedListFragment.class.getSimpleName())) {
+
+            retrofit = ((ProjectMenuActivity) context).retrofit;
+            projectID = ((ProjectMenuActivity) context).projectID;
+        }
     }
 
     // View lookup cache
@@ -134,7 +149,7 @@ public class MaterialAdapter
 
     @Override
     public boolean onLongClick(View view) {
-        if (LIST == null){
+        if (parentFragment == null){
             onLongClickRead( view );
         } else {
             onLongClickOptions( view );
@@ -149,8 +164,8 @@ public class MaterialAdapter
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
         String listToMove = "NULL";
-        if (LIST.equals(Const.INVENTORY_MATERIAL)) listToMove = "Need List";
-        else if (LIST.equals(Const.NEED_LIST_MATERIAL)) listToMove = "Inventory";
+        if (parentFragment.equals(InventoryFragment.class.getSimpleName())) listToMove = "Need List";
+        else if (parentFragment.equals(NeedListFragment.class.getSimpleName())) listToMove = "Inventory";
 
         final CharSequence[] items = {"Edit",  "Move to "+listToMove, "Delete"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -175,23 +190,24 @@ public class MaterialAdapter
     }
 
     private void onLongClickEdit( int itemPosition ) {
-        Log.i(TAG+" "+LIST, "Edit Material");
-                Intent intent = new Intent(context, EditMaterialActivity.class);
-        intent.putExtra(Const.FROM, LIST);
-        intent.putExtra(Const.EDIT, true);
-        intent.putExtra(Const.ID, getMaterial( itemPosition ).getID());
-        context.startActivity(intent);
+        Log.i(TAG+" "+parentFragment, "Edit Material");
+
+        ProjectMenuActivity activity = (ProjectMenuActivity)context;
+        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+        transaction.add(R.id.DrawerLayout, EditMaterialFragment.newInstance(getMaterial(itemPosition), TAG));
+        transaction.addToBackStack(null);
+        transaction.commit();
 
         customNotifyDataSetChanged();
     }
 
     private void onLongClickMove( int itemPosition ) {
-        Log.i(TAG+" "+LIST, "Move Material");
+        Log.i(TAG+" "+parentFragment, "Move Material");
         //TODO: CALL MOVE
     }
 
     private void onLongClickDelete( int itemPosition ) {
-        Log.i(TAG+" "+LIST, "Delete Material");
+        Log.i(TAG+" "+parentFragment, "Delete Material");
         //TODO: CALL DELETE
         deleteMaterial(itemPosition);
         customNotifyDataSetChanged();

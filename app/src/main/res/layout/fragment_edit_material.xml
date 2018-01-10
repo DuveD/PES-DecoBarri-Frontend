@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.decobarri.decobarri.project_menu.edit_items.EditMaterialActivity"
+    tools:context="com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment"
     android:orientation="vertical"
     android:background="@android:color/black">
 
@@ -29,7 +29,7 @@
                 android:background="?android:attr/selectableItemBackground"/>
 
             <TextView
-                android:id="@+id/note_title"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:gravity="center"
@@ -112,6 +112,7 @@
             android:layout_height="@dimen/padding_text_empty_list_icons" />
 
             <TextView
+                android:id="@+id/adress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adress"
@@ -149,7 +150,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/saveChanges"
+            android:id="@+id/save_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"

@@ -17,11 +17,11 @@ import android.widget.LinearLayout;
 import com.decobarri.decobarri.BaseActivity;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Const;
-import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
+import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
 import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,11 +40,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     ProjectClient client;
     Project project;
-
-    private List<Material> inventoryList;
-    private static Boolean updatingInventoryList;
-    private List<Material> needList;
-    private static Boolean updatingNeedList;
 
     private int previousBottomSheetClickedItem;
     private int lastBottomSheetClickedItem;
@@ -109,13 +104,6 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initVars() {
-        inventoryList = new ArrayList<>();
-        updatingInventoryList = false;
-        needList = new ArrayList<>();
-        updatingNeedList = false;
-        fillInvetoryList();
-        fillNeedList();
-
         // Initialized by default
         previousBottomSheetClickedItem = R.id.bottom_sheet_info;
         lastBottomSheetClickedItem = R.id.bottom_sheet_info;
@@ -291,96 +279,60 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         ((LinearLayout) findViewById(R.id.bottom_sheet_group)).setOnClickListener(this);
     }
 
-    public static Boolean getUpdatingInventoryList() { return updatingInventoryList; }
-    public static void setUpdatingInventoryList(Boolean updating) { updatingInventoryList = updating; }
-    public List<Material> getInventoryList() { return inventoryList; }
-    public Boolean inventoryIsEmpty() { return inventoryList.isEmpty(); }
-
-    public static Boolean getUpdatingNeedList() { return updatingNeedList; }
-    public static void setUpdatingNeedList(Boolean updating) { updatingNeedList = updating; }
-    public List<Material> getNeedsList() { return needList; }
-    public Boolean needListIsEmpty() { return needList.isEmpty(); }
-
-    public void fillInvetoryList() {
-        /* examples */
-        /* examples */
-        /* examples */
-        inventoryList.clear();
-        inventoryList.add(new Material("1", "http://i.imgur.com/I86rTVl.jpg","InventoryItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        inventoryList.add(new Material("2", "http://i.imgur.com/I86rTVl.jpg","InventoryItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        inventoryList.add(new Material("3", "http://i.imgur.com/I86rTVl.jpg","InventoryItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("4", "http://i.imgur.com/I86rTVl.jpg","InventoryItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        inventoryList.add(new Material("5", "http://i.imgur.com/I86rTVl.jpg","InventoryItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("6", "http://i.imgur.com/I86rTVl.jpg","InventoryItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        inventoryList.add(new Material("7", "http://i.imgur.com/I86rTVl.jpg","InventoryItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        inventoryList.add(new Material("8", "http://i.imgur.com/I86rTVl.jpg","InventoryItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        inventoryList.add(new Material("9", "http://i.imgur.com/I86rTVl.jpg","InventoryItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(inventoryList, new Comparator<Material>() {
-            @Override
-            public int compare(Material materialA, Material materialB) {
-                int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
-                if (boolean_compare == 0)
-                    return materialA.getName().compareToIgnoreCase(materialB.getName());
-                else return boolean_compare;
-            }
-        });
-    }
-
-    public void fillNeedList() {
-        /* examples */
-        /* examples */
-        /* examples */
-        needList.clear();
-        needList.add(new Material("1", "http://i.imgur.com/I86rTVl.jpg","NeedListItemA","Sillas sobrantes",true,5,"C/Exemple nº123"));
-        needList.add(new Material("2", "http://i.imgur.com/I86rTVl.jpg","NeedListItemB","Botellas sobrantes",false,5,"C/Exemple nº123"));
-        needList.add(new Material("3", "http://i.imgur.com/I86rTVl.jpg","NeedListItemC","Cables sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material("4", "http://i.imgur.com/I86rTVl.jpg","NeedListItemD","Cajas Grandes",false,20,"C/Exemple nº123"));
-        needList.add(new Material("5", "http://i.imgur.com/I86rTVl.jpg","NeedListItemE","Herramientas sobrantes",false,0,"C/Exemple nº123"));
-        needList.add(new Material("6", "http://i.imgur.com/I86rTVl.jpg","NeedListItemF","Neumaticos sobrantes",true,4,"C/Exemple nº123"));
-        needList.add(new Material("7", "http://i.imgur.com/I86rTVl.jpg","NeedListItemG","Pinturas roja, azul, verde y más...",true,0,"C/Exemple nº123"));
-        needList.add(new Material("8", "http://i.imgur.com/I86rTVl.jpg","NeedListItemH","Piscina hinchable pequeña",true,1,"C/Exemple nº123"));
-        needList.add(new Material("9", "http://i.imgur.com/I86rTVl.jpg","NeedListItemI","Cuanto más grande mejor",false,0,"C/Exemple nº123"));
-        /* /examples */
-        /* /examples */
-        /* /examples */
-
-        Collections.sort(needList, new Comparator<Material>() {
-            @Override
-            public int compare(Material materialA, Material materialB) {
-                int boolean_compare = Boolean.compare(materialB.isUrgent(), materialA.isUrgent());
-                if (boolean_compare == 0)
-                    return materialA.getName().compareToIgnoreCase(materialB.getName());
-                else return boolean_compare;
-            }
-        });
-    }
-
     public void setCurrentFragment (String TAG){
         currentFragment = TAG;
     }
 
     @Override
     public void onBackPressed() {
-
-        /*if (currentFragment.equals(EditItemFragment.class.getSimpleName())) {
-            ((EditItemFragment) getFragmentManager().findFragmentById(R.id.fragment_view)).onBackPressed();
+        Log.e(TAG, currentFragment);
+        if (currentFragment.equals(
+                EditItemFragment.class.getSimpleName())) {
+            ((EditItemFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
         }
-        else if (currentFragment.equals(EditMaterialFragment.class.getSimpleName())) {
-            ((EditMaterialFragment) getFragmentManager().findFragmentById(R.id.fragment_view)).onBackPressed();
+        else if (currentFragment.equals(
+                EditMaterialFragment.class.getSimpleName())) {
+            ((EditMaterialFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
         }
-        else*/ if (currentFragment.equals(EditNoteFragment.class.getSimpleName())) {
+        else if (currentFragment.equals(
+                EditNoteFragment.class.getSimpleName())) {
             ((EditNoteFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
         } else {
-            superOnBackPressed();
+            back();
         }
     }
 
-    public void superOnBackPressed() {
-        super.onBackPressed();
+    public void back() {
+        if (currentFragment.equals(EditItemFragment.class.getSimpleName())) {
+            Log.i(TAG, "Back from EditItemFragment");
+            super.onBackPressed();
+            ItemsFragment fragment = (ItemsFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+            fragment.fillItemList();
+        }
+        else if (currentFragment.equals(EditMaterialFragment.class.getSimpleName())) {
+            EditMaterialFragment parentFragment = (EditMaterialFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout);
+            if (parentFragment.parentFragment.equals(InventoryFragment.class.getSimpleName())) {
+                Log.i(TAG, "Back from EditMaterialFragment (InventoriFragment)");
+                super.onBackPressed();
+                InventoryFragment fragment = (InventoryFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+                // TODO: Uncomment this
+                //fragment.getInventory();
+            } else if (parentFragment.parentFragment.equals(NeedListFragment.class.getSimpleName())) {
+                Log.i(TAG, "Back from EditMaterialFragment (NeedListFragment)");
+                super.onBackPressed();
+                NeedListFragment fragment = (NeedListFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+                // TODO: Uncomment this
+                //fragment.getNeedList();
+            }
+        }
+        else if (currentFragment.equals(EditNoteFragment.class.getSimpleName())) {
+            Log.i(TAG, "Back from EditNoteFragment");
+            super.onBackPressed();
+            NotesFragment fragment = (NotesFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+            fragment.getNotes();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 

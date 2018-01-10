@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">DecoBarri</string>
     <string name="google_maps_key">AIzaSyBBzt7B43zPO0FcTXsLfx-7meI6nxhh1tE	</string>
+
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+
     <!--Navigation drawer-->
     <string name="navigation_drawer_open_description">Open navigation drawer</string>
     <string name="navigation_drawer_close_description">Close navigation drawer</string>
@@ -38,9 +42,21 @@
     <string name="swipe_dismiss_left">Swipe Dismiss Left</string>
     <string name="card_view_dismiss_success">CardView Dismissed Successfully.</string>
     <string name="empty_notes_text">Tell something to the group!</string>
+
+    <!-- Edit Notes Fragment -->
+    <string name="changes_not_saved">Changes not saved. Exit?</string>
+    <string name="note_save_failed">Note saving failed for something.</string>
+    <string name="missing_note_parameter">Note needs title and description.</string>
+
+    <!-- Notes Adapter -->
+    <string name="note_delete_failed">Note delete fail for something.</string>
+
     <!--  Action Mode Menu Items -->
     <string name="delete">Delete</string>
     <string name="copy">Copy</string>
     <string name="forward">Forward</string>
     <string name="title_activity_maps">Map</string>
+    <string name="choose_note_image">Choose Item Image</string>
+    <string name="choose_material_image">Choose Material image</string>
+    <string name="missing_material_parameter">Material needs a name.</string>
 </resources>

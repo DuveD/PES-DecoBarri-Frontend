@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +26,7 @@ import android.widget.TextView;
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.activity_resources.Notes.Note;
 import com.decobarri.decobarri.activity_resources.Notes.NotesAdapter;
-import com.decobarri.decobarri.db_resources.NotesInterface;
+import com.decobarri.decobarri.db_resources.NotesClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 
 import java.util.ArrayList;
@@ -35,39 +37,25 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class NotesFragment extends Fragment {
 
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private Adapter adapter;
+    private LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private Menu menu;
+    private Retrofit retrofit;
 
     private List<Note> notesList;
-    private static Boolean updatingNotes;
     private String projectID;
 
     private static final String TAG = NotesFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        initVars();
-    }
-
-    private void initVars() {
-        notesList = new ArrayList<>();
-        projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_project_notes, container, false);
-        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Notes");
-        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
-
         getActivity().findViewById(R.id.fabPlus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +65,24 @@ public class NotesFragment extends Fragment {
                 transaction.commit();
             }
         });
+        super.onCreate(savedInstanceState);
+        initVars();
+    }
+
+    private void initVars() {
+        notesList = new ArrayList<>();
+        retrofit = ((ProjectMenuActivity)getActivity()).retrofit;
+        projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_project_notes, container, false);
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Notes");
+        ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(TAG);
+
+        notesList = new ArrayList<>();
+        getNotes();
         return view;
     }
 
@@ -86,12 +92,14 @@ public class NotesFragment extends Fragment {
         super.onDestroyView();
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView = (RecyclerView) getView().findViewById(R.id.notes_recycler);
         emptyView = (LinearLayout) getView().findViewById(R.id.empty_notes_layout);
-        fillContentList();
+        getNotes();
         setContentView();
     }
 
@@ -105,7 +113,7 @@ public class NotesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                fillContentList();
+                getNotes();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -120,19 +128,12 @@ public class NotesFragment extends Fragment {
         adapter = new NotesAdapter(
                 notesList,
                 recyclerView,
-                getActivity()){
-
-            @Override
-            public void customNotifyDataSetChanged(){
-                setVisibleList();
-                super.customNotifyDataSetChanged();
-            }
-        };
+                getActivity());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
-    private void setVisibleList() {
+    public void setVisibleList() {
         if (notesList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
@@ -169,11 +170,10 @@ public class NotesFragment extends Fragment {
     }
 
     // Recargamos nuestro ArrayList con el contenido actualizado con llamadas a servidor
-    public void fillContentList() {
-        updatingNotes = true;
+    public void getNotes() {
         startUpdatingAnimation();
 
-        NotesInterface client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(NotesInterface.class);
+        NotesClient client = retrofit.create(NotesClient.class);
         Call<List<Note>> call = client.getNotes(projectID);
 
         // Execute the call asynchronously. Get a positive or negative callback.
@@ -198,7 +198,6 @@ public class NotesFragment extends Fragment {
                 else {
                     Log.e(TAG, "Response failed: " + response.body());
                 }
-                updatingNotes = false;
                 stopUpdatingAnimation();
             }
 
@@ -211,7 +210,6 @@ public class NotesFragment extends Fragment {
                 if (!isOnline())  Log.e(TAG, "No internet connection.");
                 else Log.w(TAG, "Please check your internet connection and try again.");
 
-                updatingNotes = false;
                 stopUpdatingAnimation();
             }
         });

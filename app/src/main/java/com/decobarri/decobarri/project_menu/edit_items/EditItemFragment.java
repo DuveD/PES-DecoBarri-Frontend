@@ -4,12 +4,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -19,27 +16,19 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Items.Item;
-import com.decobarri.decobarri.activity_resources.Materials.Material;
-import com.decobarri.decobarri.db_resources.ItemClient;
-import com.decobarri.decobarri.db_resources.MaterialsInterface;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.project_menu.ItemsFragment;
-import com.decobarri.decobarri.project_menu.NotesFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Locale;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -153,7 +142,7 @@ public class EditItemFragment extends Fragment {
         itemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyImage.openChooserWithDocuments(EditItemFragment.this, "Choose Item Image", 0);
+                EasyImage.openChooserWithDocuments(EditItemFragment.this, getResources().getString(R.string.choose_note_image), 0);
             }
         });
 
@@ -162,7 +151,7 @@ public class EditItemFragment extends Fragment {
             public void onClick(View view) {
 
                 if(nameEditText.getText().toString().equals("") && descriptionEditText.getText().toString().equals("")){
-                    Toast.makeText(getActivity(), "El ítem debe tener nombre y descripción.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "El ítem debe tener nombre y descripción.", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Item newItem = new Item();
@@ -190,7 +179,7 @@ public class EditItemFragment extends Fragment {
                 System.out.println("Response message: " + response.message());
                 if (response.isSuccessful()){
                     System.out.println("Response: " + response.body());
-                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                    ((ProjectMenuActivity)getActivity()).back();
                 }
             }
 
@@ -212,7 +201,7 @@ public class EditItemFragment extends Fragment {
                 System.out.println("Response message: " + response.message());
                 if (response.isSuccessful()){
                     System.out.println("Response: " + response.body());
-                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                    ((ProjectMenuActivity)getActivity()).back();
                 }
             }
 
@@ -252,7 +241,7 @@ public class EditItemFragment extends Fragment {
                     .setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }
-        else ((ProjectMenuActivity)this.getActivity()).superOnBackPressed();
+        else ((ProjectMenuActivity)this.getActivity()).back();
     }
 
     private boolean changes() {
@@ -273,7 +262,7 @@ public class EditItemFragment extends Fragment {
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                    ((ProjectMenuActivity)getActivity()).back();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

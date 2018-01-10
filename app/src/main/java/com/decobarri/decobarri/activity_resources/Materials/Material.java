@@ -1,37 +1,21 @@
 package com.decobarri.decobarri.activity_resources.Materials;
 
-public class Material {
+import android.os.Parcelable;
 
-    //@SerializedName("_id")
-    //@Expose
-    private String id;
+import java.io.Serializable;
 
-    //@SerializedName("image")
-    //@Expose
+public class Material implements Serializable {
+
+    private String _id;
     private String image;
-
-    //@SerializedName("name")
-    //@Expose
     private String name;
-
-    //@SerializedName("description")
-    //@Expose
     private String description;
-
-    //@SerializedName("urgent")
-    //@Expose
     private boolean urgent;
-
-    //@SerializedName("quantity")
-    //@Expose
     private int quantity;
-
-    //@SerializedName("address")
-    //@Expose
     private String address;
 
     public Material(String id, String image, String name, String description, boolean urgent, int quantity, String address) {
-        this.id = id;
+        this._id = id;
         this.image = image;
         this.name = name;
         this.description = description;
@@ -40,7 +24,7 @@ public class Material {
         this.address = address;
     }
 
-    public String getID() { return id; }
+    public String getID() { return _id; }
 
     public String getImage() {
         return image;

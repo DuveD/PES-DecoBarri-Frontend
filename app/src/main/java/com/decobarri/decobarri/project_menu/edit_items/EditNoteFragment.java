@@ -3,7 +3,7 @@ package com.decobarri.decobarri.project_menu.edit_items;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,38 +15,38 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.activity_resources.Notes.Note;
-import com.decobarri.decobarri.db_resources.MaterialsInterface;
+import com.decobarri.decobarri.db_resources.NotesClient;
 import com.decobarri.decobarri.project_menu.NotesFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
-
-import java.io.Serializable;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class EditNoteFragment extends Fragment {
 
-    private Note note;
     private View view;
+    private String projectID;
     private EditText titleEditText;
     private EditText descriptionEditText;
     private LinearLayout backgroundLayout;
     private LinearLayout buttonsBackgroundLayout;
+    private ImageButton closeButton;
+    private ImageButton saveButton;
 
+    private Note oldNote;
+    private String oldTitle;
+    private String oldDescription;
+    private String oldColor;
 
-    private String title;
-    private String description;
-    private String date;
-    private String author;
-    private Boolean modifiable;
-    private int color;
+    private String actualColor;
 
     private Retrofit retrofit;
 
@@ -54,7 +54,7 @@ public class EditNoteFragment extends Fragment {
 
     public static EditNoteFragment newInstance(Note note) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("note", (Serializable) note);
+        bundle.putParcelable("oldNote", note);
 
         EditNoteFragment fragment = new EditNoteFragment();
         fragment.setArguments(bundle);
@@ -76,14 +76,15 @@ public class EditNoteFragment extends Fragment {
     private void initVars() {
         readBundle(getArguments());
         retrofit = ((ProjectMenuActivity)this.getActivity()).retrofit;
+        projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
     }
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
-            note = (Note) bundle.getSerializable("note");
-            if (note == null) Log.e(TAG, "Bundle read error, Note is null!");
+            oldNote = (Note) bundle.getParcelable("oldNote");
+            if (oldNote == null) Log.e(TAG, "Bundle read error, Note is null!");
         } else {
-            note = null;
+            oldNote = null;
             Log.i(TAG, "Bundle is empty");
         }
     }
@@ -96,6 +97,8 @@ public class EditNoteFragment extends Fragment {
         buttonsBackgroundLayout = (LinearLayout) view.findViewById(R.id.buttons_layout);
         titleEditText = (EditText) view.findViewById(R.id.note_title);
         descriptionEditText = (EditText) view.findViewById(R.id.note_description);
+        saveButton = (ImageButton) view.findViewById(R.id.save_button);
+        closeButton = (ImageButton) view.findViewById(R.id.toolbar_button);
         setUpNavBar();
         setUpButtons();
         fillInfo();
@@ -103,17 +106,10 @@ public class EditNoteFragment extends Fragment {
     }
 
     private void setUpNavBar(){
-        ((ImageButton) view.findViewById(R.id.toolbar_button)).setOnClickListener(new View.OnClickListener() {
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
-            }
-        });
-
-        ((ImageButton) view.findViewById(R.id.save_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveNote();
             }
         });
     }
@@ -125,6 +121,7 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABwhite));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABwhite));
+                actualColor = "white";
             }
         });
         view.findViewById(R.id.note_fab_red).setOnClickListener( new View.OnClickListener() {
@@ -132,6 +129,7 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABred));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABred));
+                actualColor = "red";
             }
         });
         view.findViewById(R.id.note_fab_orange).setOnClickListener( new View.OnClickListener() {
@@ -139,6 +137,7 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABorange));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABorange));
+                actualColor = "orange";
             }
         });
         view.findViewById(R.id.note_fab_yellow).setOnClickListener( new View.OnClickListener() {
@@ -146,6 +145,7 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FAByellow));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FAByellow));
+                actualColor = "yellow";
             }
         });
         view.findViewById(R.id.note_fab_green).setOnClickListener( new View.OnClickListener() {
@@ -153,6 +153,7 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABgreen));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABgreen));
+                actualColor = "green";
             }
         });
         view.findViewById(R.id.note_fab_blue).setOnClickListener( new View.OnClickListener() {
@@ -160,35 +161,81 @@ public class EditNoteFragment extends Fragment {
             public void onClick(View view) {
                 backgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABblue));
                 buttonsBackgroundLayout.setBackgroundColor(getResources().getColor(R.color.FABblue));
+                actualColor = "blue";
             }
         });
     }
 
     private void fillInfo(){
-        if (note != null) {
-            title = note.getTitle();
-            description = note.getDescription();
-            color = note.getColor();
-            titleEditText.setContentDescription(title);
-            descriptionEditText.setContentDescription(description);
-            backgroundLayout.setBackgroundColor(color);
-            buttonsBackgroundLayout.setBackgroundColor(color);
+        if (oldNote != null) {
+            oldTitle = oldNote.getTitle();
+            oldDescription = oldNote.getDescription();
+            oldColor = oldNote.getColor();
+            actualColor = oldNote.getColor();
+            titleEditText.setText(oldTitle);
+            descriptionEditText.setText(oldDescription);
+            backgroundLayout.setBackgroundColor(getColor(oldColor));
+            buttonsBackgroundLayout.setBackgroundColor(getColor(oldColor));
+
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveNote( getNoteForm() );
+                }
+            });
         } else {
-            title = titleEditText.getText().toString();
-            description = descriptionEditText.getText().toString();
-            color = ((ColorDrawable)backgroundLayout.getBackground()).getColor();
+            oldNote = new Note();
+            oldTitle = titleEditText.getText().toString();
+            oldDescription = descriptionEditText.getText().toString();
+            oldColor = "white";
+            actualColor = "white";
+
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                if(!canCreate()){
+                    Toast.makeText(getActivity(), R.string.missing_note_parameter, Toast.LENGTH_SHORT).show();
+                } else {
+                    addNote( getNoteForm() );
+                }
+                }
+            });
         }
     }
 
-    public void saveNote() {
+    private Note getNoteForm() {
+        SharedPreferences pref = getActivity().getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+        String username = pref.getString("username", "");
 
-        MaterialsInterface client = retrofit.create(MaterialsInterface.class);
-        Call<List<Material>> call = client.contentList();
+        Log.i(TAG, projectID
+                + " " + oldNote.getId()
+                + " " + titleEditText.getText().toString()
+                + " " + oldNote.getDate()
+                + " " + descriptionEditText.getText().toString()
+                + " " + username
+                + " " + oldNote.getModifiable()
+                + " " + actualColor);
+
+
+        return new Note (   oldNote.getId(),
+                            titleEditText.getText().toString(),
+                            oldNote.getDate(),
+                            descriptionEditText.getText().toString(),
+                            username,
+                            oldNote.getModifiable(),
+                            actualColor);
+    }
+
+    public void addNote(Note note) {
+        disableButtons();
+
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<String> call = client.addNote(projectID, note);
 
         // Execute the call asynchronously. Get a positive or negative callback.
-        call.enqueue(new Callback<List<Material>>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 // The network call was a success and we got a response
                 Log.i(TAG, "Call successful: " + call.request());
                 if (response.isSuccessful()) {
@@ -196,21 +243,66 @@ public class EditNoteFragment extends Fragment {
                     Log.i(TAG, "Success : " + response.body());
 
                     // if item is saved correctly
-                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                    ((ProjectMenuActivity)getActivity()).back();
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.note_save_failed, Toast.LENGTH_SHORT).show();
+                    activeButtons();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Material>> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
+                // the network call was a failure
+                Log.e(TAG, "Call failed: " + call.request());
+                Log.e(TAG, "Error: " + t.getMessage());
+
+                Toast.makeText(getActivity(), R.string.note_save_failed, Toast.LENGTH_SHORT).show();
+
+                if (!isOnline())  Log.e(TAG, "No internet connection.");
+                else Log.w(TAG, "Please check your internet connection and try again.");
+
+                activeButtons();
+            }
+        });
+    }
+
+    public void saveNote(Note note) {
+        disableButtons();
+
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<String> call = client.editNote(projectID, note);
+
+        // Execute the call asynchronously. Get a positive or negative callback.
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                // The network call was a success and we got a response
+                Log.i(TAG, "Call successful: " + call.request());
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Log.i(TAG, "Success : " + response.body());
+
+                    // if item is saved correctly
+                    ((ProjectMenuActivity)getActivity()).back();
+                }
+                else {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    activeButtons();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
                 // the network call was a failure
                 Log.e(TAG, "Call failed: " + call.request());
                 Log.e(TAG, "Error: " + t.getMessage());
 
                 if (!isOnline())  Log.e(TAG, "No internet connection.");
                 else Log.w(TAG, "Please check your internet connection and try again.");
+
+                activeButtons();
             }
         });
     }
@@ -220,29 +312,28 @@ public class EditNoteFragment extends Fragment {
                 (ConnectivityManager) this.getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
-
     }
 
     public void onBackPressed() {
-        if (changes()) {
+        if (noteChange()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-            builder.setMessage("Changes not saved. Exit?")
-                    .setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show();
+            builder.setMessage(R.string.changes_not_saved)
+                    .setPositiveButton(R.string.Yes, dialogClickListener)
+                    .setNegativeButton(R.string.No, dialogClickListener).show();
         }
-        else ((ProjectMenuActivity)this.getActivity()).superOnBackPressed();
+        else ((ProjectMenuActivity)getActivity()).back();
     }
 
-    private boolean changes() {
+    private boolean noteChange() {
         final String newTitle = titleEditText.getText().toString();
         final String newDescription = descriptionEditText.getText().toString();
-        if (!newTitle.equals(title)){
+        if (!newTitle.isEmpty() && !newTitle.equals(oldTitle)){
             Log.i(TAG, "Title edited.");
             return true;
-        } else if (!newDescription.equals(description)){
+        } else if (!newDescription.isEmpty() && !newDescription.equals(oldDescription)){
             Log.i(TAG, "Description edited");
             return true;
-        } else if ((((ColorDrawable) backgroundLayout.getBackground()).getColor() != color) &&
+        } else if (!actualColor.equals(oldColor) &&
                 (!newTitle.isEmpty() || !newDescription.isEmpty())){
             Log.i(TAG, "Color edited");
             return true;
@@ -250,12 +341,21 @@ public class EditNoteFragment extends Fragment {
         return false;
     }
 
+    private boolean canCreate() {
+        final String newTitle = titleEditText.getText().toString();
+        final String newDescription = descriptionEditText.getText().toString();
+        if (newTitle.isEmpty() || newDescription.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    ((ProjectMenuActivity)getActivity()).superOnBackPressed();
+                    ((ProjectMenuActivity)getActivity()).back();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -269,5 +369,42 @@ public class EditNoteFragment extends Fragment {
     public void onDestroyView() {
         ((ProjectMenuActivity)this.getActivity()).setCurrentFragment(NotesFragment.class.getSimpleName());
         super.onDestroyView();
+    }
+
+    private void disableButtons(){
+        saveButton.setEnabled(false);
+        closeButton.setEnabled(false);
+    }
+
+    private void activeButtons(){
+        saveButton.setEnabled(true);
+        closeButton.setEnabled(true);
+    }
+
+    public int getColor (String color){
+        int tmpColor = getResources().getColor(R.color.FABwhite);
+        switch (color){
+            default:
+            case "white":
+                tmpColor = getResources().getColor(R.color.FABwhite);
+                break;
+            case "red":
+                tmpColor = getResources().getColor(R.color.FABred);
+                break;
+            case "orange":
+                tmpColor = getResources().getColor(R.color.FABorange);
+                break;
+            case "yellow":
+                tmpColor = getResources().getColor(R.color.FAByellow);
+                break;
+            case "green":
+                tmpColor = getResources().getColor(R.color.FABgreen);
+                break;
+            case "blue":
+                tmpColor = getResources().getColor(R.color.FABblue);
+                break;
+
+        }
+        return tmpColor;
     }
 }

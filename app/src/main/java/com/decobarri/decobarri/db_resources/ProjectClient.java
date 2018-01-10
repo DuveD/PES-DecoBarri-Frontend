@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.db_resources;
 
 import com.decobarri.decobarri.activity_resources.Items.Item;
+import com.decobarri.decobarri.activity_resources.Materials.Material;
 
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-
-/**
- * Created by arnauorriols on 7/11/17.
- */
 
 public interface ProjectClient {
 
@@ -55,6 +52,34 @@ public interface ProjectClient {
 
     @PUT("/project/deleteItem/{id}")
     Call<String> DeleteItem(@Path("id") String _id, @Body Item item);
+
+    // Invetory List Materials
+
+    @GET("")
+    Call<List<Material>> getInvetoryList();
+
+    @POST("")
+    Call<String> addInvetoryMaterial();
+
+    @PUT("")
+    Call<String> editInvetoryMaterial();
+
+    @PUT("")
+    Call<String> deleteInvetoryMaterial();
+
+    // Need List Materials
+
+    @GET("")
+    Call<List<Material>> getNeedList();
+
+    @POST("")
+    Call<String> addNeedListMaterial();
+
+    @PUT("")
+    Call<String> editNeedListMaterial();
+
+    @PUT("")
+    Call<String> deleteNeedListMaterial();
 
     @GET("/project/getImage/{id}")
     Call<ResponseBody> getImage(@Path("id") String _id);
