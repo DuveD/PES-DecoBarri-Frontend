@@ -132,7 +132,7 @@ public class NotesAdapter
         Log.i(TAG, "Edit Note");
         ProjectMenuActivity activity = (ProjectMenuActivity)context;
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        transaction.add(R.id.DrawerLayout, EditNoteFragment.newInstance(getNoteOnList(itemPosition)));
+        transaction.add(R.id.editFragmentsLayout, EditNoteFragment.newInstance(getNoteOnList(itemPosition)));
         transaction.addToBackStack(null);
         transaction.commit();
         customNotifyDataSetChanged();
@@ -202,7 +202,7 @@ public class NotesAdapter
 
     public void customNotifyDataSetChanged(){
         notifyDataSetChanged();
-        NotesFragment fragment = (NotesFragment) ((Activity)context).getFragmentManager().findFragmentById(R.id.fragment_view);
+        NotesFragment fragment = (NotesFragment) ((Activity)context).getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
         fragment.setVisibleList();
     }
 

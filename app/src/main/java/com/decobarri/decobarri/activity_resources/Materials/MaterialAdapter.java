@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -19,12 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.project_menu.InventoryFragment;
 import com.decobarri.decobarri.project_menu.NeedListFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
-import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -109,7 +106,7 @@ public class MaterialAdapter
     public void onBindViewHolder(MaterialViewHolder viewHolder, int position) {
 
         /* SET GLOBAL MATERIAL IMAGE */
-        Picasso.with(context)
+        /*Picasso.with(context)
                 .load(materialList.get(position).getImage())
                 .resize(70, 70)
                 .centerCrop()
@@ -194,7 +191,7 @@ public class MaterialAdapter
 
         ProjectMenuActivity activity = (ProjectMenuActivity)context;
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        transaction.add(R.id.DrawerLayout, EditMaterialFragment.newInstance(getMaterial(itemPosition), TAG));
+        transaction.add(R.id.editFragmentsLayout, EditMaterialFragment.newInstance(getMaterial(itemPosition), TAG));
         transaction.addToBackStack(null);
         transaction.commit();
 

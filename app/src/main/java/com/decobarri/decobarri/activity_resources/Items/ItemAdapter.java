@@ -13,13 +13,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.db_resources.ItemClient;
-import com.decobarri.decobarri.db_resources.Project;
 import com.decobarri.decobarri.db_resources.ProjectClient;
-import com.decobarri.decobarri.project_menu.ItemsFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
 import com.google.gson.GsonBuilder;
@@ -134,7 +130,7 @@ public class ItemAdapter
         Log.i(TAG, "Edit Item");
         ProjectMenuActivity activity = (ProjectMenuActivity)context;
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        transaction.add(R.id.DrawerLayout, EditItemFragment.newInstance(getItem(itemPosition)));
+        transaction.add(R.id.editFragmentsLayout, EditItemFragment.newInstance(getItem(itemPosition)));
         transaction.addToBackStack(null);
         transaction.commit();
 

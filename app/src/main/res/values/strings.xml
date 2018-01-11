@@ -29,9 +29,13 @@
 
     <!--Inventory Fragment-->
     <string name="empty_inventory_text">Go to find some materials!</string>
+    <string name="inventory_material_add_failed">Inventory material create failed for something.</string>
+    <string name="inventory_material_save_failed">Inventory material save failed for something.</string>
 
     <!--Need list Fragment-->
     <string name="empty_need_list_text">You have all you need?</string>
+    <string name="needList_material_add_failed">Need List material create failed for something.</string>
+    <string name="needList_material_save_failed">Need List material save failed for something.</string>
 
     <!--Item Fragment-->
     <string name="empty_item_text">Do you work on any item?</string>

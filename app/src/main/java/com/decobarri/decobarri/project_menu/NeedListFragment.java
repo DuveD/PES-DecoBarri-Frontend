@@ -1,13 +1,10 @@
 package com.decobarri.decobarri.project_menu;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +29,6 @@ import com.decobarri.decobarri.activity_resources.Materials.Material;
 import com.decobarri.decobarri.activity_resources.Materials.MaterialAdapter;
 import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
-import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +62,7 @@ public class NeedListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.DrawerLayout, EditMaterialFragment.newInstance(TAG));
+                transaction.add(R.id.editFragmentsLayout, EditMaterialFragment.newInstance(TAG));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -189,7 +185,6 @@ public class NeedListFragment extends Fragment {
     public void getNeedList() {
         startUpdatingAnimation();
 
-        //TODO: ACABAR ESTA LLAMADA
         ProjectClient client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(ProjectClient.class);
         Call<List<Material>> call = client.getNeedList();
 

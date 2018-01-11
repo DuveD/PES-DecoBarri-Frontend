@@ -62,7 +62,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.DrawerLayout, EditMaterialFragment.newInstance(TAG));
+                transaction.add(R.id.editFragmentsLayout, EditMaterialFragment.newInstance(TAG));
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -85,8 +85,7 @@ public class InventoryFragment extends Fragment {
 
 
         inventoryList = new ArrayList<>();
-        // TODO: Uncomment
-        //getInventory();
+        getInventory();
         return view;
     }
 
@@ -116,8 +115,7 @@ public class InventoryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                // TODO: Uncomment
-                //getInventory();
+                getInventory();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -188,9 +186,8 @@ public class InventoryFragment extends Fragment {
     public void getInventory() {
         startUpdatingAnimation();
 
-        //TODO: ACABAR ESTA LLAMADA
         ProjectClient client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(ProjectClient.class);
-        Call<List<Material>> call = client.getInvetoryList();
+        Call<List<Material>> call = client.getInvetoryList(projectID);
 
         // Execute the call asynchronously. Get a positive or negative callback.
         call.enqueue(new Callback<List<Material>>() {

@@ -22,10 +22,6 @@ import com.decobarri.decobarri.db_resources.ProjectClient;
 import com.decobarri.decobarri.project_menu.edit_items.EditItemFragment;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
 import com.decobarri.decobarri.project_menu.edit_items.EditNoteFragment;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +66,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     private void startMainFragment(){
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_view,  infoFragment);
+        transaction.replace(R.id.projectFragmentsLayout,  infoFragment);
         transaction.commit();
         bottomSheetButtonCliked();
     }
@@ -173,43 +169,43 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
             case R.id.bottom_sheet_info: default:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_info) {
                     activePlusFloatingButton(false);
-                    transaction.replace(R.id.fragment_view, infoFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, infoFragment);
                 }
                 break;
             case R.id.bottom_sheet_notes:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_notes)
                     activePlusFloatingButton(true);
-                    transaction.replace(R.id.fragment_view, notesFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, notesFragment);
                 break;
             case R.id.bottom_sheet_inventory:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_inventory)
                     activePlusFloatingButton(true);
-                    transaction.replace(R.id.fragment_view, inventoryFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, inventoryFragment);
                 break;
             case R.id.bottom_sheet_need_list:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_need_list)
                     activePlusFloatingButton(true);
-                    transaction.replace(R.id.fragment_view, needListFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, needListFragment);
                 break;
             case R.id.bottom_sheet_items:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_items)
                     activePlusFloatingButton(true);
-                    transaction.replace(R.id.fragment_view, itemsFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, itemsFragment);
                 break;
             case R.id.bottom_sheet_map:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_map)
                     activePlusFloatingButton(false);
-                    transaction.replace(R.id.fragment_view, mapFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, mapFragment);
                 break;
             case R.id.bottom_sheet_xat:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_xat)
                     activePlusFloatingButton(false);
-                    transaction.replace(R.id.fragment_view, xatFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, xatFragment);
                 break;
             case R.id.bottom_sheet_group:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_group)
                     activePlusFloatingButton(false);
-                    transaction.replace(R.id.fragment_view, participantsFragment);
+                    transaction.replace(R.id.projectFragmentsLayout, participantsFragment);
                 break;
         }
         bottomSheetButtonCliked();
@@ -285,18 +281,18 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        Log.e(TAG, currentFragment);
+        Log.i(TAG, currentFragment);
         if (currentFragment.equals(
                 EditItemFragment.class.getSimpleName())) {
-            ((EditItemFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
+            ((EditItemFragment) getFragmentManager().findFragmentById(R.id.editFragmentsLayout)).onBackPressed();
         }
         else if (currentFragment.equals(
                 EditMaterialFragment.class.getSimpleName())) {
-            ((EditMaterialFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
+            ((EditMaterialFragment) getFragmentManager().findFragmentById(R.id.editFragmentsLayout)).onBackPressed();
         }
         else if (currentFragment.equals(
                 EditNoteFragment.class.getSimpleName())) {
-            ((EditNoteFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout)).onBackPressed();
+            ((EditNoteFragment) getFragmentManager().findFragmentById(R.id.editFragmentsLayout)).onBackPressed();
         } else {
             back();
         }
@@ -306,29 +302,25 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         if (currentFragment.equals(EditItemFragment.class.getSimpleName())) {
             Log.i(TAG, "Back from EditItemFragment");
             super.onBackPressed();
-            ItemsFragment fragment = (ItemsFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+            ItemsFragment fragment = (ItemsFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
             fragment.fillItemList();
         }
         else if (currentFragment.equals(EditMaterialFragment.class.getSimpleName())) {
-            EditMaterialFragment parentFragment = (EditMaterialFragment) getFragmentManager().findFragmentById(R.id.DrawerLayout);
+            EditMaterialFragment parentFragment = (EditMaterialFragment) getFragmentManager().findFragmentById(R.id.editFragmentsLayout);
             if (parentFragment.parentFragment.equals(InventoryFragment.class.getSimpleName())) {
                 Log.i(TAG, "Back from EditMaterialFragment (InventoriFragment)");
                 super.onBackPressed();
-                InventoryFragment fragment = (InventoryFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
-                // TODO: Uncomment this
-                //fragment.getInventory();
+                InventoryFragment fragment = (InventoryFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
             } else if (parentFragment.parentFragment.equals(NeedListFragment.class.getSimpleName())) {
                 Log.i(TAG, "Back from EditMaterialFragment (NeedListFragment)");
                 super.onBackPressed();
-                NeedListFragment fragment = (NeedListFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
-                // TODO: Uncomment this
-                //fragment.getNeedList();
+                NeedListFragment fragment = (NeedListFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
             }
         }
         else if (currentFragment.equals(EditNoteFragment.class.getSimpleName())) {
             Log.i(TAG, "Back from EditNoteFragment");
             super.onBackPressed();
-            NotesFragment fragment = (NotesFragment) getFragmentManager().findFragmentById(R.id.fragment_view);
+            NotesFragment fragment = (NotesFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
             fragment.getNotes();
         } else {
             super.onBackPressed();

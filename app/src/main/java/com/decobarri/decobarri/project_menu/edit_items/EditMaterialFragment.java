@@ -67,7 +67,7 @@ public class EditMaterialFragment extends Fragment {
 
     public static EditMaterialFragment newInstance(Material oldMaterial, String parentFragment ) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("oldMaterial", oldMaterial);
+        bundle.putParcelable("oldMaterial", oldMaterial);
         bundle.putString("parentFragment", parentFragment);
 
         EditMaterialFragment fragment = new EditMaterialFragment();
@@ -248,6 +248,7 @@ public class EditMaterialFragment extends Fragment {
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.needList_material_add_failed, Toast.LENGTH_SHORT).show();
                     activeButtons();
                 }
             }
@@ -287,6 +288,7 @@ public class EditMaterialFragment extends Fragment {
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.inventory_material_add_failed, Toast.LENGTH_SHORT).show();
                     activeButtons();
                 }
             }
@@ -326,6 +328,7 @@ public class EditMaterialFragment extends Fragment {
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.needList_material_save_failed, Toast.LENGTH_SHORT).show();
                     activeButtons();
                 }
             }
@@ -365,6 +368,7 @@ public class EditMaterialFragment extends Fragment {
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.inventory_material_save_failed, Toast.LENGTH_SHORT).show();
                     activeButtons();
                 }
             }

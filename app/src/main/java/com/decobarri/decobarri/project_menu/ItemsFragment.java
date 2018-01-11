@@ -1,11 +1,8 @@
 package com.decobarri.decobarri.project_menu;
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.decobarri.decobarri.R;
-import com.decobarri.decobarri.activity_resources.Const;
 import com.decobarri.decobarri.activity_resources.Items.Item;
 import com.decobarri.decobarri.activity_resources.Items.ItemAdapter;
 import com.decobarri.decobarri.db_resources.ProjectClient;
@@ -63,7 +59,7 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.DrawerLayout, EditItemFragment.newInstance());
+                transaction.add(R.id.editFragmentsLayout, EditItemFragment.newInstance());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -60,7 +60,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.DrawerLayout, EditNoteFragment.newInstance());
+                transaction.add(R.id.editFragmentsLayout, EditNoteFragment.newInstance());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

@@ -289,6 +289,7 @@ public class EditNoteFragment extends Fragment {
                 }
                 else {
                     Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Toast.makeText(getActivity(), R.string.note_save_failed, Toast.LENGTH_SHORT).show();
                     activeButtons();
                 }
             }

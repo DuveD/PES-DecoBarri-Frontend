@@ -79,7 +79,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setUpNav() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.editFragmentsLayout);
 
         navigationView = (NavigationView) findViewById(R.id.NavigationView);
         navigationView.setNavigationItemSelectedListener(this);

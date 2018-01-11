@@ -58,8 +58,8 @@ public interface ProjectClient {
 
     // Invetory List Materials
 
-    @GET("")
-    Call<List<Material>> getInvetoryList();
+    @GET("/matProjectList/getInventari/{id}")
+    Call<List<Material>> getInvetoryList(@Path("id") String id);
 
     @POST("")
     Call<String> addInvetoryMaterial();
