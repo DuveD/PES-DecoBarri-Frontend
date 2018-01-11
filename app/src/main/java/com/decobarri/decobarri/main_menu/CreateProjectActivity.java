@@ -257,8 +257,6 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 case R.id.input_description:
                     validateDescription();
                     break;
-                case R.id.input_theme:
-                    break;
             }
         }
     }

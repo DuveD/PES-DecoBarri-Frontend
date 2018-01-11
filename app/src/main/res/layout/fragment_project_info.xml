@@ -16,6 +16,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
+            android:layout_marginTop="15dp"
             android:background="@color/navigationDrawer_unselected_item_color"
             app:srcCompat="@drawable/ic_info" />
 
@@ -23,6 +24,7 @@
             android:id="@+id/textProjName"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="match_parent"
             android:textAlignment="center"/>
 
@@ -31,7 +33,9 @@
             style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Description goes here"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:gravity="left" />
 
     </LinearLayout>
