@@ -21,6 +21,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
@@ -49,6 +52,7 @@ public class ProjectsSearchFragment extends Fragment {
     private Double lat, lng;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationListener locationListener;
+    private Menu menu;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,12 +162,17 @@ public class ProjectsSearchFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<ProjectLocation>> call, Response<List<ProjectLocation>> response) {
                     if (response.isSuccessful()) {
+                        stopUpdatingAnimation();
                         List<Project> newList = new ArrayList<>();
                         for(ProjectLocation pl : response.body()) {
                             newList.add(pl.getProject());
                         }
                         if(!newList.isEmpty()) items = newList;
                         setView();
+                        System.out.println("Call Success: " + call.request());
+                    }
+                    else{
+                        System.out.println("Response failed: " + response.body());
                     }
                     System.out.println("Project load code:" + response.code());
                     System.out.println("Project load message:" + response.message());
@@ -171,7 +180,7 @@ public class ProjectsSearchFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<List<ProjectLocation>> call, Throwable t) {
-
+                    System.out.println("Call failed: " + call.request());
                 }
             });
         }
@@ -196,7 +205,6 @@ public class ProjectsSearchFragment extends Fragment {
                 }
             });
         }
-
     }
 
     private void setView() {
@@ -227,6 +235,7 @@ public class ProjectsSearchFragment extends Fragment {
     public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_search, optionsMenu);
 
+        inflater.inflate(R.menu.reload_menu, optionsMenu);
         MenuItem myActionMenuItem = optionsMenu.findItem(R.id.options_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
 
@@ -248,7 +257,21 @@ public class ProjectsSearchFragment extends Fragment {
 
 
         });
+        this.menu = optionsMenu;
         super.onCreateOptionsMenu(optionsMenu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                startUpdatingAnimation();
+                items = new ArrayList<>();
+                fillList();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -273,6 +296,33 @@ public class ProjectsSearchFragment extends Fragment {
             }
         }
         return filteredModelList;
+    }
+
+    public void startUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout) inflater.inflate(R.layout.ic_refresh, null);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                menuItem.setActionView(iv);
+            }
+        }
+    }
+
+    public void stopUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() != null) {
+                // Remove the animation.
+                menuItem.getActionView().clearAnimation();
+                menuItem.setActionView(null);
+            }
+        }
     }
 
 
