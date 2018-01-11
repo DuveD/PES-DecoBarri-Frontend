@@ -3,9 +3,12 @@ package com.decobarri.decobarri.activity_resources.Items;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,11 +93,9 @@ public class ItemAdapter
     public void onBindViewHolder(ItemViewHolder viewHolder, int position) {
 
         /* SET ITEM IMAGE */
-        Picasso.with(context)
-                .load(itemList.get(position).getImage())
-                .resize(70, 70)
-                .centerCrop()
-                .into(viewHolder.image);
+        if (itemList.get(position).getImage() == null) Log.d("Image:", "Is null.");
+        else Log.d("Image:", itemList.get(position).getImage());
+        viewHolder.image.setImageBitmap(decodeFromBase64(itemList.get(position).getImage()));
 
         /* SET ITEM NAME */
         viewHolder.name.setText(itemList.get(position).getName());
@@ -165,7 +166,7 @@ public class ItemAdapter
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Error: " + t.toString());
+                System.out.println("Error: " + t);
             }
         });
         deleteItem(itemPosition);
@@ -174,5 +175,16 @@ public class ItemAdapter
 
     public void customNotifyDataSetChanged(){
         notifyDataSetChanged();
+    }
+
+    public Bitmap decodeFromBase64(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

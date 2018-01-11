@@ -8,15 +8,15 @@ import java.util.ArrayList;
 public class Item implements Parcelable {
 
     private String _id;
-    private String image;
+    private String img;
     private String name;
     private String description;
     private String localization;
     private ArrayList<String> materials;
 
-    public Item (String id, String image, String name, String description, String localization, ArrayList<String> materials){
+    public Item (String id, String img, String name, String description, String localization, ArrayList<String> materials){
         this._id = id;
-        this.image = image;
+        this.img = img;
         this.name = name;
         this.description = description;
         this.localization = localization;
@@ -29,7 +29,7 @@ public class Item implements Parcelable {
 
     protected Item(Parcel in) {
         _id = in.readString();
-        image = in.readString();
+        img = in.readString();
         name = in.readString();
         description = in.readString();
         localization = in.readString();
@@ -56,8 +56,8 @@ public class Item implements Parcelable {
         this.name = name;
     }
 
-    public void setImage (String image) {
-        this.image = image;
+    public void setImage (String img) {
+        this.img = img;
     }
 
     public void setDescription (String description) {
@@ -67,7 +67,7 @@ public class Item implements Parcelable {
     public String getID() { return _id; }
 
     public String getImage() {
-        return image;
+        return img;
     }
 
     public String getName() {
@@ -94,7 +94,7 @@ public class Item implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(_id);
-        parcel.writeString(image);
+        parcel.writeString(img);
         parcel.writeString(name);
         parcel.writeString(description);
         parcel.writeString(localization);

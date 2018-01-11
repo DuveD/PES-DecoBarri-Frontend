@@ -4,11 +4,15 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +31,10 @@ import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.List;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -157,6 +164,9 @@ public class EditItemFragment extends Fragment {
                     Item newItem = new Item();
                     newItem.setName(nameEditText.getText().toString());
                     newItem.setDescription(descriptionEditText.getText().toString());
+                    Bitmap bitmap = ((BitmapDrawable)itemImageView.getDrawable()).getBitmap();
+
+                    newItem.setImage(encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50));
                     if (item != null) {
                         newItem.setId(item.getID());
                         saveItem(newItem);
@@ -314,5 +324,14 @@ public class EditItemFragment extends Fragment {
                 .resize(itemImageView.getWidth(), itemImageView.getHeight())
                 .centerCrop()
                 .into(itemImageView);
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        Bitmap resized = Bitmap.createScaledBitmap(image, image.getWidth()/2, image.getHeight()/2, true);
+        resized.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.
+                toByteArray(), Base64.DEFAULT);
     }
 }

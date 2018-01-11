@@ -169,7 +169,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
 
                 BitmapDrawable drawable = (BitmapDrawable) projectImage.getDrawable();
                 bitmap = drawable.getBitmap();
-                String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 10);
+                String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
                 //***************************************************************************************** tema
                 projectCreated.setTheme(bitstring);
 
@@ -273,7 +273,8 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
     public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
     {
         ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-        image.compress(compressFormat, quality, byteArrayOS);
+        Bitmap resized = Bitmap.createScaledBitmap(image, image.getWidth()/2, image.getHeight()/2, true);
+        resized.compress(compressFormat, quality, byteArrayOS);
         return Base64.encodeToString(byteArrayOS.
                 toByteArray(), Base64.DEFAULT);
     }
