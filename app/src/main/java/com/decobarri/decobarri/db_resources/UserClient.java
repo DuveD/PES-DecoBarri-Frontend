@@ -39,10 +39,8 @@ public interface UserClient {
     @GET("/user/findByID/{username}")
     Call<User> FindByID(@Path("username") String username);
 
-    @Multipart
     @PUT("/user/edit/{username}")
-    Call<String> EditUser(@Path("username") String username, @Part MultipartBody.Part image,
-                          @Part("name") RequestBody name, @Part("email") RequestBody email);
+    Call<String> EditUser(@Path("username") String username, @Body User user);
 
     @PUT("/user/editPassword/{username}")
     Call<String> EditPassword(@Path("username") String username, @Body Password password);

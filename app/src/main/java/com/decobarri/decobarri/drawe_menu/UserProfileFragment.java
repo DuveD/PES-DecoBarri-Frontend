@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,11 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             id.setText(args.getString("id"));
             name.setText(args.getString("name"));
             email.setText(args.getString("email"));
+            User user = ((AccountSettingsActivity) this.getActivity()).user;
+            String image = user.getImage();
+            System.out.println("image: " + image.length());
+            Bitmap bm = stringToBitMap(image);
+            profile_image.setImageBitmap(bm);
         } else {
             Toast.makeText(getContext(), "Not logged", Toast.LENGTH_LONG);
         }
@@ -79,6 +85,17 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         cargar_imagen();
 
         return view;
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
     private void cargar_imagen() {

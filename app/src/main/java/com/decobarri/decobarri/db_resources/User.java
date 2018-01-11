@@ -30,9 +30,9 @@ public class User {
     @SerializedName("contacts")
     @Expose
     private List<String> contacts = null;
-    @SerializedName("image")
+    @SerializedName("img")
     @Expose
-    private String image = null;
+    private String img = null;
 
     public User() {
 
@@ -106,10 +106,10 @@ public class User {
     }
 
     public String getImage() {
-        return image;
+        return img;
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.img = image;
     }
 }

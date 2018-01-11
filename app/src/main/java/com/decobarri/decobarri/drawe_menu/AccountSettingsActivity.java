@@ -3,6 +3,8 @@ package com.decobarri.decobarri.drawe_menu;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -97,13 +99,13 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                     user = response.body();
                     name = user.getName();
                     email = user.getEmail();
-                    System.out.println("Success: " + name + ", " + email);
 
                     Bundle args = new Bundle();
                     args.putString("id", username);
                     args.putString("password", password);
                     args.putString("name", name);
                     args.putString("email", email);
+                    args.putString("image", user.getImage());
                     args.putBoolean("success", success);
 
                     currentFragment = "userProfile";
@@ -171,7 +173,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         fragmentTransaction.commit();
     }
 
-    public boolean EditUser(User u, String imagePath) {
+    public boolean EditUser(User u) {
         success=true;
         String new_name = u.getName();
         String new_email = u.getEmail();
@@ -182,7 +184,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
         new_user = new User();
         new_user.setName(new_name);
         new_user.setEmail(new_email);
-        new_image = imagePath;
+        new_user.setImage(u.getImage());
 
 
         EditUserTask et = new EditUserTask();
@@ -215,7 +217,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
 
         @Override
         protected String doInBackground(Integer... integers) {
-
             MultipartBody.Part body = null;
             if (new_image!=null) {
                 File file = new File(new_image);
@@ -233,7 +234,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), new_user.getName());
             final RequestBody mail = RequestBody.create(MediaType.parse("text/plain"), new_user.getEmail());
 
-            Call<String> call = client.EditUser(username, body, name, mail);
+            Call<String> call = client.EditUser(username, new_user);
 
             final MultipartBody.Part finalBody = body;
             call.enqueue(new Callback<String>() {
