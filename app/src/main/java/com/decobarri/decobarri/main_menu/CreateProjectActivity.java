@@ -257,8 +257,6 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 case R.id.input_description:
                     validateDescription();
                     break;
-                case R.id.input_theme:
-                    break;
             }
         }
     }
@@ -329,7 +327,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
         projectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyImage.openChooserWithDocuments(CreateProjectActivity.this, "Choose an image for your project", 0);
+                EasyImage.openChooserWithGallery(CreateProjectActivity.this, "Choose an image for your project", 0);
             }
         });
     }

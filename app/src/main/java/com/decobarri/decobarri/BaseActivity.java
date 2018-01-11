@@ -172,9 +172,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     usernameTV.setText(username);
                     emailTV.setText(response.body().getEmail());
                     /****************** When call its done... ******************/
-
-                    Bitmap bm = stringToBitMap(response.body().getImage());
-                    profileImage.setImageBitmap(bm);
+                    if(response.body().getImage()!=null) {
+                        Bitmap bm = stringToBitMap(response.body().getImage());
+                        profileImage.setImageBitmap(bm);
+                    }
+                    else profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_account_image));
                     /***********************************************************/
                 }
             }

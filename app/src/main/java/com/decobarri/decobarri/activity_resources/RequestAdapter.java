@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,20 +99,22 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @Override
     public void onBindViewHolder(final RequestAdapter.RequestViewHolder holder, final int position) {
-
-        Call<ResponseBody> call = client.getImage(getRequest(position).getUsername());
-        call.enqueue(new Callback<ResponseBody>() {
+        UserClient userClient = retrofit.create(UserClient.class);
+        Call<User> call = userClient.FindByID(getRequest(position).getUsername());
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                    if (bm != null) holder.profileImage.setImageBitmap(
-                            Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
+                    if(response.body().getImage()!=null) {
+                        Bitmap bm = stringToBitMap(response.body().getImage());
+                        holder.profileImage.setImageBitmap(bm);
+                    }
+                    else holder.profileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_account_image));
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
 
             }
         });
@@ -179,5 +182,16 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     @Override
     public int getItemCount() {
         return requestList.size();
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

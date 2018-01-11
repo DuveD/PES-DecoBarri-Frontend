@@ -70,9 +70,11 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             email.setText(args.getString("email"));
             User user = ((AccountSettingsActivity) this.getActivity()).user;
             String image = user.getImage();
-            System.out.println("image: " + image.length());
-            Bitmap bm = stringToBitMap(image);
-            profile_image.setImageBitmap(bm);
+            if(image!=null) {
+                Bitmap bm = stringToBitMap(image);
+                profile_image.setImageBitmap(bm);
+            }
+            else profile_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_account_image));
         } else {
             Toast.makeText(getContext(), "Not logged", Toast.LENGTH_LONG);
         }
