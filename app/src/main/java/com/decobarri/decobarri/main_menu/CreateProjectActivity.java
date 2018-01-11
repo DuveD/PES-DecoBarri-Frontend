@@ -167,7 +167,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 BitmapDrawable drawable = (BitmapDrawable) projectImage.getDrawable();
                 bitmap = drawable.getBitmap();
                 String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
-                
+
                 projectCreated.setTheme(bitstring);
 
                 creaProjecte(projectCreated);
