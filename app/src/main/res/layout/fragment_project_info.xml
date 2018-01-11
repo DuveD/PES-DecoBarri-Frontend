@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,11 +10,28 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/deletebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="Delete"
+            android:clickable="true"
+            android:textColor="#ffffff"
+            android:background="#ff0000"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:drawableStart="@drawable/ic_delete_forever"
+            android:textSize="15sp"/>
+
         <ImageView
             android:id="@+id/project_image"
             android:layout_width="200dp"
+            android:layout_below="@id/fab"
             android:layout_height="200dp"
             android:layout_gravity="center"
+            android:layout_marginTop="15dp"
             android:background="@color/navigationDrawer_unselected_item_color"
             app:srcCompat="@drawable/ic_info" />
 
@@ -23,6 +39,7 @@
             android:id="@+id/textProjName"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="match_parent"
             android:textAlignment="center"/>
 
@@ -31,9 +48,10 @@
             style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Description goes here"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
             android:gravity="left" />
-
     </LinearLayout>
 
 </ScrollView>
