@@ -90,8 +90,9 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                 TextView description = (TextView) dialog.findViewById(R.id.descripcion_popup);
                 ImageView imagen = (ImageView) dialog.findViewById(R.id.imageView1);
                 Button buttonSolicitar = (Button) dialog.findViewById((R.id.button_solicitar));
-                //imagen.setImageBitmap(p.get_Imagen());
                 description.setText(p.getDescription());
+                Bitmap bm = stringToBitMap(p.getTheme());
+                imagen.setImageBitmap(bm);
                 idSolicitud = p.getId();
                 dialog.show();
                 buttonSolicitar.setOnClickListener(new View.OnClickListener() {
@@ -166,10 +167,9 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         if (projectList.size() > 0) {
             viewHolder.nombre.setText(projectList.get(i).getName());
             viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
-                System.out.println("Bitmap " + projectList.get(i).getTheme());
-                //****************************************************************************
-                Bitmap bm = stringToBitMap(projectList.get(i).getTheme());
-                viewHolder.imagen.setImageBitmap(bm);
+            //**************************************************************************** Imagen en campo tema
+            Bitmap bm = stringToBitMap(projectList.get(i).getTheme());
+            viewHolder.imagen.setImageBitmap(bm);
 
         }
     }

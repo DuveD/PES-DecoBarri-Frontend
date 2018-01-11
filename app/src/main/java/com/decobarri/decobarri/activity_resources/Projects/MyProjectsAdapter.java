@@ -2,8 +2,11 @@ package com.decobarri.decobarri.activity_resources.Projects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,5 +81,19 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
         //viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
         viewHolder.nombre.setText(projectList.get(i).getName());
         viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
+        //**************************************************************************** Imagen en campo tema
+        Bitmap bm = stringToBitMap(projectList.get(i).getTheme());
+        viewHolder.imagen.setImageBitmap(bm);
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }
