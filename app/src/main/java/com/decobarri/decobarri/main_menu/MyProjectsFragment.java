@@ -1,6 +1,7 @@
 package com.decobarri.decobarri.main_menu;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,8 +16,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
@@ -57,12 +64,32 @@ public class MyProjectsFragment extends Fragment {
     private static final String TAG = "MyProjectsFragment";
     private User user;
     private Retrofit retrofit;
+    private Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         initVars();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.reload_menu, menu);
+        this.menu = menu;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                startUpdatingAnimation();
+                projectList = new ArrayList<>();
+                fillList();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initVars() {
@@ -153,6 +180,34 @@ public class MyProjectsFragment extends Fragment {
                     Log.e(TAG, "Call failed: " + callProjects.request());
                 }
             });
+        }
+        stopUpdatingAnimation();
+    }
+
+    public void startUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout iv = (RelativeLayout) inflater.inflate(R.layout.ic_refresh, null);
+                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_refresh);
+                rotation.setRepeatCount(Animation.INFINITE);
+                iv.startAnimation(rotation);
+                menuItem.setActionView(iv);
+            }
+        }
+    }
+
+    public void stopUpdatingAnimation() {
+        // Get our refresh item from the menu if it are initialized
+        if (menu != null) {
+            MenuItem menuItem = menu.findItem(R.id.action_refresh);
+            if (menuItem != null && menuItem.getActionView() != null) {
+                // Remove the animation.
+                menuItem.getActionView().clearAnimation();
+                menuItem.setActionView(null);
+            }
         }
     }
 }
