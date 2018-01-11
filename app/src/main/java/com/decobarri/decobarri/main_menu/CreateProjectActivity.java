@@ -157,9 +157,6 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
             public void onClick(View view) {
             //submitForm()
             if (validateName() & validateDescription()) {
-                //***********************************************
-                //Falta añadir imagen, username y ubicacion (la variable username ya esta inicializada)
-                //***********************************************
                 LatLng latLng = myMarker.getPosition();
                 Double lat = latLng.latitude;
                 Double lng = latLng.longitude;
@@ -170,14 +167,10 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 BitmapDrawable drawable = (BitmapDrawable) projectImage.getDrawable();
                 bitmap = drawable.getBitmap();
                 String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 10);
-                //***************************************************************************************** tema
+                //***************************************************************************************** Imagen en campo tema
                 projectCreated.setTheme(bitstring);
 
                 creaProjecte(projectCreated);
-                //Intent i = new Intent(CreateProjectActivity.this, MainMenuActivity.class);
-                //System.out.println("Creado en bd");
-                //startActivity(i);
-
             }
             }
         });
