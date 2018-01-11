@@ -39,7 +39,7 @@ public class Project {
     @Expose
     private String lng;
 
-    @SerializedName("username")
+    @SerializedName("admin")
     @Expose
     private String admin;
 

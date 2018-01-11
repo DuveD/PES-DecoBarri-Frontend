@@ -159,7 +159,6 @@ public class ParticipantsFragment extends Fragment {
 
                     userClient = retrofit.create(UserClient.class);
 
-
                     adapter = new ContactsAdapter(userList, member_list, getActivity(), "members", project_id, projectAdmin);
                     member_list.setAdapter(adapter);
                 }

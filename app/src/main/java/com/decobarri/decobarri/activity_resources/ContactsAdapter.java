@@ -186,7 +186,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onResponse(Call<User> call, Response<User> response) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Select an action");
-                        if (response.body().getContacts().contains(getContact(itemPosition)) && Objects.equals(username, admin)) {
+                        if (response.body().getContacts().contains(getContact(itemPosition).getId()) && Objects.equals(username, admin)) {
                             final CharSequence[] items = {"Remove from project"};
                             builder.setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
