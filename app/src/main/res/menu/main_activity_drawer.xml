@@ -11,7 +11,7 @@
         <item
             android:id="@+id/chat"
             android:icon="@drawable/ic_chat_globe"
-            android:title="Chat" />
+            android:title="Request" />
         <item
             android:id="@+id/contact_list"
             android:icon="@drawable/ic_contact"

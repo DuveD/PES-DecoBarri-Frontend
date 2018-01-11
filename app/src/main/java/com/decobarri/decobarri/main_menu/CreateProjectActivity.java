@@ -5,17 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncStats;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -47,6 +53,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +79,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
     private Button button_create;
     private ImageView projectImage;
     private String username;
+    private Bitmap bitmap;
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -81,7 +89,8 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
     private boolean firstMarker;
     private Geocoder geocoder;
     private ImageButton searchButton;
-
+    private String filePath;
+    private String new_image;
     private Integer THRESHOLD = 2;
     private DelayAutoCompleteTextView geo_autocomplete;
 
@@ -154,8 +163,16 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 LatLng latLng = myMarker.getPosition();
                 Double lat = latLng.latitude;
                 Double lng = latLng.longitude;
+                new_image = filePath;
                 Project projectCreated = new Project("", input_name.getText().toString(), input_theme.getText().toString(),
                         input_description.getText().toString(), "Barcelona", "FIB", username, lat.toString(), lng.toString());
+
+                BitmapDrawable drawable = (BitmapDrawable) projectImage.getDrawable();
+                bitmap = drawable.getBitmap();
+                String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 10);
+                //***************************************************************************************** tema
+                projectCreated.setTheme(bitstring);
+
                 creaProjecte(projectCreated);
                 //Intent i = new Intent(CreateProjectActivity.this, MainMenuActivity.class);
                 //System.out.println("Creado en bd");
@@ -253,12 +270,30 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.
+                toByteArray(), Base64.DEFAULT);
+    }
+
     //Imagenes
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        /*Uri uri = data.getData();
+
+        /*Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            filePath = uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            filePath = cursor.getString(idx);
+        }*/
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
@@ -284,6 +319,11 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
 
     private void onPhotosReturned(List<File> imagesFiles) {
         if (imagesFiles.size() > 1) System.out.println("There're more than one image!");
+        Picasso.with(this)
+                .load(imagesFiles.get(0))
+                .resize(projectImage.getWidth(), projectImage.getHeight())
+                .centerCrop()
+                .into(projectImage);
         Picasso.with(this)
                 .load(imagesFiles.get(0))
                 .resize(projectImage.getWidth(), projectImage.getHeight())

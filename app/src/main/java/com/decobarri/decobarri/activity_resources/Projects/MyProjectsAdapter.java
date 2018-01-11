@@ -58,6 +58,8 @@ public class MyProjectsAdapter extends RecyclerView.Adapter<MyProjectsAdapter.My
                 com.decobarri.decobarri.db_resources.Project p = projectList.get(itemPosition);
 
                 Intent projectMenu = new Intent(v.getContext(), ProjectMenuActivity.class);
+                System.out.println("Admin: " + p.getAdmin());
+                projectMenu.putExtra("Admin", p.getAdmin());
                 projectMenu.putExtra(Const.ID,p.getId()); //Pasar el id del proyecto
                 context.startActivity(projectMenu);
             }

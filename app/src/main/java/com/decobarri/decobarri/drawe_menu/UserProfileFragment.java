@@ -24,6 +24,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -69,6 +71,11 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             Toast.makeText(getContext(), "Not logged", Toast.LENGTH_LONG);
         }
 
+        /*Picasso.with(getContext())
+                .load(this.getResources().getString(R.string.db_URL) + "/user/getImage/{username}")
+                .resize(200, 200)
+                .centerCrop()
+                .into(profile_image);*/
         cargar_imagen();
 
         return view;
@@ -88,10 +95,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
+                    /*FileOutputStream f=null;
+                    bm.compress(Bitmap.CompressFormat.PNG, 100, f);*/
                     if(bm!=null)profile_image.setImageBitmap(
                             Bitmap.createScaledBitmap(bm, profile_image.getWidth(), profile_image.getHeight(), false));
+
                     /*Picasso.with(getContext())
-                            .load()
+                            .load(f)
                             .resize(profile_image.getWidth(), profile_image.getHeight())
                             .centerCrop()
                             .into(profile_image);*/

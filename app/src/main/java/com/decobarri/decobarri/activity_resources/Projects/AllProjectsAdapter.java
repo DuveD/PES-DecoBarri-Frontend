@@ -3,7 +3,10 @@ package com.decobarri.decobarri.activity_resources.Projects;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
 import com.decobarri.decobarri.db_resources.*;
@@ -37,6 +41,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
     private RecyclerView recyclerView;
     private String idSolicitud;
     private String username;
+    private String pass;
 
     public AllProjectsAdapter(List<com.decobarri.decobarri.db_resources.Project> item, Context mContext, RecyclerView rec) {
         this.projectList = item;
@@ -70,6 +75,8 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         AllProjectsViewHolder project = new AllProjectsViewHolder(v);
         SharedPreferences pref = context.getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
         username = pref.getString("username", "");
+        pass = pref.getString("password", "");
+
         v.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -117,7 +124,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         ProjectClient client =  retrofit.create(ProjectClient.class);
         //*********************************************************************************
         //Descomentar para añadir llamada addRequest
-        User user = new User(username,"");
+        User user = new User(username,pass);
         Call<String> call = client.addRequest(idSolicitud, user);
         call.enqueue(new Callback<String>() {
             @Override
@@ -126,15 +133,24 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
                 if (response.isSuccessful()) {
                     //
                     System.out.println("Success : " + response.body());
+                    Toast toast = Toast.makeText(context, "Solicitud enviada", (int) 2);
+                    toast.show();
                 }
                 else {
                     System.out.println("Error code: " + response.code());
+                    if (response.code() == 401) {
+                        Toast toast = Toast.makeText(context, "Ya se ha enviado solicituda este proyecto", (int) 2);
+                        toast.show();
+                    }
+
                 }
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 //
                 System.out.println("Call failed: " + call.request());
+                Toast toast = Toast.makeText(context, "Solicitud enviada", (int) 2);
+                toast.show();
             }
         });
     }
@@ -150,6 +166,22 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         if (projectList.size() > 0) {
             viewHolder.nombre.setText(projectList.get(i).getName());
             viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
+                System.out.println("Bitmap " + projectList.get(i).getTheme());
+                //****************************************************************************
+                Bitmap bm = stringToBitMap(projectList.get(i).getTheme());
+                viewHolder.imagen.setImageBitmap(bm);
+
+        }
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
         }
     }
 }

@@ -107,22 +107,7 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
         // Getting project ID
         projectID = getIntent().getStringExtra(Const.ID);
 
-        //Getting project Admin
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(this.getResources().getString(R.string.db_URL))
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        ProjectClient client = retrofit.create(ProjectClient.class);
-        Call<Project> call = client.FindProjectById(projectID);
-        call.enqueue(new Callback<Project>() {
-            @Override
-            public void onResponse(Call<Project> call, Response<Project> response) {
-                if(response.isSuccessful()) projectAdmin=response.body().getAdmin();
-            }
-            @Override
-            public void onFailure(Call<Project> call, Throwable t) {
-            }
-        });
+        projectAdmin = getIntent().getStringExtra("Admin");
 
 
         infoFragment = new InfoFragment();
