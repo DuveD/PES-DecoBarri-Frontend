@@ -166,7 +166,7 @@ public class AllProjectsAdapter extends RecyclerView.Adapter<AllProjectsAdapter.
         //viewHolder.imagen.setImageBitmap(projectList.get(i).get_Imagen());
         if (projectList.size() > 0) {
             viewHolder.nombre.setText(projectList.get(i).getName());
-            viewHolder.descripcion.setText("Descripcion:" + String.valueOf(projectList.get(i).getDescription()));
+            viewHolder.descripcion.setText(String.valueOf(projectList.get(i).getDescription()));
             //**************************************************************************** Imagen en campo tema
             Bitmap bm = stringToBitMap(projectList.get(i).getTheme());
             viewHolder.imagen.setImageBitmap(bm);

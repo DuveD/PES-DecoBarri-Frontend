@@ -186,7 +186,7 @@ public class NeedListFragment extends Fragment {
         ProjectClient client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(ProjectClient.class);
         Call<List<Material>> call = client.getNeedList(projectID);
 
-        // Execute the call asynchronously. Get a positive or negative callback.
+        // Execute the call asynchronously. Get a positive or negative callback
         call.enqueue(new Callback<List<Material>>() {
             @Override
             public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
