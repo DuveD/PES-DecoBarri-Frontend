@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class Material implements Parcelable {
 
-    private String material_id;
+    private String _id ;
     private String img;
     private String name;
     private String description;
@@ -19,17 +19,17 @@ public class Material implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(material_id);
+        parcel.writeString(_id);
         parcel.writeString(img);
         parcel.writeString(name);
         parcel.writeString(description);
-        parcel.writeString((urgent ? "true" : "false"));
+        parcel.writeString((urgent ? "true" : "False"));
         parcel.writeInt(quantity);
         parcel.writeString(address);
     }
 
-    public Material(String material_id, String img, String name, String description, boolean urgent, int quantity, String address) {
-        this.material_id = material_id;
+    public Material(String _id , String img, String name, String description, boolean urgent, int quantity, String address) {
+        this._id = _id;
         this.img = img;
         this.name = name;
         this.description = description;
@@ -39,7 +39,7 @@ public class Material implements Parcelable {
     }
 
     public Material (){
-        this.material_id = "";
+        this._id = "";
         this.img = "";
         this.name = "";
         this.description = "";
@@ -49,7 +49,7 @@ public class Material implements Parcelable {
     }
 
     protected Material(Parcel in) {
-        this.material_id = in.readString();
+        this._id = in.readString();
         this.img = in.readString();
         this.name = in.readString();
         this.description = in.readString();
@@ -75,7 +75,7 @@ public class Material implements Parcelable {
         return 0;
     }
 
-    public String getID() { return material_id; }
+    public String getID() { return _id; }
 
     public String getImage() {
         return img;

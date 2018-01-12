@@ -84,8 +84,7 @@ public class NeedListFragment extends Fragment {
         ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Need list");
 
         needList = new ArrayList<>();
-        // TODO: Uncomment
-        //getNeedList();
+        getNeedList();
         return view;
     }
 
@@ -113,8 +112,7 @@ public class NeedListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                // TODO: Uncomment
-                //getNeedList();
+                getNeedList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -131,7 +129,7 @@ public class NeedListFragment extends Fragment {
                     needList,
                     recyclerView,
                     getActivity(),
-                    Const.NEED_LIST_MATERIAL){
+                    TAG){
 
                 @Override
                 public void customNotifyDataSetChanged(){
@@ -145,7 +143,7 @@ public class NeedListFragment extends Fragment {
         }
     }
 
-    private void setVisibleList() {
+    public void setVisibleList() {
         if (needList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
@@ -186,7 +184,7 @@ public class NeedListFragment extends Fragment {
         startUpdatingAnimation();
 
         ProjectClient client = ((ProjectMenuActivity)this.getActivity()).retrofit.create(ProjectClient.class);
-        Call<List<Material>> call = client.getNeedList();
+        Call<List<Material>> call = client.getNeedList(projectID);
 
         // Execute the call asynchronously. Get a positive or negative callback.
         call.enqueue(new Callback<List<Material>>() {

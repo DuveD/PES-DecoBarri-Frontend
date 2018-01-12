@@ -4,10 +4,15 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +32,7 @@ import com.decobarri.decobarri.project_menu.NeedListFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
@@ -166,14 +172,13 @@ public class EditMaterialFragment extends Fragment {
 
         if (oldMaterial != null) {
             title = "Edit " + title;
-            //TODO: IMAGE
-            //oldImage = oldMaterial.getImage();
+            oldImage = oldMaterial.getImage();
             oldName = oldMaterial.getName();
             oldQuantity = oldMaterial.getQuantity();
             oldDescription = oldMaterial.getDescription();
             oldUrgent = oldMaterial.isUrgent();
 
-            //materialImageView.setImage(oldImage);
+            materialImageView.setImageBitmap(decodeFromBase64(oldImage));
             nameTextView.setText(oldName);
             quantityTextView.setText(oldQuantity);
             descriptionTextView.setText(oldDescription);
@@ -191,8 +196,6 @@ public class EditMaterialFragment extends Fragment {
             });
         } else {
             title = "New " + title;
-            //TODO: IMAGE
-            //oldImage = oldMaterial.getImage();
             oldName = nameTextView.getText().toString();
             oldQuantity = 0;
             oldDescription = descriptionTextView.getText().toString();;
@@ -201,9 +204,7 @@ public class EditMaterialFragment extends Fragment {
             saveTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(!canCreate()){
-                        Toast.makeText(getActivity(), R.string.missing_material_parameter, Toast.LENGTH_SHORT).show();
-                    } else {
+                    if(canCreate()){
                         if (parentFragment.equals(InventoryFragment.class.getSimpleName())) {
                             addInvetoryMaterial( getMaterialForm() );
                         } else if (parentFragment.equals(NeedListFragment.class.getSimpleName())) {
@@ -217,22 +218,33 @@ public class EditMaterialFragment extends Fragment {
     }
 
     private Material getMaterialForm() {
+        int quantity = 0;
+        String quantityString = quantityTextView.getText().toString();
+        if (!quantityString.isEmpty()){
+            quantity = (Integer.parseInt(quantityString));
+            quantity = ((quantity > 0) ? quantity : 0);
+        }
+        BitmapDrawable bitmapDrawable = ((BitmapDrawable)materialImageView.getDrawable());
+        Drawable drawable = getResources().getDrawable(R.drawable.material);
+        Bitmap bitmap = ((bitmapDrawable == null) ? ((BitmapDrawable) drawable).getBitmap() : bitmapDrawable.getBitmap());
+        String image = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
+
         return new Material(
-                null,
-                null,
+                " ",
+                image,
                 nameTextView.getText().toString(),
                 descriptionTextView.getText().toString(),
                 urgentCheckBox.isChecked(),
-                Integer.parseInt(quantityTextView.getText().toString()),
-                null);
+                quantity,
+                " ");
     }
 
     public void addNeedListMaterial(Material material) {
-        //TODO: ACABAR ESTA LLAMADA
-        ProjectClient client = retrofit.create(ProjectClient.class);
-        Call<String> call = client.addNeedListMaterial();
         disableButtons();
 
+        //TODO: ACABAR ESTA LLAMADA
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<String> call = client.addNeedListMaterial(projectID, material);
         // Execute the call asynchronously. Get a positive or negative callback.
         call.enqueue(new Callback<String>() {
             @Override
@@ -268,10 +280,10 @@ public class EditMaterialFragment extends Fragment {
     }
 
     public void addInvetoryMaterial(Material material) {
-        //TODO: ACABAR ESTA LLAMADA
-        ProjectClient client = retrofit.create(ProjectClient.class);
-        Call<String> call = client.addInvetoryMaterial();
         disableButtons();
+
+        ProjectClient client = retrofit.create(ProjectClient.class);
+        Call<String> call = client.addInvetoryMaterial(projectID, material);
 
         // Execute the call asynchronously. Get a positive or negative callback.
         call.enqueue(new Callback<String>() {
@@ -310,7 +322,7 @@ public class EditMaterialFragment extends Fragment {
     public void editNeedListMaterial(Material material) {
         //TODO: ACABAR ESTA LLAMADA
         ProjectClient client = retrofit.create(ProjectClient.class);
-        Call<String> call = client.editNeedListMaterial();
+        Call<String> call = client.editNeedListMaterial(projectID, material);
         disableButtons();
 
         // Execute the call asynchronously. Get a positive or negative callback.
@@ -350,7 +362,7 @@ public class EditMaterialFragment extends Fragment {
     public void editInvetoryMaterial(Material material) {
         //TODO: ACABAR ESTA LLAMADA
         ProjectClient client = retrofit.create(ProjectClient.class);
-        Call<String> call = client.editInvetoryMaterial();
+        Call<String> call = client.editInvetoryMaterial(projectID, material);
         disableButtons();
 
         // Execute the call asynchronously. Get a positive or negative callback.
@@ -401,19 +413,39 @@ public class EditMaterialFragment extends Fragment {
                     .setPositiveButton(R.string.Yes, dialogClickListener)
                     .setNegativeButton(R.string.No, dialogClickListener).show();
         }
-        else ((ProjectMenuActivity)getActivity()).back();;
+        else ((ProjectMenuActivity)getActivity()).back();
     }
 
     private boolean materialChange() {
-        // check if something changes
+        Bitmap bitmap = ((BitmapDrawable)materialImageView.getDrawable()).getBitmap();
+        String newImage = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
+        final String newName = nameTextView.getText().toString();
+        final int newQuantity = Integer.parseInt(quantityTextView.getText().toString());
+        final String newDescription = descriptionTextView.getText().toString();
+        final Boolean newUrgent = urgentCheckBox.isActivated();
+
+        if (!newImage.isEmpty() && !newImage.equals(oldImage)) {
+            Log.i(TAG, "Image edited.");
+            return true;
+        } else if (!newName.isEmpty() && !newName.equals(oldName)) {
+            Log.i(TAG, "Title edited.");
+            return true;
+        } else if (newQuantity > 0 && newQuantity != oldQuantity){
+            Log.i(TAG, "Quantity edited.");
+            return true;
+        } else if (!newDescription.isEmpty() && !newDescription.equals(oldDescription)){
+            Log.i(TAG, "Description edited");
+            return true;
+        } else if (newUrgent != oldUrgent){
+            Log.i(TAG, "Color edited");
+            return true;
+        }
         return false;
     }
 
     private boolean canCreate() {
-        //TODO: IMAGE
         final String newName = nameTextView.getText().toString();
         final String newDescription = descriptionTextView.getText().toString();
-
         if (newName.isEmpty() || newDescription.isEmpty()){
             return false;
         }
@@ -485,5 +517,25 @@ public class EditMaterialFragment extends Fragment {
     private void activeButtons(){
         saveTextView.setEnabled(true);
         closeButton.setEnabled(true);
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        Bitmap resized = Bitmap.createScaledBitmap(image, image.getWidth()/2, image.getHeight()/2, true);
+        resized.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.
+                toByteArray(), Base64.DEFAULT);
+    }
+
+    public Bitmap decodeFromBase64(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

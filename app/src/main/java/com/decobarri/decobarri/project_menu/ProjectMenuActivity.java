@@ -296,11 +296,13 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                 Log.i(TAG, "Back from EditMaterialFragment (InventoriFragment)");
                 super.onBackPressed();
                 InventoryFragment fragment = (InventoryFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
+                fragment.getInventory();
             } else if (parentFragment.parentFragment.equals(NeedListFragment.class.getSimpleName())) {
                 Log.i(TAG, "Back from EditMaterialFragment (NeedListFragment)");
                 super.onBackPressed();
                 NeedListFragment fragment = (NeedListFragment) getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
-            }
+                fragment.getNeedList();
+            } else Log.e(TAG, "Fragment not recognized");
         }
         else if (currentFragment.equals(EditNoteFragment.class.getSimpleName())) {
             Log.i(TAG, "Back from EditNoteFragment");

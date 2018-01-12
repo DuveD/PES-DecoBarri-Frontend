@@ -148,16 +148,6 @@ public class NotesAdapter
 
         NotesClient client = retrofit.create(NotesClient.class);
 
-        // TODO: Acabar esta llamada
-        Log.i(TAG, projectID
-                + " " + getNoteOnList(itemPosition).getId()
-                + " " + getNoteOnList(itemPosition).getTitle()
-                + " " + getNoteOnList(itemPosition).getDescription()
-                + " " + getNoteOnList(itemPosition).getAuthor()
-                + " " + getNoteOnList(itemPosition).getModifiable()
-                + " " + getNoteOnList(itemPosition).getDate()
-                + " " + getNoteOnList(itemPosition).getColor());
-
         Call<String> call = client.deleteNote(projectID, getNoteOnList(itemPosition));
 
         // Execute the call asynchronously. Get a positive or negative callback.

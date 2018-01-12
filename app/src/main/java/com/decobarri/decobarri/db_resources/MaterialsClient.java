@@ -9,6 +9,12 @@ import retrofit2.http.GET;
 
 public interface MaterialsClient {
 
-    @GET("/material/findAll")
-    Call<List<Material>> contentList();
+    public class wantListPairs
+    {
+        public Project project;
+        public List<Material> materials;
+    };
+
+    @GET("/project/getAllNeedMaterials")
+    Call<List<wantListPairs>> contentList();
 }

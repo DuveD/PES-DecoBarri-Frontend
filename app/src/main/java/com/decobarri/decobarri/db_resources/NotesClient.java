@@ -21,8 +21,8 @@ public interface NotesClient {
     Call<String> addNote(@Path("id") String id, @Body Note note);
 
     @PUT("/project/deleteNote/{id}")
-    Call<String> deleteNote(@Path("id") String _id, @Body Note note);
+    Call<String> deleteNote(@Path("id") String id, @Body Note note);
 
     @POST("/project/editNote/{id}")
-    Call<String> editNote(@Path("id") String _id, @Body Note note);
+    Call<String> editNote(@Path("id") String id, @Body Note note);
 }

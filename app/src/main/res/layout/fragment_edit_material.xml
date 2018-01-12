@@ -63,17 +63,12 @@
                 android:tint="@android:color/darker_gray"
                 android:scaleType="centerCrop"
                 android:background="@drawable/dotted_frame"/>
-            <com.joooonho.SelectableRoundedImageView
+            <ImageView
                 android:id="@+id/material_imageView"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_weight="0"
                 android:background="@drawable/dotted_frame"
-
-                app:sriv_left_top_corner_radius="10dp"
-                app:sriv_right_top_corner_radius="10dp"
-                app:sriv_left_bottom_corner_radius="10dp"
-                app:sriv_right_bottom_corner_radius="10dp"
 
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"/>
@@ -103,6 +98,7 @@
                     android:id="@+id/input_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textSize="@dimen/edit_text_size"
                     android:hint="Quantity (optional)" />
             </android.support.design.widget.TextInputLayout>

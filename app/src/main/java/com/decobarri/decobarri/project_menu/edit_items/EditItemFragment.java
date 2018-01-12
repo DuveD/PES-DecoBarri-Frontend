@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -31,10 +32,8 @@ import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.OutputStream;
 import java.util.List;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -56,9 +55,11 @@ public class EditItemFragment extends Fragment {
     private SearchView materialsSearchView;
     private TextView saveTextView;
     private String projectId;
+    private ImageButton toolbarImageButton;
 
-    private String name;
-    private String description;
+    private String oldImage;
+    private String oldName;
+    private String oldDescription;
 
     private Retrofit retrofit;
 
@@ -122,8 +123,11 @@ public class EditItemFragment extends Fragment {
         materialsSearchView = (SearchView) view.findViewById(R.id.searchView);
         saveTextView = (TextView) view.findViewById(R.id.save_button);
         projectId = ((ProjectMenuActivity)this.getActivity()).projectID;
+        toolbarImageButton = ((ImageButton) view.findViewById(R.id.toolbar_button));
 
         if (item!=null){
+            String image = item.getImage();
+            itemImageView.setImageBitmap(decodeFromBase64(image));
             nameEditText.setText(item.getName());
             descriptionEditText.setText(item.getDescription());
         }
@@ -137,7 +141,7 @@ public class EditItemFragment extends Fragment {
     private void setUpNavBar(){
         if (item != null) titleTextView.setText("Edit Item");
         else titleTextView.setText("New Item");
-        ((ImageButton) view.findViewById(R.id.toolbar_button)).setOnClickListener(new View.OnClickListener() {
+        toolbarImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -164,9 +168,12 @@ public class EditItemFragment extends Fragment {
                     Item newItem = new Item();
                     newItem.setName(nameEditText.getText().toString());
                     newItem.setDescription(descriptionEditText.getText().toString());
-                    Bitmap bitmap = ((BitmapDrawable)itemImageView.getDrawable()).getBitmap();
 
+                    BitmapDrawable bitmapDrawable = ((BitmapDrawable)itemImageView.getDrawable());
+                    Drawable drawable = getResources().getDrawable(R.drawable.item);
+                    Bitmap bitmap = ((bitmapDrawable == null) ? ((BitmapDrawable) drawable).getBitmap() : bitmapDrawable.getBitmap());
                     newItem.setImage(encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50));
+
                     if (item != null) {
                         newItem.setId(item.getID());
                         saveItem(newItem);
@@ -201,7 +208,7 @@ public class EditItemFragment extends Fragment {
     }
 
     private void createItem(Item newItem) {
-
+        disableButtons();
         ProjectClient client = retrofit.create(ProjectClient.class);
         Call<String> call = client.AddItem(projectId, newItem);
         call.enqueue(new Callback<String>() {
@@ -213,11 +220,13 @@ public class EditItemFragment extends Fragment {
                     System.out.println("Response: " + response.body());
                     ((ProjectMenuActivity)getActivity()).back();
                 }
+                activeButtons();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Error: " + t.toString());
+                activeButtons();
             }
         });
     }
@@ -232,14 +241,13 @@ public class EditItemFragment extends Fragment {
 
     private void fillInfo() {
         if (item != null) {
-            name = item.getName();
-            description = item.getDescription();
+            oldName = item.getName();
+            oldDescription = item.getDescription();
             //TODO: Materials composition
-            saveTextView.setText(
-                    "Save Changes");
+            saveTextView.setText("Save Changes");
         } else {
-            name = nameEditText.getText().toString();
-            description = descriptionEditText.getText().toString();
+            oldName = nameEditText.getText().toString();
+            oldDescription = descriptionEditText.getText().toString();
             saveTextView.setText("Add Item");
         }
     }
@@ -255,12 +263,21 @@ public class EditItemFragment extends Fragment {
     }
 
     private boolean changes() {
+        BitmapDrawable bitmapDrawable = ((BitmapDrawable)itemImageView.getDrawable());
+        Drawable drawable = getResources().getDrawable(R.drawable.material);
+        Bitmap bitmap = ((bitmapDrawable == null) ? ((BitmapDrawable) drawable).getBitmap() : bitmapDrawable.getBitmap());
+
+        final String newImage = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
         final String newName = nameEditText.getText().toString();
         final String newDescription = descriptionEditText.getText().toString();
-        if (!newName.equals(name)){
+
+        if (!newImage.isEmpty() && !newImage.equals(oldImage)) {
+            Log.i(TAG, "Image edited.");
+            return true;
+        } else if (!newName.equals(oldName)){
             Log.i(TAG, "Name edited.");
             return true;
-        } else if (!newDescription.equals(description)){
+        } else if (!newDescription.equals(oldDescription)){
             Log.i(TAG, "Description edited");
             return true;
         }
@@ -317,6 +334,16 @@ public class EditItemFragment extends Fragment {
         });
     }
 
+    private void disableButtons(){
+        saveTextView.setEnabled(false);
+        toolbarImageButton.setEnabled(false);
+    }
+
+    private void activeButtons(){
+        saveTextView.setEnabled(true);
+        toolbarImageButton.setEnabled(true);
+    }
+
     private void onPhotosReturned(List<File> imagesFiles) {
         if (imagesFiles.size() > 1) System.out.println("There're more than one image!");
         Picasso.with(getActivity())
@@ -324,6 +351,17 @@ public class EditItemFragment extends Fragment {
                 .resize(itemImageView.getWidth(), itemImageView.getHeight())
                 .centerCrop()
                 .into(itemImageView);
+    }
+
+    public Bitmap decodeFromBase64(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
     public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)

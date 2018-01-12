@@ -61,28 +61,29 @@ public interface ProjectClient {
     @GET("/project/getInventory/{id}")
     Call<List<Material>> getInvetoryList(@Path("id") String id);
 
-    @POST("")
-    Call<String> addInvetoryMaterial();
+    @POST("/project/addInventoryMaterial/{id}")
+    Call<String> addInvetoryMaterial(@Path("id") String id, @Body Material material);
 
-    @PUT("")
-    Call<String> editInvetoryMaterial();
+    @PUT("/project/editInventoryMaterial/{id}")
+    Call<String> editInvetoryMaterial(@Path("id") String id, @Body Material material);
 
-    @PUT("")
-    Call<String> deleteInvetoryMaterial();
+    @POST("/project/deleteInventoryMaterial/{id}")
+    Call<String> deleteInvetoryMaterial(@Path("id") String id, @Body Material material);
 
     // Need List Materials
 
-    @GET("")
-    Call<List<Material>> getNeedList();
+    @GET("/project/getNeedList/{id}")
+    Call<List<Material>> getNeedList(@Path("id") String id);
 
-    @POST("")
-    Call<String> addNeedListMaterial();
+    @POST("/project/addNeedListMaterial/{id}")
+    Call<String> addNeedListMaterial(@Path("id") String id, @Body Material material);
 
-    @PUT("")
-    Call<String> editNeedListMaterial();
+    @PUT("/project/editNeedListMaterial/{id}")
+    Call<String> editNeedListMaterial(@Path("id") String id, @Body Material material);
 
-    @PUT("")
-    Call<String> deleteNeedListMaterial();
+    @POST("/project/deleteNeedListMaterial/{id}")
+    Call<String> deleteNeedListMaterial(@Path("id") String id, @Body Material material);
+
 
     @GET("/project/getImage/{id}")
     Call<ResponseBody> getImage(@Path("id") String _id);

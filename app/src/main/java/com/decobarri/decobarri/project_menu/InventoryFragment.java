@@ -132,7 +132,7 @@ public class InventoryFragment extends Fragment {
                     inventoryList,
                     recyclerView,
                     getActivity(),
-                    Const.INVENTORY_MATERIAL){
+                    TAG){
 
                 @Override
                 public void customNotifyDataSetChanged(){
@@ -146,7 +146,7 @@ public class InventoryFragment extends Fragment {
         }
     }
 
-    private void setVisibleList() {
+    public void setVisibleList() {
         if (inventoryList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);

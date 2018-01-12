@@ -93,8 +93,6 @@ public class ItemAdapter
     public void onBindViewHolder(ItemViewHolder viewHolder, int position) {
 
         /* SET ITEM IMAGE */
-        if (itemList.get(position).getImage() == null) Log.d("Image:", "Is null.");
-        else Log.d("Image:", itemList.get(position).getImage());
         viewHolder.image.setImageBitmap(decodeFromBase64(itemList.get(position).getImage()));
 
         /* SET ITEM NAME */

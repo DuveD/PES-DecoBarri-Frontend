@@ -1,12 +1,18 @@
 package com.decobarri.decobarri.activity_resources.Materials;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +24,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.decobarri.decobarri.R;
+import com.decobarri.decobarri.db_resources.ProjectClient;
+import com.decobarri.decobarri.main_menu.GlobalMaterialsFragment;
 import com.decobarri.decobarri.project_menu.InventoryFragment;
 import com.decobarri.decobarri.project_menu.NeedListFragment;
 import com.decobarri.decobarri.project_menu.ProjectMenuActivity;
 import com.decobarri.decobarri.project_menu.edit_items.EditMaterialFragment;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MaterialAdapter
         extends Adapter<MaterialAdapter.MaterialViewHolder>
-        implements OnClickListener, OnLongClickListener {
+        implements OnClickListener {
 
     private List<Material> materialList;
     private RecyclerView recyclerView;
@@ -91,7 +101,6 @@ public class MaterialAdapter
     public MaterialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.material_view, parent, false);
         view.setOnClickListener(this);
-        view.setOnLongClickListener(this);
         MaterialViewHolder material = new MaterialViewHolder(view);
         return material;
     }
@@ -105,28 +114,26 @@ public class MaterialAdapter
     @Override
     public void onBindViewHolder(MaterialViewHolder viewHolder, int position) {
 
-        /* SET GLOBAL MATERIAL IMAGE */
-        /*Picasso.with(context)
-                .load(materialList.get(position).getImage())
-                .resize(70, 70)
-                .centerCrop()
-                .into(viewHolder.image);
+        /* SET MATERIAL IMAGE */
+        Material material = materialList.get(position);
 
+        /* SET MATERIAL IMAGE */
+        viewHolder.image.setImageBitmap(decodeFromBase64(material.getImage()));
 
-        /* SET GLOBAL MATERIAL NAME */
-        viewHolder.name.setText(materialList.get(position).getName());
+        /* SET MATERIAL NAME */
+        viewHolder.name.setText(material.getName());
 
-        /* SET GLOBAL MATERIAL ADRESS */
-        viewHolder.address.setText(materialList.get(position).getAddress());
+        /* SET MATERIAL ADRESS */
+        viewHolder.address.setText(material.getAddress());
 
-        /* SET GLOBAL MATERIAL QUANTITY */
-        if (materialList.get(position).getQuantity() <= 0)
+        /* SET MATERIAL QUANTITY */
+        if (material.getQuantity() <= 0)
             viewHolder.quantity.setText("-");
         else
-            viewHolder.quantity.setText(Integer.toString(materialList.get(position).getQuantity()));
+            viewHolder.quantity.setText(Integer.toString(material.getQuantity()));
 
-        /* SET GLOBAL MATERIAL URGENT ICON TO VISIBLE IF IT IS NECESSARY */
-        if (materialList.get(position).isUrgent()) {
+        /* SET MATERIAL URGENT ICON TO VISIBLE IF IT IS NECESSARY */
+        if (material.isUrgent()) {
             viewHolder.urgent.setVisibility(View.VISIBLE);
             viewHolder.image.setBorderColorResource(R.color.urgent_color);
         }
@@ -134,30 +141,14 @@ public class MaterialAdapter
 
 
     public void onClick(View view) {
-
-        int itemPosition = recyclerView.getChildLayoutPosition(view);
-        Material item = materialList.get(itemPosition);
-
-        CharSequence text = "Item description: " + item.getDescription() + "\n"
-                + "Item urgent: " + item.isUrgent();
-        Toast toast = Toast.makeText(view.getContext(), text, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        if (parentFragment == null){
-            onLongClickRead( view );
+        if (parentFragment.equals(GlobalMaterialsFragment.class.getSimpleName())){
+            // TODO Thing to do in Global Materials Fragment
         } else {
-            onLongClickOptions( view );
+            onClickOptions( view );
         }
-        return true;
     }
 
-    private void onLongClickRead(View view) {
-    }
-
-    private void onLongClickOptions(View view) {
+    private void onClickOptions(View view) {
         final int itemPosition = recyclerView.getChildLayoutPosition(view);
 
         String listToMove = "NULL";
@@ -172,13 +163,13 @@ public class MaterialAdapter
             public void onClick(DialogInterface dialog, int item) {
                 switch (item){
                     case 0:
-                        onLongClickEdit(itemPosition);
+                        onClickEdit(itemPosition);
                         break;
                     case 1:
-                        onLongClickMove(itemPosition);
+                        onClickMove(itemPosition);
                         break;
                     case 2:
-                        onLongClickDelete(itemPosition);
+                        onClickDelete(itemPosition);
                         break;
                 }
             }
@@ -186,31 +177,141 @@ public class MaterialAdapter
         builder.show();
     }
 
-    private void onLongClickEdit( int itemPosition ) {
+    private void onClickEdit(int itemPosition ) {
         Log.i(TAG+" "+parentFragment, "Edit Material");
 
         ProjectMenuActivity activity = (ProjectMenuActivity)context;
         FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
-        transaction.add(R.id.editFragmentsLayout, EditMaterialFragment.newInstance(getMaterial(itemPosition), TAG));
+        transaction.add(R.id.editFragmentsLayout, EditMaterialFragment.newInstance(getMaterial(itemPosition), parentFragment));
         transaction.addToBackStack(null);
         transaction.commit();
 
         customNotifyDataSetChanged();
     }
 
-    private void onLongClickMove( int itemPosition ) {
+    private void onClickMove(int itemPosition ) {
         Log.i(TAG+" "+parentFragment, "Move Material");
         //TODO: CALL MOVE
     }
 
-    private void onLongClickDelete( int itemPosition ) {
+    private void onClickDelete(final int itemPosition ) {
         Log.i(TAG+" "+parentFragment, "Delete Material");
-        //TODO: CALL DELETE
-        deleteMaterial(itemPosition);
-        customNotifyDataSetChanged();
+        if (parentFragment.equals(InventoryFragment.class.getSimpleName())) {
+            deleteInvetoryMaterial( itemPosition );
+        } else if (parentFragment.equals(NeedListFragment.class.getSimpleName())) {
+            deleteNeedListMaterial( itemPosition );
+        }
+    }
+
+    private void deleteInvetoryMaterial(final int itemPosition) {
+
+        ProjectClient client = retrofit.create(ProjectClient.class);
+
+        Call<String> call = client.deleteInvetoryMaterial(projectID, getMaterial(itemPosition));
+
+        // Execute the call asynchronously. Get a positive or negative callback.
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                // The network call was a success and we got a response
+                Log.i(TAG, "Call successful: " + call.request());
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Log.i(TAG, "Success : " + response.body());
+
+                    deleteMaterial(itemPosition);
+                    customNotifyDataSetChanged();
+                }
+                else {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    if (response.body() != null)
+                        Log.i(TAG, response.body());
+
+                    Toast.makeText(context, R.string.note_delete_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                // the network call was a failure
+                Log.e(TAG, "Call failed: " + call.request());
+                Log.e(TAG, "Error: " + t.getMessage());
+
+                if (!isOnline())  Log.e(TAG, "No internet connection.");
+                else Log.w(TAG, "Please check your internet connection and try again.");
+            }
+        });
+    }
+
+    private void deleteNeedListMaterial(final int itemPosition) {
+
+        ProjectClient client = retrofit.create(ProjectClient.class);
+
+        Call<String> call = client.deleteNeedListMaterial(projectID, getMaterial(itemPosition));
+
+        // Execute the call asynchronously. Get a positive or negative callback.
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                // The network call was a success and we got a response
+                Log.i(TAG, "Call successful: " + call.request());
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    Log.i(TAG, "Success : " + response.body());
+
+                    deleteMaterial(itemPosition);
+                    customNotifyDataSetChanged();
+                }
+                else {
+                    Log.i(TAG, "Response "+response.code() + ": " + response.message());
+                    if (response.body() != null)
+                        Log.i(TAG, response.body());
+
+                    Toast.makeText(context, R.string.note_delete_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                // the network call was a failure
+                Log.e(TAG, "Call failed: " + call.request());
+                Log.e(TAG, "Error: " + t.getMessage());
+
+                if (!isOnline())  Log.e(TAG, "No internet connection.");
+                else Log.w(TAG, "Please check your internet connection and try again.");
+            }
+        });
+    }
+
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     public void customNotifyDataSetChanged(){
         notifyDataSetChanged();
+        if (parentFragment.equals(InventoryFragment.class.getSimpleName())) {
+            InventoryFragment fragment = (InventoryFragment) ((Activity)context).getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
+            fragment.setVisibleList();
+        } else if (parentFragment.equals(NeedListFragment.class.getSimpleName())) {
+            NeedListFragment fragment = (NeedListFragment) ((Activity)context).getFragmentManager().findFragmentById(R.id.projectFragmentsLayout);
+            fragment.setVisibleList();
+        }
+
+
+    }
+
+    public Bitmap decodeFromBase64(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }
