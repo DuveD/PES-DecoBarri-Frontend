@@ -143,6 +143,9 @@ public class MaterialAdapter
     public void onClick(View view) {
         if (parentFragment.equals(GlobalMaterialsFragment.class.getSimpleName())){
             // TODO Thing to do in Global Materials Fragment
+            final int itemPosition = recyclerView.getChildLayoutPosition(view);
+            Material material = getMaterial(itemPosition);
+            Toast.makeText(context, material.getDescription(), Toast.LENGTH_SHORT).show();
         } else {
             onClickOptions( view );
         }

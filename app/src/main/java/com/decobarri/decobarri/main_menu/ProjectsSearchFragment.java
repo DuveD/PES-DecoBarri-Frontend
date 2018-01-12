@@ -43,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ProjectsSearchFragment extends Fragment {
-    List items = new ArrayList();
+    public List items = new ArrayList();
     private RecyclerView rec;
     private AllProjectsAdapter adapter;
     private RecyclerView.LayoutManager lmanager;

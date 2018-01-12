@@ -179,6 +179,8 @@ public class GlobalMaterialsFragment extends Fragment {
                     Log.i(TAG, "Success : " + response.body());
                     globalMaterialList = new ArrayList<>();
                     for (MaterialsClient.wantListPairs project: response.body()) {
+                        List<Material> materialList = project.materials;
+                        for (Material material : materialList) { material.setAddress(project.project.getName()); }
                         globalMaterialList.addAll(project.materials);
                     }
                     Collections.sort(globalMaterialList, new Comparator<Material>() {
