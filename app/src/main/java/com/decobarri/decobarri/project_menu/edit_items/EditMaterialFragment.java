@@ -61,6 +61,7 @@ public class EditMaterialFragment extends Fragment {
 
     private String projectID;
 
+    private String oldID;
     private String oldImage;
     private String oldName;
     private int oldQuantity;
@@ -98,6 +99,7 @@ public class EditMaterialFragment extends Fragment {
     }
 
     private void initVars() {
+        oldMaterial = new Material();
         readBundle(getArguments());
         retrofit = ((ProjectMenuActivity)this.getActivity()).retrofit;
         projectID = ((ProjectMenuActivity)this.getActivity()).projectID;
@@ -129,11 +131,15 @@ public class EditMaterialFragment extends Fragment {
         materialImageView = (ImageView) view.findViewById(R.id.material_imageView);
         nameTextView = (TextView) view.findViewById(R.id.input_name);
         quantityTextView = (TextView) view.findViewById(R.id.input_quantity);
-        adressTextView = (TextView) view.findViewById(R.id.adress);
+        //adressTextView = (TextView) view.findViewById(R.id.adress);
         descriptionTextView = (TextView) view.findViewById(R.id.input_description);
         urgentCheckBox = (CheckBox) view.findViewById(R.id.input_urgent);
         saveTextView = (TextView) view.findViewById(R.id.save_button);
         closeButton = (ImageButton) view.findViewById(R.id.toolbar_button);
+/*
+        if (parentFragment.equals(InventoryFragment.class.getSimpleName())) {
+            urgentCheckBox.setVisibility(View.GONE);
+        }*/
 
         setUpNavBar();
         setUpButtons();
@@ -172,6 +178,7 @@ public class EditMaterialFragment extends Fragment {
 
         if (oldMaterial != null) {
             title = "Edit " + title;
+            oldID = oldMaterial.getID();
             oldImage = oldMaterial.getImage();
             oldName = oldMaterial.getName();
             oldQuantity = oldMaterial.getQuantity();
@@ -180,7 +187,7 @@ public class EditMaterialFragment extends Fragment {
 
             materialImageView.setImageBitmap(decodeFromBase64(oldImage));
             nameTextView.setText(oldName);
-            quantityTextView.setText(oldQuantity);
+            quantityTextView.setText(Integer.toString(oldQuantity));
             descriptionTextView.setText(oldDescription);
             urgentCheckBox.setChecked(oldUrgent);
 
@@ -230,7 +237,7 @@ public class EditMaterialFragment extends Fragment {
         String image = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
 
         return new Material(
-                " ",
+                ((oldID == null) ? " " : oldID),
                 image,
                 nameTextView.getText().toString(),
                 descriptionTextView.getText().toString(),
@@ -417,27 +424,14 @@ public class EditMaterialFragment extends Fragment {
     }
 
     private boolean materialChange() {
-        Bitmap bitmap = ((BitmapDrawable)materialImageView.getDrawable()).getBitmap();
-        String newImage = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
         final String newName = nameTextView.getText().toString();
-        final int newQuantity = Integer.parseInt(quantityTextView.getText().toString());
         final String newDescription = descriptionTextView.getText().toString();
-        final Boolean newUrgent = urgentCheckBox.isActivated();
 
-        if (!newImage.isEmpty() && !newImage.equals(oldImage)) {
-            Log.i(TAG, "Image edited.");
-            return true;
-        } else if (!newName.isEmpty() && !newName.equals(oldName)) {
+        if (!newName.isEmpty() && !newName.equals(oldName)) {
             Log.i(TAG, "Title edited.");
-            return true;
-        } else if (newQuantity > 0 && newQuantity != oldQuantity){
-            Log.i(TAG, "Quantity edited.");
             return true;
         } else if (!newDescription.isEmpty() && !newDescription.equals(oldDescription)){
             Log.i(TAG, "Description edited");
-            return true;
-        } else if (newUrgent != oldUrgent){
-            Log.i(TAG, "Color edited");
             return true;
         }
         return false;

@@ -263,18 +263,10 @@ public class EditItemFragment extends Fragment {
     }
 
     private boolean changes() {
-        BitmapDrawable bitmapDrawable = ((BitmapDrawable)itemImageView.getDrawable());
-        Drawable drawable = getResources().getDrawable(R.drawable.material);
-        Bitmap bitmap = ((bitmapDrawable == null) ? ((BitmapDrawable) drawable).getBitmap() : bitmapDrawable.getBitmap());
-
-        final String newImage = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
         final String newName = nameEditText.getText().toString();
         final String newDescription = descriptionEditText.getText().toString();
 
-        if (!newImage.isEmpty() && !newImage.equals(oldImage)) {
-            Log.i(TAG, "Image edited.");
-            return true;
-        } else if (!newName.equals(oldName)){
+        if (!newName.equals(oldName)){
             Log.i(TAG, "Name edited.");
             return true;
         } else if (!newDescription.equals(oldDescription)){

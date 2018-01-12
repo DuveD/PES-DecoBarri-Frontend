@@ -102,7 +102,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         /****************** When call its done... ******************/
         String image = user.getImage();
-        System.out.println("image: " + image.length());
+        if (image !=  null) System.out.println("image: " + image.length());
         Bitmap bm = stringToBitMap(image);
         profileImage.setImageBitmap(bm);
         /***********************************************************/

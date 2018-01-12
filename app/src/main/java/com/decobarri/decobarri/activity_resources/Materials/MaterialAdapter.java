@@ -133,7 +133,7 @@ public class MaterialAdapter
             viewHolder.quantity.setText(Integer.toString(material.getQuantity()));
 
         /* SET MATERIAL URGENT ICON TO VISIBLE IF IT IS NECESSARY */
-        if (material.isUrgent()) {
+        if (material.isUrgent() && !parentFragment.equals(InventoryFragment.class.getSimpleName())) {
             viewHolder.urgent.setVisibility(View.VISIBLE);
             viewHolder.image.setBorderColorResource(R.color.urgent_color);
         }
@@ -155,7 +155,7 @@ public class MaterialAdapter
         if (parentFragment.equals(InventoryFragment.class.getSimpleName())) listToMove = "Need List";
         else if (parentFragment.equals(NeedListFragment.class.getSimpleName())) listToMove = "Inventory";
 
-        final CharSequence[] items = {"Edit",  "Move to "+listToMove, "Delete"};
+        final CharSequence[] items = {"Edit",  /*"Move to "+listToMove,*/ "Delete"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         //builder.setTitle("Select an action");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -166,9 +166,9 @@ public class MaterialAdapter
                         onClickEdit(itemPosition);
                         break;
                     case 1:
-                        onClickMove(itemPosition);
+                        /*onClickMove(itemPosition);
                         break;
-                    case 2:
+                    case 2:*/
                         onClickDelete(itemPosition);
                         break;
                 }

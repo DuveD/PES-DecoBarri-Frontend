@@ -102,7 +102,7 @@
                     android:textSize="@dimen/edit_text_size"
                     android:hint="Quantity (optional)" />
             </android.support.design.widget.TextInputLayout>
-
+        <!--
         <Space
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_text_empty_list_icons" />
@@ -115,7 +115,7 @@
                 android:textSize="@dimen/edit_text_size"/>
             <View android:background="@android:color/black"
                 android:layout_width = "match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"/>-->
 
         <Space
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +34,7 @@ import com.decobarri.decobarri.db_resources.UserClient;
 import com.decobarri.decobarri.main_menu.MainMenuActivity;
 import com.google.gson.GsonBuilder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -234,6 +237,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), new_user.getName());
             final RequestBody mail = RequestBody.create(MediaType.parse("text/plain"), new_user.getEmail());
 
+            // Reducimos tamaño de la foto
+            Bitmap bitmap = decodeFromBase64(new_user.getImage());
+            new_user.setImage(encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50));
+
             Call<String> call = client.EditUser(username, new_user);
 
             final MultipartBody.Part finalBody = body;
@@ -357,5 +364,23 @@ public class AccountSettingsActivity extends AppCompatActivity implements Profil
                 break;
         }
     }
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        Bitmap resized = Bitmap.createScaledBitmap(image, image.getWidth()/2, image.getHeight()/2, true);
+        resized.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.
+                toByteArray(), Base64.DEFAULT);
+    }
 
+    public Bitmap decodeFromBase64(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 }

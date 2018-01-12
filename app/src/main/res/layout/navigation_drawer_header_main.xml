@@ -6,26 +6,23 @@
     android:background="@drawable/navigation_drawer_background"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <com.joooonho.SelectableRoundedImageView
-            android:id="@+id/imageView"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:srcCompat="@drawable/ic_menu_account_image"
-            app:sriv_left_top_corner_radius="35dp"
-            app:sriv_right_top_corner_radius="35dp"
-            app:sriv_left_bottom_corner_radius="35dp"
-            app:sriv_right_bottom_corner_radius="35dp"
+    android:paddingTop="30dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
 
-            app:sriv_border_width="2dip"
-            app:sriv_border_color="@color/primaryColor" />
-    </RelativeLayout>
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    <com.joooonho.SelectableRoundedImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/ic_menu_account_image"
+        app:sriv_left_top_corner_radius="30dp"
+        app:sriv_right_top_corner_radius="30dp"
+        app:sriv_left_bottom_corner_radius="30dp"
+        app:sriv_right_bottom_corner_radius="32dp"
+
+        app:sriv_border_width="0dip"
+        app:sriv_border_color="@color/primaryColor" />
 
     <TextView
         android:layout_width="match_parent"

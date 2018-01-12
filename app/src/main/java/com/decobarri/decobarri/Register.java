@@ -2,6 +2,7 @@ package com.decobarri.decobarri;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -68,9 +69,11 @@ public class Register extends AppCompatActivity {
                 public void onResponse(Call<String> call, Response<String> response) {
                     if(response.isSuccessful()){
                         System.out.println("Success : " + response.body());
-                        ContentValues values = new ContentValues();
-                        values.put("username", user);
-                        values.put("password", pass);
+                        SharedPreferences pref = getSharedPreferences("LOGGED_USER", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("username", user);
+                        editor.putString("password", pass);
+                        editor.apply();
                         Intent i = new Intent(Register.this, MainMenuActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);

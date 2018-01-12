@@ -232,42 +232,10 @@
         android:baselineAligned="false"
         tools:ignore="NestedWeights"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        >
 
         <!-- ICON 2x0 -->
-        <LinearLayout
-            android:id="@+id/bottom_sheet_xat"
-            style="@style/AppTheme.BottomSheetBoton"
-            android:layout_width="72dp"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:id="@+id/bottom_sheet_xat_imageView"
-                android:layout_width="@dimen/icon_dimensions"
-                android:layout_height="@dimen/icon_dimensions"
-                android:tint="@android:color/darker_gray"
-                app:srcCompat="@drawable/ic_chat" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/bottom_text_padding" />
-
-            <TextView
-                android:id="@+id/bottom_sheet_xat_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="fill_vertical"
-                android:text="@string/bottom_sheet_xat_text" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <!-- ICON 2x1 -->
         <LinearLayout
             android:id="@+id/bottom_sheet_group"
             style="@style/AppTheme.BottomSheetBoton"
@@ -293,6 +261,40 @@
                 android:layout_height="wrap_content"
                 android:gravity="fill_vertical"
                 android:text="@string/bottom_sheet_group_text" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <!-- ICON 2x1 -->
+        <LinearLayout
+            android:id="@+id/bottom_sheet_xat"
+            style="@style/AppTheme.BottomSheetBoton"
+            android:layout_width="72dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/bottom_sheet_xat_imageView"
+                android:layout_width="@dimen/icon_dimensions"
+                android:layout_height="@dimen/icon_dimensions"
+                android:tint="@android:color/darker_gray"
+                app:srcCompat="@drawable/ic_chat" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/bottom_text_padding" />
+
+            <TextView
+                android:id="@+id/bottom_sheet_xat_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="fill_vertical"
+                android:text="@string/bottom_sheet_xat_text" />
         </LinearLayout>
 
         <Space

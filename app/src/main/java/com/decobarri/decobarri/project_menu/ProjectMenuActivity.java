@@ -182,11 +182,11 @@ public class ProjectMenuActivity extends BaseActivity implements View.OnClickLis
                     activePlusFloatingButton(false);
                     transaction.replace(R.id.projectFragmentsLayout, mapFragment);
                 break;
-            case R.id.bottom_sheet_xat:
+            /*case R.id.bottom_sheet_xat:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_xat)
                     activePlusFloatingButton(false);
                     transaction.replace(R.id.projectFragmentsLayout, xatFragment);
-                break;
+                break;*/
             case R.id.bottom_sheet_group:
                 if (previousBottomSheetClickedItem != R.id.bottom_sheet_group)
                     activePlusFloatingButton(false);
