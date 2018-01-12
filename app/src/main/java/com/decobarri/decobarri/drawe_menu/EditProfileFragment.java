@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.decobarri.decobarri.db_resources.UserClient;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
@@ -87,13 +90,22 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             error.setText("Wrong email");
         }
 
+        User user = ((AccountSettingsActivity) this.getActivity()).user;
+
         if(args != null){
             id.setText(args.getString("id"));
             name.setText(args.getString("name"));
-            email.setText(args.getString("email"));
+            email.setText(user.getEmail());
         } else {
             Toast.makeText(getContext(), "Not logged", Toast.LENGTH_LONG);
         }
+
+        /****************** When call its done... ******************/
+        String image = user.getImage();
+        System.out.println("image: " + image.length());
+        Bitmap bm = stringToBitMap(image);
+        profileImage.setImageBitmap(bm);
+        /***********************************************************/
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(getActivity().getResources().getString(R.string.db_URL))
@@ -150,10 +162,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             String in_email = email.getText().toString();
 
             User u = new User(id.getText().toString(), in_name, in_email);
+            BitmapDrawable drawable = (BitmapDrawable) profileImage.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            String bitstring = encodeToBase64(bitmap, Bitmap.CompressFormat.PNG, 50);
+            u.setImage(bitstring);
 
-            listener.EditUser(u, filePath);
-
-
+            listener.EditUser(u);
         }
         else if (view.getId() == R.id.button_cancel){
             listener.ChangeFragment(3);
@@ -164,6 +178,15 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         else if (view.getId() == R.id.imageView3 || view.getId() == R.id.imageView4){
             EasyImage.openChooserWithGallery(EditProfileFragment.this, "Choose Material Image", 0);
         }
+    }
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        Bitmap resized = Bitmap.createScaledBitmap(image, image.getWidth()/2, image.getHeight()/2, true);
+        resized.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.
+                toByteArray(), Base64.DEFAULT);
     }
 
     @Override
@@ -218,5 +241,16 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     public void error(){
         error.setVisibility(View.VISIBLE);
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

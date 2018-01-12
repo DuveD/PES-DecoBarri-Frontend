@@ -106,10 +106,10 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
 
         inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutDescription = (TextInputLayout) findViewById(R.id.input_layout_description);
-        inputLayoutTheme = (TextInputLayout) findViewById(R.id.input_layout_theme);
+        //inputLayoutTheme = (TextInputLayout) findViewById(R.id.input_layout_theme);
         input_name = (EditText) findViewById(R.id.input_project_name);
         input_description = (EditText) findViewById(R.id.input_description);
-        input_theme = (EditText) findViewById(R.id.input_theme);
+        //input_theme = (EditText) findViewById(R.id.input_theme);
         button_create = (Button) findViewById(R.id.create_button);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -150,7 +150,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
 
         input_name.addTextChangedListener(new MyTextWatcher(input_name));
         input_description.addTextChangedListener(new MyTextWatcher(input_description));
-        input_theme.addTextChangedListener(new MyTextWatcher(input_theme));
+        //input_theme.addTextChangedListener(new MyTextWatcher(input_theme));
 
         button_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +161,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 Double lat = latLng.latitude;
                 Double lng = latLng.longitude;
                 new_image = filePath;
-                Project projectCreated = new Project("", input_name.getText().toString(), input_theme.getText().toString(),
+                Project projectCreated = new Project("", input_name.getText().toString(), "",
                         input_description.getText().toString(), "Barcelona", "FIB", username, lat.toString(), lng.toString());
 
                 BitmapDrawable drawable = (BitmapDrawable) projectImage.getDrawable();
@@ -257,8 +257,6 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
                 case R.id.input_description:
                     validateDescription();
                     break;
-                case R.id.input_theme:
-                    break;
             }
         }
     }
@@ -329,7 +327,7 @@ public class CreateProjectActivity extends AppCompatActivity implements OnMapRea
         projectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyImage.openChooserWithDocuments(CreateProjectActivity.this, "Choose an image for your project", 0);
+                EasyImage.openChooserWithGallery(CreateProjectActivity.this, "Choose an image for your project", 0);
             }
         });
     }

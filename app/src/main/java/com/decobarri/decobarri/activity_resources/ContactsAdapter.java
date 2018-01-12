@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,26 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         System.out.println("Id: " + contactList.get(position).getId());
         holder.name.setText(contactList.get(position).getName());
         holder.item_container.setVisibility(View.VISIBLE);
+        /****************** When call its done... ******************/
+        Bitmap bm = stringToBitMap(contactList.get(position).getImage());
+        holder.profileImage.setImageBitmap(bm);
+        /***********************************************************/
+        Call<User> image_call = client.FindByID(contactList.get(position).getId());
+        image_call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getImage()!=null) {
+                        Bitmap bm = stringToBitMap(response.body().getImage());
+                        holder.profileImage.setImageBitmap(bm);
+                    }
+                    else holder.profileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_menu_account_image));
+                }
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+            }
+        });
 
         if (Objects.equals(LIST, "members")){
             if (!Objects.equals(username, contactList.get(position))) {
@@ -137,23 +158,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     public void onFailure(Call<User> call, Throwable t) {
                         System.out.println("Error: " + t);
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                Call<ResponseBody> image_call = client.downloadImage(username);
-                image_call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if(response.isSuccessful()){
-                            Bitmap bm = BitmapFactory.decodeStream(response.body().byteStream());
-                            if(bm!=null)holder.profileImage.setImageBitmap(
-                                    Bitmap.createScaledBitmap(bm, holder.profileImage.getWidth(), holder.profileImage.getHeight(), false));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                     }
                 });
             }
@@ -345,5 +349,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public void setFilter(List<User> filteredList) {
         this.contactList = filteredList;
         notifyDataSetChanged();
+    }
+
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

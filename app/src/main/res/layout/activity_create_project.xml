@@ -79,11 +79,6 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/input_layout_description"
             android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/input_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Theme" />
         </android.support.design.widget.TextInputLayout>
 
          <LinearLayout

@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -91,7 +92,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         usernameTV = (TextView) header.findViewById(R.id.username_drawer);
         emailTV = (TextView) header.findViewById(R.id.email_drawer);
         setUpUser();
-        setUpImage();
+        //setUpImage();
 
         //create default navigation drawer toggle
         toggle = new ActionBarDrawerToggle(
@@ -170,6 +171,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 if(response.isSuccessful()&&response.body().getEmail()!=null) {
                     usernameTV.setText(username);
                     emailTV.setText(response.body().getEmail());
+                    /****************** When call its done... ******************/
+                    if(response.body().getImage()!=null) {
+                        Bitmap bm = stringToBitMap(response.body().getImage());
+                        profileImage.setImageBitmap(bm);
+                    }
+                    else profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_account_image));
+                    /***********************************************************/
                 }
             }
 
@@ -178,6 +186,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+    public Bitmap stringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
     @Override
