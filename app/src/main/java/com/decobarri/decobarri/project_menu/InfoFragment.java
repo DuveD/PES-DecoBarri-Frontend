@@ -64,6 +64,7 @@ public class InfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_info, container, false);
+        ((TextView) getActivity().findViewById(R.id.Toolbar_title)).setText("Project Info");
         projNameText = (TextView) view.findViewById(R.id.textProjName);
         projDescriptionText = (TextView) view.findViewById(R.id.descriptionText);
         projImage = (ImageView) view.findViewById(R.id.project_image);
